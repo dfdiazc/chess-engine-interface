@@ -3,7 +3,7 @@ import { FaChess } from 'react-icons/fa';
 
 const LandingHeader = () => {
   return (
-    <div className='h-32 w-full bg-yellow-400'>
+    <div className='flex items-center p-32 w-full bg-black'>
       <div>
         <FaChess />
       </div>
