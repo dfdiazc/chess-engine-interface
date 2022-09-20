@@ -18,7 +18,10 @@ const Landing = () => {
               <h2 className="text-xl text-gray-800 font-roboto font-semibold md:text-5xl">
                 Play chess online against a powerful AI!
               </h2>
-              <Link to="#" className="text-xl text-gray-800 font-roboto font-medium select-none p-3 bg-blue-400 rounded-full hover:bg-blue-400/80 hover:shadow text-center">
+              <Link
+                to="/login"
+                className="text-xl text-gray-800 font-roboto font-medium select-none p-3 bg-blue-400 rounded-lg border-b-4 border-blue-500 transition duration-300 hover:bg-blue-400/80 hover:border-blue-500/80 hover:shadow text-center"
+              >
                 Play now!
               </Link>
             </div>
