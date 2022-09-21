@@ -6,7 +6,7 @@ import { FaChess } from "react-icons/fa";
 
 const Register = () => {
   return (
-    <div className="flex flex-col h-max w-full bg-gradient-to-r from-yellow-400 to-blue-400 bg-fixed">
+    <div className="flex flex-col h-screen w-full bg-gradient-to-r from-yellow-400 to-blue-400 bg-fixed">
       <div className="flex justify-center grow py-10">
         <div className="bg-white px-10 py-6 relative rounded-xl self-center w-full max-w-sm">
           <div className="flex flex-col pb-6 items-center gap-5">
