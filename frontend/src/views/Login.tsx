@@ -2,7 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { LoginForm } from "components";
 import { IconContext } from "react-icons";
-import { FaChess, FaApple, FaFacebook, FaTwitter, FaGithub } from "react-icons/fa";
+import {
+  FaChess,
+  FaApple,
+  FaFacebook,
+  FaTwitter,
+  FaGithub,
+} from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {

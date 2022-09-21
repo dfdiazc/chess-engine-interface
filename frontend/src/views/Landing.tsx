@@ -28,6 +28,11 @@ const Landing = () => {
           </div>
         </div>
       </div>
+      <img
+        src="https://img-08.stickers.cloud/packs/7b6076b2-8227-4343-bff7-a218e327bf7e/webp/0fc594da-af1d-4aac-8cbe-50de8a725510.webp"
+        className="h-2 w-2 absolute bottom-0 left-0 hover:w-96 hover:h-96"
+        alt="Description pending"
+      ></img>
     </div>
   );
 };

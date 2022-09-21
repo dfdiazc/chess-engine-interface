@@ -1,9 +1,11 @@
 import React from "react";
-import { FaChess, FaGithub } from "react-icons/fa";
+import { FaChess } from "react-icons/fa";
+import { AiOutlineUser } from "react-icons/ai";
+import { FiChevronDown } from "react-icons/fi";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 
-const LandingHeader = () => {
+const Header = () => {
   return (
     <header className="flex items-center justify-between h-16 px-5 w-full bg-yellow-400">
       <div className="flex gap-5">
@@ -15,16 +17,21 @@ const LandingHeader = () => {
         </span>
       </div>
       <div className="flex items-center gap-5 text-center self-center">
-        <Link to="#" className="text-roboto font-medium text-md text-gray-800 select-none hover:underline">About</Link>
-        <Link to="#" className="text-roboto font-medium text-md text-gray-800 select-none hover:underline">Contact</Link>
-        <a href="https://github.com/dfdiazc/chess-engine-interface">
-          <IconContext.Provider value={{ className: "h-8 w-8 text-gray-800" }}>
-            <FaGithub />
+        <button className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-blue-500 hover:bg-blue-400">
+          <div className="bg-white rounded-full">
+            <IconContext.Provider
+              value={{ className: "h-5 w-5 text-gray-500 m-1" }}
+            >
+              <AiOutlineUser />
+            </IconContext.Provider>
+          </div>
+          <IconContext.Provider value={{ className: "h-5 w-5 text-white m-1" }}>
+            <FiChevronDown />
           </IconContext.Provider>
-        </a>
+        </button>
       </div>
     </header>
   );
 };
 
-export default LandingHeader;
+export default Header;
