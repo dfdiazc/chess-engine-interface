@@ -7,8 +7,8 @@ import { FcGoogle } from "react-icons/fc";
 
 const Login = () => {
   return (
-    <div className="flex flex-col h-screen w-full bg-gradient-to-r from-yellow-400 to-blue-400 bg-cover">
-      <div className="flex justify-center grow">
+    <div className="flex flex-col h-max w-full bg-gradient-to-r from-yellow-400 to-blue-400 bg-fixed">
+      <div className="flex justify-center grow py-10">
         <div className="bg-white px-10 py-6 relative rounded-xl self-center w-full max-w-sm">
           <div className="flex flex-col pb-6 items-center gap-5">
             <div className="flex gap-5">
@@ -25,7 +25,7 @@ const Login = () => {
           <LoginForm />
           <div className="flex items-center py-5">
             <span className="grow mr-3 h-px bg-black/20"></span>
-            <span>or</span>
+            <span className="font-roboto font-normal text-gray-800">or</span>
             <span className="grow ml-3 h-px bg-black/20"></span>
           </div>
           <div className="flex flex-col pb-10 gap-2">
