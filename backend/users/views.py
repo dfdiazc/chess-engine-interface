@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout
@@ -43,3 +43,7 @@ class LogoutView(View):
         logout(request)
 
         return JsonResponse({"status": "logged out"})
+
+def test(request):
+
+    return HttpResponse("Test")
