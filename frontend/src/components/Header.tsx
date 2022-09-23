@@ -17,7 +17,7 @@ const Header = () => {
         </span>
       </div>
       <div className="flex items-center gap-5 text-center self-center">
-        <button className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-blue-500 hover:bg-blue-400">
+        <button className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-blue-600 hover:bg-blue-500">
           <div className="bg-white rounded-full">
             <IconContext.Provider
               value={{ className: "h-5 w-5 text-gray-500 m-1" }}
