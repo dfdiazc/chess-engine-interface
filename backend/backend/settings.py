@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%jg=@g904rz=)x^pqg1r1vp$ve65!^nl=(@lib8do8vo#uh*q6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['unrealchess.pythonanywhere.com']
 
