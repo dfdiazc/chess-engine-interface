@@ -5,7 +5,7 @@ const RegisterForm = () => {
     <form>
       <div className="flex flex-col gap-5">
         <input
-          className="grow border rounded p-2 focus:shadow-outline"
+          className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
           type="email"
           name="email"
           id="email"
@@ -15,7 +15,7 @@ const RegisterForm = () => {
           required
         ></input>
         <input
-          className="grow border rounded p-2 focus:shadow-outline"
+          className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
           type="password"
           name="password"
           id="password"
@@ -24,7 +24,7 @@ const RegisterForm = () => {
           required
         ></input>
         <input
-          className="grow border rounded p-2 focus:shadow-outline"
+          className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
           type="password"
           name="confirm-password"
           id="confirm-password"
