@@ -4,7 +4,7 @@ import { Chessboard, Square } from "react-chessboard";
 import { Chess } from "chess.js";
 
 const Play = () => {
-  const [game, setGame] = useState(new Chess());
+  const [game] = useState(new Chess());
   const [fen, setFen] = useState(game.fen());
 
   function onDrop(source: Square, target: Square) {

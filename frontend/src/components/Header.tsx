@@ -3,11 +3,10 @@ import { FaChess } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
 import { IconContext } from "react-icons";
-import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="flex items-center justify-between h-16 px-5 w-full bg-yellow-400">
+    <header className="flex items-center justify-between h-16 px-5 w-full bg-yellow-400 shadow">
       <div className="flex gap-5">
         <IconContext.Provider value={{ className: "h-8 w-8 text-gray-800" }}>
           <FaChess />
