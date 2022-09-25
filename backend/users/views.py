@@ -43,7 +43,3 @@ class LogoutView(View):
         logout(request)
 
         return JsonResponse({"status": "logged out"})
-
-def test(request):
-
-    return HttpResponse("Test")

@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['unrealchess.pythonanywhere.com']
 # Application definition
 
 INSTALLED_APPS = [
+    'api',
     'users',
     'django.contrib.admin',
     'django.contrib.auth',
