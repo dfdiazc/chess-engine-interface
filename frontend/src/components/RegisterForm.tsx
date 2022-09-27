@@ -1,8 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 const RegisterForm = () => {
+  interface user {
+    email: string;
+    password: string;
+  }
+  interface response {
+    response: string | "No Response";
+  }
+  let initialState: user = {
+    email: "",
+    password: "",
+  };
+  const [user, setUser] = useState<user>(initialState);
+  const [response, setResponse] = useState<response>();
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    axios.post<response>('http://unrealchess.pythonanywhere.com/users/create', user)
+    .then((response) => {
+      setResponse(response.data)
+      console.log(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+  const onChangeHandler = (event: HTMLInputElement) => {
+    const {name, value} = event
+      setUser((prev) => {
+        return {...prev, [name]: value}
+      })
+  }
   return (
-    <form>
+    <form onSubmit={submitForm}>
       <div className="flex flex-col gap-5">
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
@@ -12,6 +43,8 @@ const RegisterForm = () => {
           autoComplete="username"
           inputMode="email"
           placeholder="E-mail"
+          value={user.email}
+          onChange={(e) => onChangeHandler(e.target)}
           required
         ></input>
         <input
@@ -21,6 +54,8 @@ const RegisterForm = () => {
           id="password"
           autoComplete="new-password"
           placeholder="Password"
+          value={user.password}
+          onChange={(e) => onChangeHandler(e.target)}
           required
         ></input>
         <input
@@ -30,6 +65,8 @@ const RegisterForm = () => {
           id="confirm-password"
           autoComplete="new-password"
           placeholder="Confirm Password"
+          value={user.password}
+          onChange={(e) => onChangeHandler(e.target)}
           required
         ></input>
       </div>
