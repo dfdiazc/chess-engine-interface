@@ -1,39 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 const RegisterForm = () => {
-  const [formValue, setformValue] = React.useState({
-    username: "",
+  interface user {
+    email: string;
+    password: string;
+  }
+  interface response {
+    response: string | "No Response";
+  }
+  let initialState: user = {
     email: "",
     password: "",
-  });
-  const handleSubmit = async() => {
-    const registerFormData = new FormData();
-    registerFormData.append("email", formValue.email)
-    registerFormData.append("password", formValue.password)
-
-    try{
-      const response = await axios({
-        method: "post",
-        url: "http://127.0.0.1:8000/",
-        data: registerFormData,
-        headers: {"Content-Type": "multipart/form-data"}
-      })
-      console.log(registerFormData)
-      console.log(response)
-    }
-    catch(error) {
-      console.log(error)
-    }
   };
-  const handleChange = (event: any) => {
-    setformValue({
-      ...formValue,
-      [event.target.name]: event.target.value,
+  const [user, setUser] = useState<user>(initialState);
+  const [response, setResponse] = useState<response>();
+  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    axios.post<response>('http://unrealchess.pythonanywhere.com/users/create', user)
+    .then((response) => {
+      setResponse(response.data)
+      console.log(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
     });
-  };
+  }
+  const onChangeHandler = (event: HTMLInputElement) => {
+    const {name, value} = event
+      setUser((prev) => {
+        return {...prev, [name]: value}
+      })
+  }
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={submitForm}>
       <div className="flex flex-col gap-5">
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
@@ -43,8 +43,8 @@ const RegisterForm = () => {
           autoComplete="username"
           inputMode="email"
           placeholder="E-mail"
-          value={formValue.email}
-          onChange={handleChange}
+          value={user.email}
+          onChange={(e) => onChangeHandler(e.target)}
           required
         ></input>
         <input
@@ -54,8 +54,8 @@ const RegisterForm = () => {
           id="password"
           autoComplete="new-password"
           placeholder="Password"
-          value={formValue.password}
-          onChange={handleChange}
+          value={user.password}
+          onChange={(e) => onChangeHandler(e.target)}
           required
         ></input>
         <input
@@ -65,8 +65,8 @@ const RegisterForm = () => {
           id="confirm-password"
           autoComplete="new-password"
           placeholder="Confirm Password"
-          value={formValue.password}
-          onChange={handleChange}
+          value={user.password}
+          onChange={(e) => onChangeHandler(e.target)}
           required
         ></input>
       </div>
