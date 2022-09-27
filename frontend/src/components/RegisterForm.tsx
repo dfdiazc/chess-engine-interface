@@ -1,8 +1,39 @@
 import React from "react";
+import axios from "axios";
 
 const RegisterForm = () => {
+  const [formValue, setformValue] = React.useState({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const handleSubmit = async() => {
+    const registerFormData = new FormData();
+    registerFormData.append("email", formValue.email)
+    registerFormData.append("password", formValue.password)
+
+    try{
+      const response = await axios({
+        method: "post",
+        url: "http://127.0.0.1:8000/",
+        data: registerFormData,
+        headers: {"Content-Type": "multipart/form-data"}
+      })
+      console.log(registerFormData)
+      console.log(response)
+    }
+    catch(error) {
+      console.log(error)
+    }
+  };
+  const handleChange = (event: any) => {
+    setformValue({
+      ...formValue,
+      [event.target.name]: event.target.value,
+    });
+  };
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <div className="flex flex-col gap-5">
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
@@ -12,6 +43,8 @@ const RegisterForm = () => {
           autoComplete="username"
           inputMode="email"
           placeholder="E-mail"
+          value={formValue.email}
+          onChange={handleChange}
           required
         ></input>
         <input
@@ -21,6 +54,8 @@ const RegisterForm = () => {
           id="password"
           autoComplete="new-password"
           placeholder="Password"
+          value={formValue.password}
+          onChange={handleChange}
           required
         ></input>
         <input
@@ -30,6 +65,8 @@ const RegisterForm = () => {
           id="confirm-password"
           autoComplete="new-password"
           placeholder="Confirm Password"
+          value={formValue.password}
+          onChange={handleChange}
           required
         ></input>
       </div>
