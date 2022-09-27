@@ -9,13 +9,13 @@ class CreateView(View):
 
     def post(self, request):
 
-        username = request.POST.get("email") # The username is set as the user's email
-        email = request.POST.get("email")
-        password = request.POST.get("password")
+        #username = request.POST["email"] # The username is set as the user's email
+        #email = request.POST.get("email")
+        #password = request.POST.get("password")
 
-        user = User.objects.create_user(username, email, password)
+        #user = User.objects.create_user(username, email, password)
 
-        return JsonResponse({"status": "user created successfully"})
+        return JsonResponse({"message": "Hello, world!"})#JsonResponse({"status": "user created successfully"})
 
 class LoginView(View):
 
