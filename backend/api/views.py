@@ -8,3 +8,9 @@ class TestView(View):
     def get(self, request):
 
         return HttpResponse("Test View")
+
+class GreetingView(View):
+
+    def get(self, request, name):
+
+        return HttpResponse("Hello, " + name)
