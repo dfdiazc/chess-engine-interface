@@ -6,12 +6,12 @@ const Play = () => {
   function initialSize() {
     let windowWidth = window.innerWidth;
     if (windowWidth < 1024) return windowWidth * 0.8;
-    else return 800;
+    else return 600;
   }
   const handleResize = () => {
     let windowWidth = window.innerWidth;
     if (windowWidth < 1024) setBoardWidth(windowWidth * 0.8);
-    else setBoardWidth(800);
+    else setBoardWidth(600);
   };
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -19,7 +19,7 @@ const Play = () => {
   return (
     <div className="h-full flex flex-col">
       <Header />
-      <div className="grid grid-flow-col grid-cols-8 bg-neutral-800 h-full py-3 pl-36">
+      <div className="grid grid-flow-col grid-cols-8 bg-white h-full py-3 pl-36">
         <div className="col-span-5">
           <CustomChessBoard boardWidth={boardWidth} />
         </div>
