@@ -1,10 +1,14 @@
 import { LandingHeader } from "components";
 import React from "react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
 const Landing = () => {
   return (
     <div className="h-full">
+      <Helmet>
+        <style>{"body {background-color: #262626}"}</style>
+      </Helmet>
       <LandingHeader />
       <div>
         <div className="flex justify-center bg-neutral-100">

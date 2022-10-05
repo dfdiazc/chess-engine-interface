@@ -6,7 +6,7 @@ import { IconContext } from "react-icons";
 
 const Header = () => {
   return (
-    <header className="flex items-center justify-between h-16 px-5 w-full bg-yellow-400 shadow">
+    <header className="flex items-center justify-between h-16 px-5 w-full bg-yellow-500 shadow">
       <div className="flex gap-5">
         <IconContext.Provider value={{ className: "h-8 w-8 text-gray-800" }}>
           <FaChess />
