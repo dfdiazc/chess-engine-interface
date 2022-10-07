@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['unrealchess.pythonanywhere.com', '127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    "rest_framework",
     "corsheaders",
     'api',
     'users',
@@ -56,8 +57,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
 ]
-
-CORS_ORIGIN_ALLOW_ALL = True
 
 
 ROOT_URLCONF = 'backend.urls'
