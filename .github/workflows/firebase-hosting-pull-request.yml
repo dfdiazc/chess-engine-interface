@@ -6,15 +6,13 @@ name: Deploy to Firebase Hosting on PR
 defaults:
   run:
     working-directory: frontend
-  env:
-    CI: false
 jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: CI='' npm ci && npm run build
+      - run: CI='' npm ci && CI=false npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
