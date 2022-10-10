@@ -20,6 +20,13 @@ const Play = () => {
   return (
     <div className="h-full flex flex-col">
       <Helmet>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8455605191106104"
+          crossOrigin="anonymous"
+        ></script>
+      </Helmet>
+      <Helmet>
         <style>{"body {background-color: #121B1E}"}</style>
       </Helmet>
       <Header />
