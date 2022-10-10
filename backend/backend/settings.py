@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     # REST Framework apps
     "rest_framework",
     "rest_framework_simplejwt",
-    # corsheaders
+    'corsheaders',
 
     # Created apps
     'api',
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
 
-    #"corsheaders.middleware.CorsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
 
     'django.middleware.security.SecurityMiddleware',
@@ -180,3 +180,15 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
+
+# corsheaders
+
+CORS_ALLOWED_ORIGINS = [
+
+    "https://unrealchess.web.app",
+
+]
+
+# serve static files
+
+STATIC_ROOT = "/home/unrealchess/chess-engine-interface/backend/static"
