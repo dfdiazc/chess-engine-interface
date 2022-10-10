@@ -3,21 +3,21 @@ import axios from "axios";
 
 const RegisterForm = () => {
   interface user {
-    email: string;
+    username: string;
     password: string;
   }
   interface response {
     response: string | "No Response";
   }
   let initialState: user = {
-    email: "",
+    username: "",
     password: "",
   };
   const [user, setUser] = useState<user>(initialState);
   const [response, setResponse] = useState<response>();
   const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    axios.post<response>('http://unrealchess.pythonanywhere.com/users/create', user)
+    axios.post<response>('https://unrealchess.pythonanywhere.com/users/create', user)
     .then((response) => {
       setResponse(response.data)
       console.log(response.data)
@@ -37,13 +37,13 @@ const RegisterForm = () => {
       <div className="flex flex-col gap-5">
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
-          type="email"
-          name="email"
-          id="email"
+          type="text"
+          name="username"
+          id="username"
           autoComplete="username"
           inputMode="email"
           placeholder="E-mail"
-          value={user.email}
+          value={user.username}
           onChange={(e) => onChangeHandler(e.target)}
           required
         ></input>

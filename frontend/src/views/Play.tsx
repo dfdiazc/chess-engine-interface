@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CustomChessBoard, Header } from "components";
+import { Helmet } from "react-helmet";
 
 const Play = () => {
   const [boardWidth, setBoardWidth] = useState(initialSize);
@@ -18,22 +19,13 @@ const Play = () => {
   });
   return (
     <div className="h-full flex flex-col">
+      <Helmet>
+        <style>{"body {background-color: #121B1E}"}</style>
+      </Helmet>
       <Header />
-      <div className="grid grid-flow-col grid-cols-8 bg-white h-full py-3 pl-36">
+      <div className="grid grid-flow-col grid-cols-8 h-full py-3 pl-36">
         <div className="col-span-5">
           <CustomChessBoard boardWidth={boardWidth} />
-        </div>
-        <div className="flex flex-col p-5 w-full bg-neutral-900 rounded-xl col-span-2">
-          <span className="font-roboto font-normal text-white text-2xl">
-            Moves
-          </span>
-          <div className="mt-10">
-            <div className="font-roboto font-normal text-md">
-              <span className="text-white/50">1.</span>
-              <span className="text-white/80 ml-5">e4</span>
-              <span className="text-white/80 ml-5">d5</span>
-            </div>
-          </div>
         </div>
       </div>
     </div>
