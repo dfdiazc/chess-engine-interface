@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     # REST Framework apps
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     'corsheaders',
 
     # Created apps
@@ -186,6 +187,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
 
     "https://unrealchess.web.app",
+    "http://localhost:3000/",
 
 ]
 
