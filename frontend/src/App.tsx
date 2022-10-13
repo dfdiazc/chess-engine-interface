@@ -5,7 +5,6 @@ import Login from "views/Login";
 import Play from "views/Play";
 import Register from "views/Register";
 
-
 function App() {
   return (
     <BrowserRouter>
@@ -14,12 +13,18 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/play" element={<Play />} />
-        <Route path="/*" element={<main><p>Not Found</p></main>} />
+        {/* not found */}
+        <Route
+          path="/*"
+          element={
+            <main>
+              <p>Not Found</p>
+            </main>
+          }
+        />
       </Routes>
-  </BrowserRouter>
+    </BrowserRouter>
   );
 }
-
-
 
 export default App;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from 'axios';
 
 const RegisterForm = () => {
   interface user {
@@ -41,8 +41,7 @@ const RegisterForm = () => {
           name="username"
           id="username"
           autoComplete="username"
-          inputMode="email"
-          placeholder="E-mail"
+          placeholder="E-mail or Username"
           value={user.username}
           onChange={(e) => onChangeHandler(e.target)}
           required

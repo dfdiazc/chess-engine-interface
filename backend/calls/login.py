@@ -1,10 +1,10 @@
 import requests
 
-endpoint = "http://127.0.0.1:8000/users/login"
+endpoint = "https://unrealchess.pythonanywhere.com/users/login"
 
 userdata = {
-    "username": "test_username",
-    "password": "test_password"
+    "username": "jotas",
+    "password": "test_password777"
 }
 
 response = requests.post(endpoint, json=userdata)
