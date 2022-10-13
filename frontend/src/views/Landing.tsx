@@ -45,7 +45,7 @@ const Landing = () => {
                 ></img>
                   <div className="col-start-3 col-end-8 flex flex-col gap-10 self-center text-center select-none">
                     <h2 className="text-6xl text-white text-left font-roboto font-medium">
-                      Play chess online against a powerful AI!
+                      Play chess online for free!
                     </h2>
                     <Link
                       to="/play"
