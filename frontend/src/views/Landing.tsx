@@ -23,26 +23,26 @@ const Landing = () => {
               ></img>
               <div className="flex h-full">
                 <div className="relative grid grid-flow-col grid-cols-12 w-full">
-                <img
-                  src="https://i.pinimg.com/originals/cc/f5/a5/ccf5a501510ff6e3ab0d400ee922f2ae.png"
-                  className="absolute h-24 top-24 left-[calc(30%-300px)] -rotate-12"
-                  alt="Description pending"
-                ></img>
-                <img
-                  src="https://i.pinimg.com/originals/cc/f5/a5/ccf5a501510ff6e3ab0d400ee922f2ae.png"
-                  className="absolute h-24 bottom-24 left-[calc(85%-300px)] rotate-[25deg]"
-                  alt="Description pending"
-                ></img>
-                <img
-                  src="https://i.pinimg.com/originals/c5/fe/e2/c5fee2b05ce93bc24906ccd2f30eff0b.png"
-                  className="absolute h-24 top-28 left-[calc(80%-300px)] rotate-12"
-                  alt="Description pending"
-                ></img>
-                <img
-                  src="https://i.pinimg.com/originals/c5/fe/e2/c5fee2b05ce93bc24906ccd2f30eff0b.png"
-                  className="absolute h-24 bottom-32 left-[calc(35%-300px)] -rotate-[20deg]"
-                  alt="Description pending"
-                ></img>
+                  <img
+                    src="https://i.pinimg.com/originals/cc/f5/a5/ccf5a501510ff6e3ab0d400ee922f2ae.png"
+                    className="absolute h-24 top-24 left-[calc(30%-300px)] -rotate-12"
+                    alt="Description pending"
+                  ></img>
+                  <img
+                    src="https://i.pinimg.com/originals/cc/f5/a5/ccf5a501510ff6e3ab0d400ee922f2ae.png"
+                    className="absolute h-24 bottom-24 left-[calc(85%-300px)] rotate-[25deg]"
+                    alt="Description pending"
+                  ></img>
+                  <img
+                    src="https://i.pinimg.com/originals/c5/fe/e2/c5fee2b05ce93bc24906ccd2f30eff0b.png"
+                    className="absolute h-24 top-28 left-[calc(80%-300px)] rotate-12"
+                    alt="Description pending"
+                  ></img>
+                  <img
+                    src="https://i.pinimg.com/originals/c5/fe/e2/c5fee2b05ce93bc24906ccd2f30eff0b.png"
+                    className="absolute h-24 bottom-32 left-[calc(35%-300px)] -rotate-[20deg]"
+                    alt="Description pending"
+                  ></img>
                   <div className="col-start-3 col-end-8 flex flex-col gap-10 self-center text-center select-none">
                     <h2 className="text-6xl text-white text-left font-roboto font-medium">
                       Play chess online for free!
@@ -57,11 +57,11 @@ const Landing = () => {
                 </div>
               </div>
             </div>
-            <img
+            {/*<img
               src="https://img-08.stickers.cloud/packs/7b6076b2-8227-4343-bff7-a218e327bf7e/webp/0fc594da-af1d-4aac-8cbe-50de8a725510.webp"
               className="h-2 w-2 absolute bottom-0 left-0 hover:w-96 hover:h-96"
               alt="Description pending"
-            ></img>
+  ></img>*/}
           </div>
         </div>
       </div>

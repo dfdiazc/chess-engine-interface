@@ -14,9 +14,10 @@ const LandingHeader = () => {
           Un-Real Chess
         </span>
       </div>
-      <div className="flex items-center gap-8 text-center self-center">
+      <div className="flex items-end gap-8 text-center self-center">
+        {/*
         <Link to="#" className="text-roboto font-medium text-md text-white select-none hover:underline">About</Link>
-        <Link to="#" className="text-roboto font-medium text-md text-white select-none hover:underline">Contact</Link>
+  <Link to="#" className="text-roboto font-medium text-md text-white select-none hover:underline">Contact</Link>*/}
         <a href="https://github.com/dfdiazc/chess-engine-interface">
           <IconContext.Provider value={{ className: "h-8 w-8 text-white" }}>
             <FaGithub />
