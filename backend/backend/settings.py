@@ -1,3 +1,4 @@
+# If you are seeing this on PythonAnywhere, something went wrong
 """
 Django settings for backend project.
 
