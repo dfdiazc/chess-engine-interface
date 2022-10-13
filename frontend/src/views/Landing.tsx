@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 
 const Landing = () => {
   return (
-    <div className="h-full">
+    <div className="h-full overflow-x-hidden">
       <div className="flex justify-center">
-        <div className="w-full max-w-screen-2xl">
+        <div className="w-full max-w-[1920px]">
           <div className="flex flex-col">
             <div className="flex justify-center">
               <Helmet>
@@ -15,44 +15,46 @@ const Landing = () => {
               </Helmet>
               <LandingHeader />
             </div>
-            <div className="flex h-[calc(100vh-4rem)] relative overflow-x-hidden max-w-screen-2xl">
+            <div className="flex h-[calc(100vh-4rem)] shrink-0 relative max-w-screen-2xl">
               <img
                 src="https://i.pinimg.com/originals/b5/2a/42/b52a42ba2b209665e62baf1c93feb66f.png"
-                className="absolute inset-y-0 m-auto -right-52 h-5/6"
+                className="hidden select-none sm:flex absolute inset-y-0 -z-10 m-auto sm:-right-[32rem] md:-right-[28rem] lg:-right-96 min-w-[705px] min-h-[705px] h-5/6"
                 alt="Description pending"
               ></img>
-              <div className="flex h-full">
-                <div className="relative grid grid-flow-col grid-cols-12 w-full">
+              <div className="flex h-full justify-left">
+                <div className="relative flex px-3 sm:w-2/3 md:w-3/4 lg:left-[15%] xl:left-[35%]">
                   <img
                     src="https://i.pinimg.com/originals/cc/f5/a5/ccf5a501510ff6e3ab0d400ee922f2ae.png"
-                    className="absolute h-24 top-24 left-[calc(30%-300px)] -rotate-12"
+                    className="absolute select-none h-24 top-[5%] left-[0%] xl:-left-[25%] -rotate-12"
                     alt="Description pending"
                   ></img>
                   <img
                     src="https://i.pinimg.com/originals/cc/f5/a5/ccf5a501510ff6e3ab0d400ee922f2ae.png"
-                    className="absolute h-24 bottom-24 left-[calc(85%-300px)] rotate-[25deg]"
+                    className="absolute select-none h-24 bottom-[5%] left-[70%] xl:left-[100%] rotate-[25deg]"
                     alt="Description pending"
                   ></img>
                   <img
                     src="https://i.pinimg.com/originals/c5/fe/e2/c5fee2b05ce93bc24906ccd2f30eff0b.png"
-                    className="absolute h-24 top-28 left-[calc(80%-300px)] rotate-12"
-                    alt="Description pending"
+                    className="absolute select-none h-24 top-[10%] left-[70%] xl:left-[90%] rotate-12"
+                    alt="Description pending" 
                   ></img>
                   <img
                     src="https://i.pinimg.com/originals/c5/fe/e2/c5fee2b05ce93bc24906ccd2f30eff0b.png"
-                    className="absolute h-24 bottom-32 left-[calc(35%-300px)] -rotate-[20deg]"
+                    className="absolute  select-none h-24 bottom-[10%] left-[5%] xl:left-[0%] -rotate-[20deg]"
                     alt="Description pending"
                   ></img>
-                  <div className="col-start-3 col-end-8 flex flex-col gap-10 self-center text-center select-none">
+                  <div className="flex flex-col gap-10 self-center text-center select-none">
                     <h2 className="text-6xl text-white text-left font-roboto font-medium">
                       Play chess online for free!
                     </h2>
+                    <div className="flex mx-3 sm:mx-16">
                     <Link
                       to="/play"
-                      className="w-1/2 self-center text-xl text-white font-roboto font-medium select-none p-3 bg-blue-500 rounded-full border-b-4 border-blue-600 transition duration-300 hover:bg-blue-500/80 hover:border-blue-600/80 hover:shadow text-center"
+                      className="grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none p-3 bg-blue-500 rounded-full border-b-4 border-blue-600 transition duration-300 hover:bg-blue-500/80 hover:border-blue-600/80 hover:shadow text-center"
                     >
                       Play now!
                     </Link>
+                    </div>
                   </div>
                 </div>
               </div>
