@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CustomChessBoard, Header } from "components";
 import { Helmet } from "react-helmet";
+import { Adsense } from "@ctrl/react-adsense";
 
 const Play = () => {
   const [boardWidth, setBoardWidth] = useState(initialSize);
@@ -20,13 +21,6 @@ const Play = () => {
   return (
     <div className="h-full flex flex-col">
       <Helmet>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8455605191106104"
-          crossOrigin="anonymous"
-        ></script>
-      </Helmet>
-      <Helmet>
         <style>{"body {background-color: #121B1E}"}</style>
       </Helmet>
       <Header />
@@ -34,6 +28,12 @@ const Play = () => {
         <div className="col-span-5">
           <CustomChessBoard boardWidth={boardWidth} />
         </div>
+        <Adsense
+          client="ca-pub-7640562161899788"
+          slot="7259870550"
+          style={{ width: 500, height: 300 }}
+          format=""
+        />
       </div>
     </div>
   );
