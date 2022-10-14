@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
-    <header className="flex items-center justify-between h-16 px-8 w-full bg-transparent shadow max-w-[1920px]">
+    <header className="flex items-center justify-between h-16 px-6 sm:px-10 w-full bg-transparent shadow max-w-[1920px]">
       <Link to="/" className="flex gap-5 shrink-0">
         <IconContext.Provider value={{ className: "h-8 w-8 text-white" }}>
           <FaChess />
