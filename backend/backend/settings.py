@@ -187,7 +187,7 @@ SIMPLE_JWT = {
 CORS_ALLOWED_ORIGINS = [
 
     "https://unrealchess.web.app",
-    "http://localhost:3000/",
+    "http://localhost:3000",
 
 ]
 
