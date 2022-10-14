@@ -37,11 +37,11 @@ const RegisterForm = () => {
       <div className="flex flex-col gap-5">
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
-          type="text"
+          type="email"
           name="username"
           id="username"
-          autoComplete="username"
-          placeholder="E-mail or Username"
+          autoComplete="email"
+          placeholder="E-mail"
           value={user.username}
           onChange={(e) => onChangeHandler(e.target)}
           required

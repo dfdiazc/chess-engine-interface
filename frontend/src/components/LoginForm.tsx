@@ -22,6 +22,7 @@ const LoginForm = () => {
     .then((response) => {
       setResponse(response.data)
       console.log(response.data)
+      localStorage.setItem("tokens", JSON.stringify(response.data))
     })
     .catch(function (error) {
       console.log(error);
@@ -37,11 +38,11 @@ const LoginForm = () => {
     <form onSubmit={submitForm}>
       <div className="flex flex-col gap-5">
         <input
-          className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
-          type="text"
+          className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md translate-x-0"
+          type="email"
           name="username"
           id="username"
-          placeholder="E-mail or Username"
+          placeholder="E-mail"
           value={user.username}
           onChange={(e) => onChangeHandler(e.target)}
           required
