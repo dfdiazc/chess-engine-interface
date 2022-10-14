@@ -18,7 +18,7 @@ const Landing = () => {
             <div className="flex h-[calc(100vh-4rem)] shrink-0 relative max-w-screen-2xl">
               <img
                 src="https://i.pinimg.com/originals/b5/2a/42/b52a42ba2b209665e62baf1c93feb66f.png"
-                className="hidden select-none sm:flex absolute inset-y-0 -z-10 m-auto sm:-right-[32rem] md:-right-[28rem] lg:-right-96 min-w-[705px] min-h-[705px] h-5/6"
+                className="hidden select-none sm:flex absolute inset-y-0 -z-10 m-auto sm:-right-[32rem] md:-right-[28rem] lg:-right-96 min-w-[705px] h-5/6"
                 alt="Description pending"
               ></img>
               <div className="flex h-full justify-left">
