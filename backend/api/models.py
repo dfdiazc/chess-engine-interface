@@ -6,7 +6,7 @@ class Match(models.Model):
 
     # All matches must be associated to a player on whites and a player on blacks (one of them could be the engine)
     whites_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "whites")
-    blacks_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "balcks")
+    blacks_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "blacks")
 
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()

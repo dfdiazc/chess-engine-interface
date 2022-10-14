@@ -81,7 +81,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   };
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex h-5">
+      <div className="flex items-center h-5">
         <IconContext.Provider value={{ className: "h-5 w-5 text-white" }}>
           <div className="flex gap-2">
             {lostPieces.P > 0 && (
@@ -133,9 +133,9 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
         />
-        <div className="flex justify-center w-10 relative">
+        <div className="flex justify-center w-5 relative">
           <div
-            className="w-4 h-4 bg-blue-600 rounded-full absolute transition-all duration-300 bottom-0"
+            className="w-3 h-3 bg-blue-600 rounded-full absolute transition-all duration-300 bottom-0"
             style={turn === "w" ? styleBottom : styleTop}
           ></div>
         </div>
