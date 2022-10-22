@@ -5,4 +5,5 @@ app_name = "api"
 
 urlpatterns = [
     path("mods/<str:FEN>", views.LostView.as_view()),
+    path("match/create", views.CreateMatchView.as_view()),
 ]
