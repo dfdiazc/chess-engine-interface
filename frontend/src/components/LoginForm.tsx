@@ -1,61 +1,56 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 const LoginForm = () => {
-  interface user {
+
+  interface LoginFormData {
     username: string;
     password: string;
   }
-  interface response {
-    response: string | "No Response";
-  }
-  let initialState: user = {
-    username: "",
-    password: "",
-  };
-  const [user, setUser] = useState<user>(initialState);
-  const [response, setResponse] = useState<response>();
-  const submitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    axios.post<response>('https://unrealchess.pythonanywhere.com/users/login', user)
-    .then((response) => {
-      setResponse(response.data)
-      console.log(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-  const onChangeHandler = (event: HTMLInputElement) => {
-    const {name, value} = event
-      setUser((prev) => {
-        return {...prev, [name]: value}
-      })
-  }
+  const validationSchema = useMemo(
+    () =>
+      yup.object().shape({
+        username: yup.string().required("Email is required"),
+        password: yup.string().required("Password is required"),
+      }),
+    []
+  );
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: yupResolver(validationSchema),
+  });
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  });
+
   return (
-    <form onSubmit={submitForm}>
+    <form onSubmit={onSubmit} noValidate>
       <div className="flex flex-col gap-5">
         <input
-          className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
-          type="text"
-          name="username"
+          className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md translate-x-0"
+          type="email"
           id="username"
-          placeholder="E-mail or Username"
-          value={user.username}
-          onChange={(e) => onChangeHandler(e.target)}
-          required
-        ></input>
+          autoComplete="username"
+          placeholder="E-mail"
+          {...register("username")}
+        />
+        {errors.username && <p className="font-roboto font-normal text-md text-red-600">{errors.username.message}</p>}
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
           type="password"
-          name="password"
           id="password"
+          autoComplete="current-password"
           placeholder="Password"
-          value={user.password}
-          onChange={(e) => onChangeHandler(e.target)}
-          required
-        ></input>
+          {...register("password")}
+        />
+        {errors.password && <p className="font-roboto font-normal text-md text-red-600">{errors.password.message}</p>}
       </div>
       <div className="flex justify-between items-center mt-3">
         <div className="form-group form-check">

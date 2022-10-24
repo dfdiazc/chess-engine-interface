@@ -8,8 +8,8 @@ class Match(models.Model):
     whites_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "whites")
     blacks_player = models.ForeignKey(User, on_delete=models.CASCADE, related_name = "blacks")
 
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(null = True)
 
 class Moves(models.Model):
 
