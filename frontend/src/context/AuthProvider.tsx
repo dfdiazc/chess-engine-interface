@@ -2,7 +2,7 @@ import React, { useState, createContext, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-type authContextInterface = {
+interface authContextInterface {
   user: string;
   authTokens: string;
   login: () => void;
@@ -20,7 +20,7 @@ const AuthContext = createContext<authContextInterface | null>(
   authContextDefaultValues
 );
 
-const AuthProvider = () => {
+const AuthProvider = ({ children }:any) => {
   let [authTokens, setAuthTokens] = useState(() =>
     localStorage.getItem("authTokens")
       ? JSON.parse(localStorage.getItem("authTokens") || "{}")
@@ -60,8 +60,8 @@ const AuthProvider = () => {
   };
 
   let logout = () => {
-    setAuthTokens(null);
-    setUser(null);
+    setAuthTokens("");
+    setUser("");
     localStorage.removeItem("authTokens");
     navigate("/login");
   };
@@ -73,7 +73,7 @@ const AuthProvider = () => {
     setLoading(false);
   }, [authTokens, loading]);
   return (
-    <AuthContext.Provider value={contextData}>
+    <AuthContext.Provider value={authContextDefaultValues}>
       {loading ? null : children}
     </AuthContext.Provider>
   );
