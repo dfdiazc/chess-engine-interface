@@ -5,6 +5,7 @@
   "dependencies": {
     "@ctrl/react-adsense": "^1.6.0",
     "@hookform/resolvers": "^2.9.10",
+    "@reduxjs/toolkit": "^1.8.6",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -12,7 +13,6 @@
     "@types/node": "^16.11.59",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
-    "@types/yup": "^0.32.0",
     "axios": "^0.27.2",
     "chess.js": "^1.0.0-alpha.0",
     "firebase": "^9.10.0",
@@ -25,6 +25,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.38.0",
     "react-icons": "^4.4.0",
+    "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.0",
     "react-scripts": "^5.0.1",
     "typescript": "^4.8.3",
@@ -59,6 +60,7 @@
   "devDependencies": {
     "@types/chess.js": "^0.13.3",
     "@types/react-helmet": "^6.1.5",
+    "@types/yup": "^0.32.0",
     "autoprefixer": "^9.8.8",
     "postcss": "^8.4.16",
     "tailwindcss": "^3.1.8"

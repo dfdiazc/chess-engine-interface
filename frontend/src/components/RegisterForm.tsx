@@ -3,6 +3,9 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { registerUser } from "redux/features/auth/authActions";
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from "redux/store";
 
 const RegisterForm = () => {
   interface RegisterFormData {
@@ -29,6 +32,7 @@ const RegisterForm = () => {
       }),
     []
   );
+  const dispatch = useDispatch<AppDispatch>()
   const {
     register,
     handleSubmit,
@@ -36,8 +40,8 @@ const RegisterForm = () => {
   } = useForm<RegisterFormData>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit((data:RegisterFormData) => {
+    dispatch(registerUser(data));
   });
 
   return (
