@@ -18,7 +18,27 @@ export const registerUser = createAsyncThunk(
         },
       };
       const response = await axios.post(
-        BASE_URL + "register",
+        BASE_URL + "create",
+        { username, password },
+        config
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  "user/login",
+  async ({ username, password }: UserAttributes) => {
+    try {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      const response = await axios.post(
+        BASE_URL + "login",
         { username, password },
         config
       );

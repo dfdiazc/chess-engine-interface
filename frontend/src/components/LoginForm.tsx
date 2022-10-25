@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
-import axios from 'axios';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { loginUser } from "redux/features/auth/authActions";
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from "redux/store";
 
 const LoginForm = () => {
 
@@ -19,6 +21,7 @@ const LoginForm = () => {
       }),
     []
   );
+  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
@@ -26,8 +29,8 @@ const LoginForm = () => {
   } = useForm<LoginFormData>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit((data:LoginFormData) => {
+    dispatch(loginUser(data));
   });
 
   return (
