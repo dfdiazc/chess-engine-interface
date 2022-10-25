@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { registerUser } from "redux/features/auth/authActions";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from "redux/store";
 
 const RegisterForm = () => {
   interface RegisterFormData {
@@ -31,7 +32,7 @@ const RegisterForm = () => {
       }),
     []
   );
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const {
     register,
     handleSubmit,

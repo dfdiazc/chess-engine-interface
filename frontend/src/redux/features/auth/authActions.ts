@@ -1,9 +1,16 @@
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import axios from "axios";
 
+const BASE_URL = "http://unrealchess.pythonanywhere.com/"
+
+interface UserAttributes {
+  username: string,
+  password: string,
+}
+
 export const registerUser = createAsyncThunk(
   "user/register",
-  async( username, password ) => {
+  async( {username, password }: UserAttributes ) => {
     try {
         const config = {
             headers: {
