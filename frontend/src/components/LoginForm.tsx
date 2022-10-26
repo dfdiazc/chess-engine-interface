@@ -1,13 +1,20 @@
-import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { loginUser } from "redux/features/auth/authActions";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
+import { useLoginMutation } from "features/auth/authApiSlice";
+import { setCredentials } from "features/auth/authSlice";
 
 const LoginForm = () => {
+  const userRef = useRef();
+  const errRef = useRef();
+  const [errMsg, setErrMsg] = useState("");
+  const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
 
   interface LoginFormData {
     username: string;
@@ -29,8 +36,14 @@ const LoginForm = () => {
   } = useForm<LoginFormData>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = handleSubmit((data:LoginFormData) => {
-    dispatch(loginUser(data));
+  const onSubmit = handleSubmit((data: LoginFormData) => {
+    try{
+    dispatch(setCredentials({...data}));
+    navigate('/play');
+    }
+    catch(error){
+      console.log(error)
+    }
   });
 
   return (
@@ -44,7 +57,11 @@ const LoginForm = () => {
           placeholder="E-mail"
           {...register("username")}
         />
-        {errors.username && <p className="font-roboto font-normal text-md text-red-600">{errors.username.message}</p>}
+        {errors.username && (
+          <p className="font-roboto font-normal text-md text-red-600">
+            {errors.username.message}
+          </p>
+        )}
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
           type="password"
@@ -53,7 +70,11 @@ const LoginForm = () => {
           placeholder="Password"
           {...register("password")}
         />
-        {errors.password && <p className="font-roboto font-normal text-md text-red-600">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="font-roboto font-normal text-md text-red-600">
+            {errors.password.message}
+          </p>
+        )}
       </div>
       <div className="flex justify-between items-center mt-3">
         <div className="form-group form-check">
