@@ -6,7 +6,7 @@ import type { RootState } from "app/store";
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://unrealchess.pythonanywhere.com/",
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.token;
+    const token = (getState() as RootState).auth.accessToken;
     if (token) {
       headers.set("authorization", `Bearer ${token}`);
     }
@@ -20,8 +20,8 @@ const baseQueryWithReauth = async (args: string | FetchArgs, api: BaseQueryApi, 
   if (result?.error?.status === 403) {
     const refreshResult = await baseQuery("/users/refresh", api, extraOptions);
     if (refreshResult?.data) {
-      const user = (api.getState() as RootState).auth.user;
-      api.dispatch(setCredentials({ ...refreshResult.data, user }));
+      const accessToken = (api.getState() as RootState).auth.accessToken;
+      api.dispatch(setCredentials({ accessToken }));
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch(logOut());

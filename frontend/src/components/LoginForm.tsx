@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "redux/store";
+import { AppDispatch } from "app/store";
 import { useLoginMutation } from "features/auth/authApiSlice";
 import { setCredentials } from "features/auth/authSlice";
 
@@ -19,7 +19,7 @@ const LoginForm = () => {
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
-        username: yup.string().required("Email is required"),
+        username: yup.string().email().required("Email is required"),
         password: yup.string().required("Password is required"),
       }),
     []
