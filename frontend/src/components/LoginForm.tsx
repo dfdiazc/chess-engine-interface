@@ -1,18 +1,14 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { loginUser } from "redux/features/auth/authActions";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
 import { useLoginMutation } from "features/auth/authApiSlice";
 import { setCredentials } from "features/auth/authSlice";
 
 const LoginForm = () => {
-  const userRef = useRef();
-  const errRef = useRef();
-  const [errMsg, setErrMsg] = useState("");
   const navigate = useNavigate();
   const [login, { isLoading }] = useLoginMutation();
 
@@ -36,13 +32,13 @@ const LoginForm = () => {
   } = useForm<LoginFormData>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = handleSubmit((data: LoginFormData) => {
-    try{
-    dispatch(setCredentials({...data}));
-    navigate('/play');
-    }
-    catch(error){
-      console.log(error)
+  const onSubmit = handleSubmit(async (data: LoginFormData) => {
+    try {
+      await login(data);
+      dispatch(setCredentials({ ...data }));
+      navigate("/play");
+    } catch (error) {
+      console.log(error);
     }
   });
 

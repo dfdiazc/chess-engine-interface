@@ -1,12 +1,18 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { registerUser } from "redux/features/auth/authActions";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "redux/store";
+import { useRegisterMutation } from "features/auth/authApiSlice";
+import { setCredentials } from "features/auth/authSlice";
+
 
 const RegisterForm = () => {
+
+  const navigate = useNavigate();
+  const [registerUser, { isLoading }] = useRegisterMutation();
   interface RegisterFormData {
     username: string;
     password: string;
@@ -39,8 +45,13 @@ const RegisterForm = () => {
   } = useForm<RegisterFormData>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = handleSubmit((data:RegisterFormData) => {
-    dispatch(registerUser(data));
+  const onSubmit = handleSubmit(async (data:RegisterFormData) => {
+    try {
+      await registerUser({username:data.username, password:data.password});
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   return (

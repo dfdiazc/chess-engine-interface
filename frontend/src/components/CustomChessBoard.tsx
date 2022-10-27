@@ -23,18 +23,18 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [turn, setTurn] = useState(game.turn());
   const [playMove] = useSound(chessMoveSound, { volume: 0.5 });
   interface pieces {
-    r: 0;
-    n: 0;
-    b: 0;
-    q: 0;
-    k: 0;
-    p: 0;
-    P: 0;
-    R: 0;
-    N: 0;
-    B: 0;
-    Q: 0;
-    K: 0;
+    r: number;
+    n: number;
+    b: number;
+    q: number;
+    k: number;
+    p: number;
+    P: number;
+    R: number;
+    N: number;
+    B: number;
+    Q: number;
+    K: number;
   }
   const [lostPieces, setLostPieces] = useState<pieces>({
     r: 0,
