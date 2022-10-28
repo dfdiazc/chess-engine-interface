@@ -1,13 +1,16 @@
 import React, { useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { loginUser } from "redux/features/auth/authActions";
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from "redux/store";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "app/store";
+import { useLoginMutation } from "features/auth/authApiSlice";
+import { setCredentials } from "features/auth/authSlice";
 
 const LoginForm = () => {
+  const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
 
   interface LoginFormData {
     username: string;
@@ -16,7 +19,7 @@ const LoginForm = () => {
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
-        username: yup.string().required("Email is required"),
+        username: yup.string().email().required("Email is required"),
         password: yup.string().required("Password is required"),
       }),
     []
@@ -29,8 +32,14 @@ const LoginForm = () => {
   } = useForm<LoginFormData>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = handleSubmit((data:LoginFormData) => {
-    dispatch(loginUser(data));
+  const onSubmit = handleSubmit(async (data: LoginFormData) => {
+    try {
+      const response = await login(data);
+      dispatch(setCredentials({ ...response }));
+      navigate("/play");
+    } catch (error) {
+      console.log(error);
+    }
   });
 
   return (
@@ -44,7 +53,11 @@ const LoginForm = () => {
           placeholder="E-mail"
           {...register("username")}
         />
-        {errors.username && <p className="font-roboto font-normal text-md text-red-600">{errors.username.message}</p>}
+        {errors.username && (
+          <p className="font-roboto font-normal text-md text-red-600">
+            {errors.username.message}
+          </p>
+        )}
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
           type="password"
@@ -53,7 +66,11 @@ const LoginForm = () => {
           placeholder="Password"
           {...register("password")}
         />
-        {errors.password && <p className="font-roboto font-normal text-md text-red-600">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="font-roboto font-normal text-md text-red-600">
+            {errors.password.message}
+          </p>
+        )}
       </div>
       <div className="flex justify-between items-center mt-3">
         <div className="form-group form-check">
