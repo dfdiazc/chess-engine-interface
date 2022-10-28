@@ -22,19 +22,20 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [fen, setFen] = useState(game.fen());
   const [turn, setTurn] = useState(game.turn());
   const [playMove] = useSound(chessMoveSound, { volume: 0.5 });
+  let timeoutId: null | ReturnType<typeof setTimeout> = null
   interface pieces {
-    r: 0;
-    n: 0;
-    b: 0;
-    q: 0;
-    k: 0;
-    p: 0;
-    P: 0;
-    R: 0;
-    N: 0;
-    B: 0;
-    Q: 0;
-    K: 0;
+    r: number;
+    n: number;
+    b: number;
+    q: number;
+    k: number;
+    p: number;
+    P: number;
+    R: number;
+    N: number;
+    B: number;
+    Q: number;
+    K: number;
   }
   const [lostPieces, setLostPieces] = useState<pieces>({
     r: 0,
@@ -50,10 +51,11 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     Q: 0,
     K: 0,
   });
-  function onDrop(source: Square, target: Square) {
-    let result = game.move({ from: source, to: target });
-    if (result != null) {
-      axios
+  interface BestMove {
+    best_move: string;
+  }
+  function showLostPieces(){
+    axios
         .get<pieces>(
           `https://unrealchess.pythonanywhere.com/api/mods/${game
             .fen()
@@ -62,9 +64,32 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         .then((response) => {
           setLostPieces(response.data);
         });
+  }
+  function computerMove() {
+    axios.get<BestMove>(
+      `https://unrealchess.pythonanywhere.com/api/play/stockfish/${game
+        .fen()
+        .replaceAll("/", "-")}`
+    ).then((response) => {
+      const source = response.data.best_move.substring(0, 2);
+      const target = response.data.best_move.substring(2, 4);
+      game.move({from: source, to: target});
+      showLostPieces();
       setFen(game.fen());
       setTurn(game.turn());
       playMove();
+    });
+  }
+  function onDrop(source: Square, target: Square) {
+    let result = game.move({ from: source, to: target });
+    if (result != null) {
+      showLostPieces();
+      setFen(game.fen());
+      setTurn(game.turn());
+      playMove();
+
+      const newTimeout = setTimeout(computerMove, 200);
+      timeoutId = newTimeout;
       return true;
     }
     return false;
@@ -141,7 +166,9 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         </div>
       </div>
       <div className="flex">
-        <IconContext.Provider value={{ className: "h-5 w-5 text-black stroke-[10] stroke-white" }}>
+        <IconContext.Provider
+          value={{ className: "h-5 w-5 text-black stroke-[10] stroke-white" }}
+        >
           <div className="flex gap-2">
             {lostPieces.p > 0 && (
               <div className="flex gap-1">
