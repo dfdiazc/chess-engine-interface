@@ -5,7 +5,7 @@ from stockfish import Stockfish
 import os
 
 dirname = os.path.dirname(__file__) # present working directory (equivalent of running pwd in the terminal)
-engine_location = "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linux_x64" # relative path to the engine
+engine_location = "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linux_x64/stockfish_13_linux_x64" # relative path to the engine
 engine_path = os.path.realpath(os.path.join(dirname, engine_location)) # Compute actual path to the engine
 
 global stockfish
