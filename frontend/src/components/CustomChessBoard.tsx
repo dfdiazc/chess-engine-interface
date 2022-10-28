@@ -22,6 +22,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [fen, setFen] = useState(game.fen());
   const [turn, setTurn] = useState(game.turn());
   const [playMove] = useSound(chessMoveSound, { volume: 0.5 });
+  const [arePiecesDragable, setArePiecesDragable] = useState(true);
   let timeoutId: null | ReturnType<typeof setTimeout> = null
   interface pieces {
     r: number;
@@ -55,6 +56,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     best_move: string;
   }
   function showLostPieces(){
+    setArePiecesDragable(false);
     axios
         .get<pieces>(
           `https://unrealchess.pythonanywhere.com/api/mods/${game
@@ -78,6 +80,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       setFen(game.fen());
       setTurn(game.turn());
       playMove();
+      setArePiecesDragable(true);
     });
   }
   function onDrop(source: Square, target: Square) {
@@ -157,6 +160,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           position={fen}
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
+          arePiecesDraggable={arePiecesDragable}
         />
         <div className="flex justify-center w-5 relative">
           <div
