@@ -17,8 +17,9 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result?.error?.status === 403) {
-    const refreshResult = await baseQuery("/users/refresh", api, extraOptions);
+  if (result?.error?.status === 401) {
+    const accessToken = (api.getState() as RootState).auth.accessToken;
+    const refreshResult = await baseQuery({url: "/users/refresh", method: "POST", body: {accessToken}}, api, extraOptions);
     if (refreshResult?.data) {
       const accessToken = (api.getState() as RootState).auth.accessToken;
       api.dispatch(setCredentials({ accessToken }));

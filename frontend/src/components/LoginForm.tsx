@@ -34,8 +34,8 @@ const LoginForm = () => {
   });
   const onSubmit = handleSubmit(async (data: LoginFormData) => {
     try {
-      const response = await login(data);
-      dispatch(setCredentials({ ...response }));
+      const response = await login(data).unwrap();
+      dispatch(setCredentials(response));
       navigate("/play");
     } catch (error) {
       console.log(error);
