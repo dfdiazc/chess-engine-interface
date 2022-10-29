@@ -50,20 +50,42 @@ def missing_pieces(FEN:str)->dict:
 
 def get_stockfish_move(FEN:str)->str:
     """
-    Determine the next best move according to the stockfish engine
+    Determine the next best move according to the stockfish engine.
+
+    Uses the default elo rating
     """
 
     stockfish.set_fen_position(FEN) # Tell stockfish the current state of the board
 
     best_move = stockfish.get_best_move() # Get the best move from the current state
 
-    """
-    Code to return the new FEN code after performing the best move
-
-    stockfish.make_moves_from_current_position([best_move])
-    new_FEN = stockfish.get_fen_position()
-
-    return new_FEN
-    """
-
     return best_move
+
+def get_stockfish_nbest_moves(FEN:str)->str:
+    """
+    Determine the next best n moves according to the stockfish engine
+    """
+
+    n = 3 # number of moves to be displayed
+
+    stockfish.set_fen_position(FEN)
+
+    raw_moves = stockfish.get_top_moves(n)
+
+    moves = [i["Move"] for i in raw_moves]
+
+    return moves
+
+def get_stockfish_move_elo(ELO:int, FEN:str)->str:
+    """
+    Determine the next best move according to the stockfish engine, given
+    a certain elo rating for the engine
+    """
+
+    stockfish.set_fen_position(FEN)
+
+    stockfish.set_elo_rating(ELO)
+
+    best_move_elo = stockfish.get_best_move()
+
+    return best_move_elo
