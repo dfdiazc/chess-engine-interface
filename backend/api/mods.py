@@ -70,7 +70,7 @@ def get_stockfish_move_elo(ELO:int, FEN:str)->str:
     stockfish = load_engine()
     board = chess.Board(FEN)
     stockfish.configure({"UCI_Elo": ELO, "UCI_LimitStrength": "true"})
-    result = stockfish.play(board, chess.engine.Limit(time = 1.0))
+    result = stockfish.play(board, chess.engine.Limit(time = 0.1))
     stockfish.quit()
 
     return str(result.move)
