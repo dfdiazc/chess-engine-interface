@@ -59,7 +59,7 @@ class GetStockfishBestMoves(generics.GenericAPIView):
 
 class GetStockfishMoveELO(generics.GenericAPIView):
 
-    def get(self, request, skill_level, FEN):
+    def get(self, request, ELO, FEN):
 
         new_FEN = fix_fen(FEN)
 

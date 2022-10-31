@@ -1,4 +1,5 @@
-from stockfish import Stockfish
+import chess
+import chess.engine
 
 ##################################
 # Specify path to stockfish engine
@@ -9,7 +10,7 @@ engine_location = "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linu
 engine_path = os.path.realpath(os.path.join(dirname, engine_location)) # Compute actual path to the engine
 
 global stockfish
-stockfish = Stockfish(path = engine_path, depth = 5)
+stockfish = chess.engine.SimpleEngine.popen_uci(engine_path)
 ##################################
 
 def missing_pieces(FEN:str)->dict:
@@ -47,20 +48,6 @@ def missing_pieces(FEN:str)->dict:
 
     return current_count
 
-
-def get_stockfish_move(FEN:str)->str:
-    """
-    Determine the next best move according to the stockfish engine.
-
-    Uses the default elo rating
-    """
-
-    stockfish.set_fen_position(FEN) # Tell stockfish the current state of the board
-
-    best_move = stockfish.get_best_move() # Get the best move from the current state
-
-    return best_move
-
 def get_stockfish_nbest_moves(FEN:str)->str:
     """
     Determine the next best n moves according to the stockfish engine
@@ -76,16 +63,17 @@ def get_stockfish_nbest_moves(FEN:str)->str:
 
     return moves
 
-def get_stockfish_move_elo(skill_level:int, FEN:str)->str:
+def get_stockfish_move_elo(ELO:int, FEN:str)->str:
     """
     Determine the next best move according to the stockfish engine, given
     a certain elo rating for the engine
     """
 
-    stockfish.set_fen_position(FEN)
+    board = chess.Board(FEN)
+    stockfish.configure({"UCI_Elo": ELO, "UCI_LimitStrength": "true"})
+    result = stockfish.play(board, chess.engine.Limit(time = 1.0))
+    stockfish.quit()
 
-    stockfish.set_skill_level(skill_level)
+    return str(result.move)
 
-    best_move_elo = stockfish.get_best_move()
-
-    return best_move_elo
+print(get_stockfish_move_elo(1350, "rnbqkbnr/ppp2ppp/8/3p4/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 4"))
