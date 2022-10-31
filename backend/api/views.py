@@ -65,4 +65,4 @@ class GetStockfishMoveELO(generics.GenericAPIView):
 
         best_move_elo = mods.get_stockfish_move_elo(ELO, new_FEN)
 
-        return Response({"best_move_elo": best_move_elo})
+        return Response({"best_move": best_move_elo})
