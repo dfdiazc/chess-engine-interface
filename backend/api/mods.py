@@ -76,7 +76,7 @@ def get_stockfish_nbest_moves(FEN:str)->str:
 
     return moves
 
-def get_stockfish_move_elo(ELO:int, FEN:str)->str:
+def get_stockfish_move_elo(skill_level:int, FEN:str)->str:
     """
     Determine the next best move according to the stockfish engine, given
     a certain elo rating for the engine
@@ -84,7 +84,7 @@ def get_stockfish_move_elo(ELO:int, FEN:str)->str:
 
     stockfish.set_fen_position(FEN)
 
-    stockfish.set_elo_rating(ELO)
+    stockfish.set_skill_level(skill_level)
 
     best_move_elo = stockfish.get_best_move()
 
