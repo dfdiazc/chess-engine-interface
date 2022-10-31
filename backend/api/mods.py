@@ -9,7 +9,7 @@ engine_location = "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linu
 engine_path = os.path.realpath(os.path.join(dirname, engine_location)) # Compute actual path to the engine
 
 global stockfish
-stockfish = Stockfish(path = engine_path)
+stockfish = Stockfish(path = engine_path, depth = 5)
 ##################################
 
 def missing_pieces(FEN:str)->dict:
@@ -76,7 +76,7 @@ def get_stockfish_nbest_moves(FEN:str)->str:
 
     return moves
 
-def get_stockfish_move_elo(ELO:int, FEN:str)->str:
+def get_stockfish_move_elo(skill_level:int, FEN:str)->str:
     """
     Determine the next best move according to the stockfish engine, given
     a certain elo rating for the engine
@@ -84,7 +84,7 @@ def get_stockfish_move_elo(ELO:int, FEN:str)->str:
 
     stockfish.set_fen_position(FEN)
 
-    stockfish.set_elo_rating(ELO)
+    stockfish.set_skill_level(skill_level)
 
     best_move_elo = stockfish.get_best_move()
 
