@@ -75,5 +75,3 @@ def get_stockfish_move_elo(ELO:int, FEN:str)->str:
     stockfish.quit()
 
     return str(result.move)
-
-print(get_stockfish_move_elo(1350, "rnbqkbnr/ppp2ppp/8/3p4/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 4"))
