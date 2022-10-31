@@ -19,7 +19,10 @@ const LoginForm = () => {
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
-        username: yup.string().email().required("Email is required"),
+        username: yup
+          .string()
+          .email("Please enter a valid email")
+          .required("Email is required"),
         password: yup.string().required("Password is required"),
       }),
     []
@@ -34,8 +37,8 @@ const LoginForm = () => {
   });
   const onSubmit = handleSubmit(async (data: LoginFormData) => {
     try {
-      const response = await login(data);
-      dispatch(setCredentials({ ...response }));
+      const response = await login(data).unwrap();
+      dispatch(setCredentials(response));
       navigate("/play");
     } catch (error) {
       console.log(error);

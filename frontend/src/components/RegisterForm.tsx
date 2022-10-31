@@ -1,15 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "app/store";
 import { useRegisterMutation } from "features/auth/authApiSlice";
 
-
 const RegisterForm = () => {
-
   const navigate = useNavigate();
   const [registerUser, { isLoading }] = useRegisterMutation();
   interface RegisterFormData {
@@ -20,11 +16,17 @@ const RegisterForm = () => {
   const validationSchema = useMemo(
     () =>
       yup.object().shape({
-        username: yup.string().email().required("Email is required"),
-        password: yup.string().required("Password is required"),
+        username: yup
+          .string()
+          .email("Please enter a valid email.")
+          .required("Email is required."),
+        password: yup
+          .string()
+          .min(8, "Password must be at least 8 characters.")
+          .required("Password is required."),
         confirmPassword: yup.string().test({
           name: "password-confirmation",
-          message: "Passwords don't match",
+          message: "Passwords don't match.",
           test: function () {
             const { password, confirmPassword } = this.parent;
             if (password && confirmPassword !== password) {
@@ -36,20 +38,30 @@ const RegisterForm = () => {
       }),
     []
   );
-  const dispatch = useDispatch<AppDispatch>();
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<RegisterFormData>({
     resolver: yupResolver(validationSchema),
   });
-  const onSubmit = handleSubmit(async (data:RegisterFormData) => {
+  const onSubmit = handleSubmit(async (data: RegisterFormData) => {
     try {
-      await registerUser({username:data.username, password:data.password});
+      await registerUser({
+        username: data.username,
+        password: data.password,
+      }).unwrap();
       navigate("/login");
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      console.log(error)
+      const errors = error.data;
+      if (errors.password) {
+        setError('password', {
+          type: "server",
+          message: errors.password[0],
+        });
+      }
     }
   });
 
@@ -64,7 +76,11 @@ const RegisterForm = () => {
           placeholder="E-mail"
           {...register("username")}
         />
-        {errors.username && <p className="font-roboto font-normal text-md text-red-600">{errors.username.message}</p>}
+        {errors.username && (
+          <p className="font-roboto font-normal text-md text-red-600">
+            {errors.username.message}
+          </p>
+        )}
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
           type="password"
@@ -73,7 +89,11 @@ const RegisterForm = () => {
           placeholder="Password"
           {...register("password")}
         />
-        {errors.password && <p className="font-roboto font-normal text-md text-red-600">{errors.password.message}</p>}
+        {errors.password && (
+          <p className="font-roboto font-normal text-md text-red-600">
+            {errors.password.message}
+          </p>
+        )}
         <input
           className="grow border rounded p-2 focus:shadow-outline font-roboto font-normal text-md"
           type="password"
@@ -82,7 +102,11 @@ const RegisterForm = () => {
           placeholder="Confirm Password"
           {...register("confirmPassword")}
         />
-        {errors.confirmPassword && <p className="font-roboto font-normal text-md text-red-600">{errors.confirmPassword.message}</p>}
+        {errors.confirmPassword && (
+          <p className="font-roboto font-normal text-md text-red-600">
+            {errors.confirmPassword.message}
+          </p>
+        )}
       </div>
       <div className="flex mt-10">
         <button

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess, Square } from "chess.js";
 import { IconContext } from "react-icons";
-import useSound from "use-sound";
+import { Howl } from "howler";
 import chessMoveSound from "assets/sounds/chess-move.mp3";
 import {
   FaChessBishop,
@@ -21,8 +21,11 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [game] = useState(new Chess());
   const [fen, setFen] = useState(game.fen());
   const [turn, setTurn] = useState(game.turn());
-  const [playMove] = useSound(chessMoveSound, { volume: 0.5 });
-  let timeoutId: null | ReturnType<typeof setTimeout> = null
+  const moveSound = new Howl({
+    src: [chessMoveSound]
+  });
+  const [arePiecesDragable, setArePiecesDragable] = useState(true);
+  const [newTimeout, setNewTimeout] = useState <null | ReturnType<typeof setTimeout>>(null)
   interface pieces {
     r: number;
     n: number;
@@ -54,31 +57,35 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   interface BestMove {
     best_move: string;
   }
-  function showLostPieces(){
+  function showLostPieces() {
+    setArePiecesDragable(false);
     axios
-        .get<pieces>(
-          `https://unrealchess.pythonanywhere.com/api/mods/${game
-            .fen()
-            .replaceAll("/", "-")}$`
-        )
-        .then((response) => {
-          setLostPieces(response.data);
-        });
+      .get<pieces>(
+        `https://unrealchess.pythonanywhere.com/api/mods/${game
+          .fen()
+          .replaceAll("/", "-")}$`
+      )
+      .then((response) => {
+        setLostPieces(response.data);
+      });
   }
   function computerMove() {
-    axios.get<BestMove>(
-      `https://unrealchess.pythonanywhere.com/api/play/stockfish/${game
-        .fen()
-        .replaceAll("/", "-")}`
-    ).then((response) => {
-      const source = response.data.best_move.substring(0, 2);
-      const target = response.data.best_move.substring(2, 4);
-      game.move({from: source, to: target});
-      showLostPieces();
-      setFen(game.fen());
-      setTurn(game.turn());
-      playMove();
-    });
+    axios
+      .get<BestMove>(
+        `https://unrealchess.pythonanywhere.com/api/play/stockfish/${game
+          .fen()
+          .replaceAll("/", "-")}`
+      )
+      .then((response) => {
+        const source = response.data.best_move.substring(0, 2);
+        const target = response.data.best_move.substring(2, 4);
+        game.move({ from: source, to: target });
+        showLostPieces();
+        setFen(game.fen());
+        setTurn(game.turn());
+        moveSound.play();
+        setArePiecesDragable(true);
+      });
   }
   function onDrop(source: Square, target: Square) {
     let result = game.move({ from: source, to: target });
@@ -86,10 +93,10 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       showLostPieces();
       setFen(game.fen());
       setTurn(game.turn());
-      playMove();
+      moveSound.play();
 
-      const newTimeout = setTimeout(computerMove, 200);
-      timeoutId = newTimeout;
+      const newTimeout = setTimeout(computerMove, 1000);
+      setNewTimeout(newTimeout);
       return true;
     }
     return false;
@@ -157,6 +164,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           position={fen}
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
+          arePiecesDraggable={arePiecesDragable}
         />
         <div className="flex justify-center w-5 relative">
           <div
