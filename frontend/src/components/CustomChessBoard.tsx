@@ -15,6 +15,7 @@ import axios from "axios";
 
 interface CustomChessBoardProps {
   boardWidth: number;
+  elo: string;
 }
 
 const CustomChessBoard = (props: CustomChessBoardProps) => {
@@ -72,7 +73,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   function computerMove() {
     axios
       .get<BestMove>(
-        `https://unrealchess.pythonanywhere.com/api/play/stockfish/${game
+        `https://unrealchess.pythonanywhere.com/api/play/stockfish/${props.elo}/${game
           .fen()
           .replaceAll("/", "-")}`
       )
