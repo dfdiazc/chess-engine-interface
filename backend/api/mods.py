@@ -9,8 +9,7 @@ engine_location = "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linu
 engine_path = os.path.realpath(os.path.join(dirname, engine_location)) # Compute actual path to the engine
 
 global stockfish
-stockfish = Stockfish(path = engine_path)
-stockfish.set_depth(5)
+stockfish = Stockfish(path = engine_path, depth = 5)
 ##################################
 
 def missing_pieces(FEN:str)->dict:
