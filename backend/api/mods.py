@@ -1,17 +1,15 @@
 import chess
 import chess.engine
-
-##################################
-# Specify path to stockfish engine
 import os
 
-dirname = os.path.dirname(__file__) # present working directory (equivalent of running pwd in the terminal)
-engine_location = "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linux_x64/stockfish_13_linux_x64" # relative path to the engine
-engine_path = os.path.realpath(os.path.join(dirname, engine_location)) # Compute actual path to the engine
+def load_engine():
 
-global stockfish
-stockfish = chess.engine.SimpleEngine.popen_uci(engine_path)
-##################################
+    dirname = os.path.dirname(__file__) # present working directory (equivalent of running pwd in the terminal)
+    engine_location = "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linux_x64/stockfish_13_linux_x64" # relative path to the engine
+    engine_path = os.path.realpath(os.path.join(dirname, engine_location)) # Compute actual path to the engine
+    stockfish = chess.engine.SimpleEngine.popen_uci(engine_path)
+
+    return stockfish
 
 def missing_pieces(FEN:str)->dict:
     """
@@ -69,6 +67,7 @@ def get_stockfish_move_elo(ELO:int, FEN:str)->str:
     a certain elo rating for the engine
     """
 
+    stockfish = load_engine()
     board = chess.Board(FEN)
     stockfish.configure({"UCI_Elo": ELO, "UCI_LimitStrength": "true"})
     result = stockfish.play(board, chess.engine.Limit(time = 1.0))
