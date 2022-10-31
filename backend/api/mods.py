@@ -10,6 +10,7 @@ engine_path = os.path.realpath(os.path.join(dirname, engine_location)) # Compute
 
 global stockfish
 stockfish = Stockfish(path = engine_path)
+stockfish.set_depth(5)
 ##################################
 
 def missing_pieces(FEN:str)->dict:
