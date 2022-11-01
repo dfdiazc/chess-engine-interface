@@ -20,3 +20,4 @@ class UserUpdateView(generics.UpdateAPIView):
 
     serializer_class = UserUpdateSerializer
     lookup_field = "username"
+    permission_classes = [IsAuthenticated]

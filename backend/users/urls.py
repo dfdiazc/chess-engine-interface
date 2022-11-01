@@ -6,11 +6,11 @@ from rest_framework_simplejwt.views import (TokenObtainPairView, TokenRefreshVie
 app_name = "users"
 
 urlpatterns = [
-    path("create", views.CreateView.as_view()), # Create a user
-    path("login", TokenObtainPairView.as_view()), # Log a user in
-    path("logout", TokenBlacklistView.as_view()), # Log a user out
-    path("refresh", TokenRefreshView.as_view()), # refresh jwt token
-    path("<str:username>", views.UserDetailView.as_view()), # retrieve a user's information
-    path("token/verify", TokenVerifyView.as_view()),
-    path("update", views.UserUpdateView.as_view()),
+    path("create", views.CreateView.as_view(), name = "create"), # Create a user
+    path("login", TokenObtainPairView.as_view(), name = "login"), # Log a user in
+    path("logout", TokenBlacklistView.as_view(), name = "logout"), # Log a user out
+    path("refresh", TokenRefreshView.as_view(), name = "refresh"), # refresh jwt token
+    path("update", views.UserUpdateView.as_view(), name = "update"),
+    path("<str:username>", views.UserDetailView.as_view(), name = "detail"), # retrieve a user's information
+    path("token/verify", TokenVerifyView.as_view(), name = "verify"),
 ]
