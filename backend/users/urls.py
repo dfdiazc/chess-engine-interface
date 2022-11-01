@@ -11,5 +11,6 @@ urlpatterns = [
     path("logout", TokenBlacklistView.as_view()), # Log a user out
     path("refresh", TokenRefreshView.as_view()), # refresh jwt token
     path("<str:username>", views.UserDetailView.as_view()), # retrieve a user's information
-    path("token/verify", TokenVerifyView.as_view())
+    path("token/verify", TokenVerifyView.as_view()),
+    path("update", views.UserUpdateView.as_view()),
 ]

@@ -1,6 +1,6 @@
 from rest_framework import generics
 from django.contrib.auth.models import User
-from .serializers import RegisterSerializer, UserDetailSerializer
+from .serializers import RegisterSerializer, UserDetailSerializer, UserUpdateSerializer
 from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
@@ -15,6 +15,8 @@ class UserDetailView(generics.RetrieveAPIView):
     queryset = User.objects.all()
     lookup_field = "username"
     permission_classes = [IsAuthenticated]
-    #def get_queryset(self, *args, **kwargs):
 
-        #return User.objects.filter(username = self.request.user["username"])
+class UserUpdateView(generics.UpdateAPIView):
+
+    serializer_class = UserUpdateSerializer
+    lookup_field = "username"
