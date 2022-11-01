@@ -71,3 +71,15 @@ class GetStockfishMoveELO(generics.GenericAPIView):
         best_move_elo = mods.get_stockfish_move_elo(ELO, new_FEN)
 
         return Response({"best_move": best_move_elo})
+
+class PromotionView(generics.GenericAPIView):
+
+    def get(self, request, move, FEN):
+
+        new_FEN = fix_fen(FEN)
+        player, promotion_intended = mods.will_promote(move, new_FEN)
+
+        return Response({
+            "promotion_intended": promotion_intended,
+            "player": player
+        })

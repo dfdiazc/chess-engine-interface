@@ -11,6 +11,17 @@ def load_engine():
 
     return stockfish
 
+def get_player_turn(FEN:str)->str:
+
+    return FEN.split(" ")[1]
+
+def get_first_and_last_rows(FEN:str)->tuple:
+
+    board = FEN.split(" ")[0]
+    rows = board.split("/")
+
+    return rows[0], rows[-1]
+
 def missing_pieces(FEN:str)->dict:
     """
     Determine the number of missing pieces at a given time of the match based on the
@@ -78,3 +89,40 @@ def get_stockfish_move_elo(ELO:int, FEN:str)->str:
     stockfish.quit()
 
     return str(result.move)
+
+def will_promote(move:str, FEN:str)->bool:
+    """
+    Determine whether the result of a given move is a pawn promotion
+    """
+
+    player = get_player_turn(FEN) # determine who is making the intended move
+
+    board = chess.Board(FEN) # set the board to current position
+    board.push_uci(move) # make the intended move on the current board
+    new_FEN = board.fen() # update the board to have the new move
+
+    f1, fl = get_first_and_last_rows(new_FEN) # get information of new first and last rows
+
+    # Determine whether the first or the last row should be checked
+
+    promotion_intended = False
+
+    if(player == "w"):
+
+        interest_row = f1
+
+        if("P" in interest_row):
+
+            promotion_intended = True
+
+    else:
+
+        interest_row = fl
+
+        if("p" in fl):
+
+            promotion_intended = True
+
+    return player, promotion_intended
+
+FEN = "rnbqkbnr/ppP3pp/4pp2/3p4/2P5/8/P2PPPPP/RNBQKBNR w KQkq - 0 1"
