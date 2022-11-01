@@ -12,6 +12,7 @@ import {
   FaChessRook,
 } from "react-icons/fa";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 interface CustomChessBoardProps {
   boardWidth: number;
@@ -85,6 +86,15 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     }
   }
   async function computerMove() {
+    axiosRetry(axios, {
+      retries: 3,
+      retryDelay: (retryCount: number) => {
+        return retryCount * 2000;
+      },
+      retryCondition: (error) => {
+        return error.response?.status === 502;
+      }
+    });
     await axios
       .get<BestMove>(
         `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
@@ -185,7 +195,9 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         />
         {gameOver && (
           <div className="flex h-10 p-10 z-10 absolute top-24 left-1/2 bg-white/10 rounded">
-            <span className="font-roboto font-normal text-white">{gameState}</span>
+            <span className="font-roboto font-normal text-white">
+              {gameState}
+            </span>
           </div>
         )}
         <div className="flex justify-center w-5 relative">
