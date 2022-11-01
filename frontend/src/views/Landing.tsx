@@ -3,6 +3,8 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 import ChessboardImage from "assets/images/chessboard.png";
+import WhiteRook from "assets/images/white_rook.png";
+import WhitePawn from "assets/images/white_pawn.png";
 
 const Landing = () => {
   return (
@@ -26,22 +28,22 @@ const Landing = () => {
               <div className="flex h-full justify-left">
                 <div className="relative flex px-3 sm:w-2/3 md:w-3/4 lg:left-[15%] xl:left-[35%]">
                   <img
-                    src="https://i.pinimg.com/originals/cc/f5/a5/ccf5a501510ff6e3ab0d400ee922f2ae.png"
+                    src={WhiteRook}
                     className="absolute select-none h-24 top-[5%] left-[0%] xl:-left-[25%] -rotate-12"
                     alt="Description pending"
                   ></img>
                   <img
-                    src="https://i.pinimg.com/originals/cc/f5/a5/ccf5a501510ff6e3ab0d400ee922f2ae.png"
+                    src={WhiteRook}
                     className="absolute select-none h-24 bottom-[5%] left-[70%] xl:left-[100%] rotate-[25deg]"
                     alt="Description pending"
                   ></img>
                   <img
-                    src="https://i.pinimg.com/originals/c5/fe/e2/c5fee2b05ce93bc24906ccd2f30eff0b.png"
+                    src={WhitePawn}
                     className="absolute select-none h-24 top-[10%] left-[70%] xl:left-[90%] rotate-12"
                     alt="Description pending"
                   ></img>
                   <img
-                    src="https://i.pinimg.com/originals/c5/fe/e2/c5fee2b05ce93bc24906ccd2f30eff0b.png"
+                    src={WhitePawn}
                     className="absolute  select-none h-24 bottom-[10%] left-[5%] xl:left-[0%] -rotate-[20deg]"
                     alt="Description pending"
                   ></img>
