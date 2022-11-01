@@ -15,12 +15,13 @@ def get_player_turn(FEN:str)->str:
 
     return FEN.split(" ")[1]
 
-def get_first_and_last_rows(FEN:str)->tuple:
+def is_move_from_pawn(move:str, FEN:str)->bool:
 
-    board = FEN.split(" ")[0]
-    rows = board.split("/")
+    board = chess.Board(FEN)
+    square = chess.parse_square(move[:2])
+    piece = board.piece_at(square)
 
-    return rows[0], rows[-1]
+    return str(piece)
 
 def missing_pieces(FEN:str)->dict:
     """
@@ -95,34 +96,34 @@ def will_promote(move:str, FEN:str)->bool:
     Determine whether the result of a given move is a pawn promotion
     """
 
-    player = get_player_turn(FEN) # determine who is making the intended move
+    end_row = move[3]
+    player = get_player_turn(FEN)
+    piece_moved = is_move_from_pawn(move, FEN)
 
-    board = chess.Board(FEN) # set the board to current position
-    board.push_uci(move) # make the intended move on the current board
-    new_FEN = board.fen() # update the board to have the new move
+    if((end_row not in ["1", "8"])and(piece_moved not in ["P", "p"])):
 
-    f1, fl = get_first_and_last_rows(new_FEN) # get information of new first and last rows
-
-    # Determine whether the first or the last row should be checked
-
-    promotion_intended = False
+        return player, False
 
     if(player == "w"):
 
-        interest_row = f1
-
-        if("P" in interest_row):
-
-            promotion_intended = True
+        piece_obtained = "Q"
 
     else:
 
-        interest_row = fl
+        piece_obtained = "q"
 
-        if("p" in fl):
+    move = f"{move}q"
+    board = chess.Board(FEN) # set the board to current position
 
-            promotion_intended = True
+    pieces = FEN.split(" ")[0]
+    current_queens = pieces.count(piece_obtained)
+
+    board.push_uci(move) # make the intended move on the current board
+    new_FEN = str(board.fen()) # update the board to have the new move
+
+    new_pieces = new_FEN.split(" ")[0]
+    new_queens = new_pieces.count(piece_obtained)
+
+    promotion_intended = (current_queens < new_queens)
 
     return player, promotion_intended
-
-FEN = "rnbqkbnr/ppP3pp/4pp2/3p4/2P5/8/P2PPPPP/RNBQKBNR w KQkq - 0 1"
