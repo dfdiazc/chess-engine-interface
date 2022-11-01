@@ -70,6 +70,18 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setLostPieces(response.data);
       });
   }
+  function isGameOver(){
+    const checkmate = game.isCheckmate();
+    const draw = game.isDraw();
+
+    if (checkmate){
+      alert("Checkmate")
+    }
+    else if(draw){
+      alert("Draw")
+    }
+    
+  }
   function computerMove() {
     axios
       .get<BestMove>(
@@ -86,6 +98,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setTurn(game.turn());
         moveSound.play();
         setArePiecesDragable(true);
+        isGameOver();
       });
   }
   function onDrop(source: Square, target: Square) {
@@ -98,6 +111,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
 
       const newTimeout = setTimeout(computerMove, 1000);
       setNewTimeout(newTimeout);
+      isGameOver();
       return true;
     }
     return false;

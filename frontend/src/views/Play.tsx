@@ -44,7 +44,7 @@ const Play = () => {
                 type="range"
                 className="w-full mt-5"
                 min="1350"
-                max="2800"
+                max="2850"
                 step="1"
                 defaultValue={elo}
                 onChange={(event) => {
