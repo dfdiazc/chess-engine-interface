@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from rest_framework import generics
 from . import mods
-from .models import Match
-from .serializers import MatchSerializer
+from .models import Match, Moves
+from .serializers import MatchSerializer, MoveSerializer
 
 # Auxiliary functions
 
@@ -30,6 +30,11 @@ class CreateMatchView(generics.CreateAPIView):
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
 
+
+class CreateMoveView(generics.CreateAPIView):
+
+    queryset = Moves.objects.all()
+    serializer_class = MoveSerializer
 
 class GetStockfishMove(generics.GenericAPIView):
 
