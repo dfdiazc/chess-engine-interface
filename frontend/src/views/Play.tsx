@@ -15,6 +15,7 @@ const Play = () => {
     if (windowWidth < 768) setBoardWidth(windowWidth * 0.8);
     else setBoardWidth(600);
   };
+  const [elo, setElo] = useState<string>("1350");
   useEffect(() => {
     window.addEventListener("resize", handleResize);
   });
@@ -30,16 +31,34 @@ const Play = () => {
               <Header />
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row justify-center items-center h-full shrink-0 relative">
-            <div className="px-3 py-10">
-              <CustomChessBoard boardWidth={boardWidth} />
+          <div className="flex flex-col gap-5 lg:flex-row justify-center items-center h-full shrink-0 relative">
+            <div className="pl-10 pr-3 py-10">
+              <CustomChessBoard boardWidth={boardWidth} elo={elo} />
             </div>
-            <div className="hidden lg:flex w-[200px]  h-[600px]">
-            <Adsense
-              client="ca-pub-7640562161899788"
-              slot="7259870550"
-              format=""
-            />
+            <div className="px-5 py-3 bg-[#102B34] flex flex-col rounded grow shrink-0">
+              <span className="font-roboto font-normal text-white text-center">
+                Difficulty
+              </span>
+              <span className="w-full mr-3 mt-3 h-px bg-white"></span>
+              <input
+                type="range"
+                className="w-full mt-5"
+                min="1350"
+                max="2850"
+                step="1"
+                defaultValue={elo}
+                onChange={(event) => {
+                  setElo((event.target as HTMLInputElement).value);
+                }}
+              />
+              <span className="font-roboto font-normal text-white text-center">{elo}</span>
+            </div>
+            <div className="hidden lg:flex w-[200px] h-[600px]">
+              <Adsense
+                client="ca-pub-7640562161899788"
+                slot="7259870550"
+                format=""
+              />
             </div>
           </div>
         </div>

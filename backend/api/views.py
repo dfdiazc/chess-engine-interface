@@ -59,10 +59,10 @@ class GetStockfishBestMoves(generics.GenericAPIView):
 
 class GetStockfishMoveELO(generics.GenericAPIView):
 
-    def get(self, request, ELO, FEN):
+    def get(self, request, skill_level, FEN):
 
         new_FEN = fix_fen(FEN)
 
-        best_move_elo = mods.get_stockfish_move_elo(ELO, new_FEN)
+        best_move_elo = mods.get_stockfish_move_elo(skill_level, new_FEN)
 
-        return Response({"best_move_elo": best_move_elo})
+        return Response({"best_move": best_move_elo})

@@ -15,6 +15,7 @@ import axios from "axios";
 
 interface CustomChessBoardProps {
   boardWidth: number;
+  elo: string;
 }
 
 const CustomChessBoard = (props: CustomChessBoardProps) => {
@@ -69,10 +70,22 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setLostPieces(response.data);
       });
   }
+  function isGameOver(){
+    const checkmate = game.isCheckmate();
+    const draw = game.isDraw();
+
+    if (checkmate){
+      alert("Checkmate")
+    }
+    else if(draw){
+      alert("Draw")
+    }
+    
+  }
   function computerMove() {
     axios
       .get<BestMove>(
-        `https://unrealchess.pythonanywhere.com/api/play/stockfish/${game
+        `https://unrealchess.pythonanywhere.com/api/play/stockfish/${props.elo}/${game
           .fen()
           .replaceAll("/", "-")}`
       )
@@ -85,6 +98,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setTurn(game.turn());
         moveSound.play();
         setArePiecesDragable(true);
+        isGameOver();
       });
   }
   function onDrop(source: Square, target: Square) {
@@ -97,6 +111,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
 
       const newTimeout = setTimeout(computerMove, 1000);
       setNewTimeout(newTimeout);
+      isGameOver();
       return true;
     }
     return false;
