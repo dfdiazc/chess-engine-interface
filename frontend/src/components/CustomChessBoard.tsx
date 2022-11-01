@@ -12,6 +12,7 @@ import {
   FaChessRook,
 } from "react-icons/fa";
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 interface CustomChessBoardProps {
   boardWidth: number;
@@ -22,11 +23,15 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [game] = useState(new Chess());
   const [fen, setFen] = useState(game.fen());
   const [turn, setTurn] = useState(game.turn());
+  const [gameOver, setGameOver] = useState(false);
+  const [gameState, setGameState] = useState<string>();
   const moveSound = new Howl({
-    src: [chessMoveSound]
+    src: [chessMoveSound],
   });
   const [arePiecesDragable, setArePiecesDragable] = useState(true);
-  const [newTimeout, setNewTimeout] = useState <null | ReturnType<typeof setTimeout>>(null)
+  const [newTimeout, setNewTimeout] = useState<null | ReturnType<
+    typeof setTimeout
+  >>(null);
   interface pieces {
     r: number;
     n: number;
@@ -70,36 +75,44 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setLostPieces(response.data);
       });
   }
-  function isGameOver(){
+  function gameOverState() {
     const checkmate = game.isCheckmate();
     const draw = game.isDraw();
 
-    if (checkmate){
-      alert("Checkmate")
+    if (checkmate) {
+      setGameState("Checkmate");
+    } else if (draw) {
+      setGameState("Draw");
     }
-    else if(draw){
-      alert("Draw")
-    }
-    
   }
-  function computerMove() {
-    axios
+  async function computerMove() {
+    axiosRetry(axios, {
+      retries: 3,
+      retryDelay: (retryCount: number) => {
+        return retryCount * 2000;
+      },
+      retryCondition: (error) => {
+        return error.response?.status === 502;
+      }
+    });
+    await axios
       .get<BestMove>(
-        `https://unrealchess.pythonanywhere.com/api/play/stockfish/${props.elo}/${game
-          .fen()
-          .replaceAll("/", "-")}`
+        `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
+          props.elo
+        }/${game.fen().replaceAll("/", "-")}`
       )
       .then((response) => {
         const source = response.data.best_move.substring(0, 2);
         const target = response.data.best_move.substring(2, 4);
         game.move({ from: source, to: target });
-        showLostPieces();
-        setFen(game.fen());
-        setTurn(game.turn());
-        moveSound.play();
-        setArePiecesDragable(true);
-        isGameOver();
       });
+    showLostPieces();
+    setFen(game.fen());
+    setTurn(game.turn());
+    moveSound.play();
+    setArePiecesDragable(true);
+    setGameOver(game.isGameOver());
+    gameOverState();
   }
   function onDrop(source: Square, target: Square) {
     let result = game.move({ from: source, to: target });
@@ -111,7 +124,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
 
       const newTimeout = setTimeout(computerMove, 1000);
       setNewTimeout(newTimeout);
-      isGameOver();
       return true;
     }
     return false;
@@ -181,6 +193,13 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           boardWidth={props.boardWidth}
           arePiecesDraggable={arePiecesDragable}
         />
+        {gameOver && (
+          <div className="flex h-10 p-10 z-10 absolute top-24 left-1/2 bg-white/10 rounded">
+            <span className="font-roboto font-normal text-white">
+              {gameState}
+            </span>
+          </div>
+        )}
         <div className="flex justify-center w-5 relative">
           <div
             className="w-3 h-3 bg-blue-600 rounded-full absolute transition-all duration-300 bottom-0"

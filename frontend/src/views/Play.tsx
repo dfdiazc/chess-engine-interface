@@ -35,14 +35,14 @@ const Play = () => {
             <div className="pl-10 pr-3 py-10">
               <CustomChessBoard boardWidth={boardWidth} elo={elo} />
             </div>
-            <div className="px-5 py-3 bg-[#102B34] flex flex-col rounded grow shrink-0">
+            <div className="px-5 py-3 bg-[#102B34] flex flex-col rounded grow shrink-0 max-w-sm">
               <span className="font-roboto font-normal text-white text-center">
                 Difficulty
               </span>
               <span className="w-full mr-3 mt-3 h-px bg-white"></span>
               <input
                 type="range"
-                className="w-full mt-5"
+                className="w-full mt-5 hover:cursor-pointer"
                 min="1350"
                 max="2850"
                 step="1"

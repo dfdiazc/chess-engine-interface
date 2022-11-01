@@ -2,6 +2,7 @@ import React from "react";
 import { FaChess } from "react-icons/fa";
 import { AiOutlineUser } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
+import { HiMenu } from "react-icons/hi";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -10,7 +11,7 @@ import { selectCurrentAccessToken } from "features/auth/authSlice";
 const Header = () => {
   const token = useSelector(selectCurrentAccessToken);
   return (
-    <header className="flex items-center justify-between h-16 px-6 sm:px-10 w-full bg-transparent shadow max-w-[1920px]">
+    <header className="flex items-center justify-between h-16 pl-6 pr-2 sm:px-10 w-full bg-transparent shadow max-w-[1920px]">
       <Link to="/" className="flex gap-5 shrink-0">
         <IconContext.Provider value={{ className: "h-8 w-8 text-white" }}>
           <FaChess />
@@ -19,7 +20,7 @@ const Header = () => {
           Un-Real Chess
         </span>
       </Link>
-      <div className="flex items-center gap-5 text-center self-center">
+      <div className="flex items-center text-center self-center">
         {token ? (
           <Link to="/profile" className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-gray-600 hover:bg-gray-500">
             <div className="bg-white rounded-full">
@@ -37,6 +38,7 @@ const Header = () => {
           </Link>
         ) : (
           <>
+          <div className="hidden md:flex gap-3">
             <Link
               to="/register"
               className="px-8 py-2 bg-blue-500 rounded-full text-roboto text-md text-white"
@@ -49,6 +51,14 @@ const Header = () => {
             >
               Log In
             </Link>
+          </div>
+          <div>
+            <button className="flex md:hidden"><IconContext.Provider
+              value={{ className: "h-8 w-8 text-white m-1" }}
+            >
+              <HiMenu />
+            </IconContext.Provider></button>
+          </div>
           </>
         )}
       </div>
