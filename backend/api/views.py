@@ -80,6 +80,6 @@ class PromotionView(generics.GenericAPIView):
         player, promotion_intended = mods.will_promote(move, new_FEN)
 
         return Response({
-            "promotion_intended": promotion_intended,
+            "promotion": promotion_intended,
             "player": player
         })
