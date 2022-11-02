@@ -63,10 +63,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   interface BestMove {
     best_move: string;
   }
-  interface Promotion {
-    promotion: boolean;
-    player: string;
-  }
   axiosRetry(axios, {
     retries: 3,
     retryDelay: (retryCount: number) => {
