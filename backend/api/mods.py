@@ -100,7 +100,10 @@ def will_promote(move:str, FEN:str)->bool:
     player = get_player_turn(FEN)
     piece_moved = is_move_from_pawn(move, FEN)
 
-    if((end_row not in ["1", "8"])and(piece_moved not in ["P", "p"])):
+    white_condition = ((piece_moved == "P")and(end_row == "8"))
+    black_condition = ((piece_moved == "p")and(end_row == "1"))
+
+    if( not (white_condition or black_condition)):
 
         return player, False
 
