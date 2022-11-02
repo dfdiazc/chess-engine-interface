@@ -108,7 +108,12 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       .then((response) => {
         const source = response.data.best_move.substring(0, 2);
         const target = response.data.best_move.substring(2, 4);
-        game.move({ from: source, to: target });
+        if (response.data.best_move.length === 5) {
+          const promoPiece = response.data.best_move.substring(4);
+          game.move({ from: source, to: target, promotion: promoPiece });
+        } else {
+          game.move({ from: source, to: target });
+        }
       });
     showLostPieces();
     setFen(game.fen());
