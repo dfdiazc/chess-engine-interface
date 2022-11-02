@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Chessboard, Pieces } from "react-chessboard";
 import { Chess, Square } from "chess.js";
 import { IconContext } from "react-icons";
@@ -13,10 +13,13 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import axiosRetry from "axios-retry";
+import LostPieces from "./LostPieces";
 
 interface CustomChessBoardProps {
   boardWidth: number;
   elo: string;
+  startGame: boolean;
+  playerColor: string;
 }
 
 const CustomChessBoard = (props: CustomChessBoardProps) => {
@@ -25,13 +28,46 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [turn, setTurn] = useState(game.turn());
   const [gameOver, setGameOver] = useState(false);
   const [gameState, setGameState] = useState<string>();
+  const [computerColor, setComputerColor] = useState<string>(() => {
+    if (props.playerColor === "w") {
+      return "b";
+    }
+    return "w";
+  });
   const moveSound = new Howl({
     src: [chessMoveSound],
   });
-  const [arePiecesDragable, setArePiecesDragable] = useState(true);
+  const [arePiecesDragable, setArePiecesDragable] = useState(false);
   const [newTimeout, setNewTimeout] = useState<null | ReturnType<
     typeof setTimeout
   >>(null);
+  const [boardOrientation, setBoardOrientation] = useState<
+    "white" | "black" | undefined
+  >(() => {
+    if (props.playerColor === "w") {
+      return "white";
+    }
+    return "black";
+  });
+
+  useEffect(() => {
+    if (props.playerColor === "w") {
+      setBoardOrientation("white");
+      setComputerColor("b");
+    } else {
+      setBoardOrientation("black");
+      setComputerColor("w");
+    }
+  }, [props.playerColor]);
+  useEffect(() => {
+    if (props.startGame) {
+      if (turn === props.playerColor) {
+        setArePiecesDragable(true);
+      } else if (turn === computerColor) {
+        computerMove();
+      }
+    }
+  }, [turn, props.startGame]);
   interface pieces {
     r: number;
     n: number;
@@ -73,7 +109,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     },
   });
   function showLostPieces() {
-    setArePiecesDragable(false);
     axios
       .get<pieces>(
         `https://unrealchess.pythonanywhere.com/api/mods/${game
@@ -132,77 +167,66 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       setFen(game.fen());
       setTurn(game.turn());
       moveSound.play();
-
-      const newTimeout = setTimeout(computerMove, 1000);
-      setNewTimeout(newTimeout);
+      setArePiecesDragable(false);
+      setGameOver(game.isGameOver());
       return true;
     }
     return false;
   }
   let styleTop = {
     transform: `translateY(-${props.boardWidth - 16}px)`,
-    backgroundColor: "black",
     borderWidth: "1px",
   };
   let styleBottom = {
     transform: "translateY(0%)",
-    backgroundColor: "white",
     borderWidth: "1px",
   };
+  function classTop() {
+    let className =
+      "w-3 h-3 rounded-full absolute transition-all duration-300 bottom-0";
+
+    if (props.playerColor === "w") {
+      className += " bg-black";
+    } else {
+      className += " bg-white";
+    }
+    return className;
+  }
+  function classBottom() {
+    let className =
+      "w-3 h-3 rounded-full absolute transition-all duration-300 bottom-0";
+
+    if (props.playerColor === "w") {
+      className += " bg-white";
+    } else {
+      className += " bg-black";
+    }
+    return className;
+  }
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center h-5">
-        <IconContext.Provider value={{ className: "h-5 w-5 text-white" }}>
-          <div className="flex gap-2">
-            {lostPieces.P > 0 && (
-              <div className="flex gap-1">
-                <FaChessPawn />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.P}
-                </span>
-              </div>
-            )}
-            {lostPieces.N > 0 && (
-              <div className="flex gap-1">
-                <FaChessKnight />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.N}
-                </span>
-              </div>
-            )}
-            {lostPieces.B > 0 && (
-              <div className="flex gap-1">
-                <FaChessBishop />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.B}
-                </span>
-              </div>
-            )}
-            {lostPieces.Q > 0 && (
-              <div className="flex gap-1">
-                <FaChessQueen />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.Q}
-                </span>
-              </div>
-            )}
-            {lostPieces.R > 0 && (
-              <div className="flex gap-1">
-                <FaChessRook />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.R}
-                </span>
-              </div>
-            )}
-          </div>
-        </IconContext.Provider>
-      </div>
+      <LostPieces
+        r={lostPieces.r}
+        n={lostPieces.n}
+        b={lostPieces.b}
+        q={lostPieces.q}
+        k={lostPieces.k}
+        p={lostPieces.p}
+        P={lostPieces.P}
+        R={lostPieces.R}
+        N={lostPieces.N}
+        B={lostPieces.B}
+        Q={lostPieces.Q}
+        K={lostPieces.K}
+        color={computerColor}
+      />
       <div className="flex">
         <Chessboard
           position={fen}
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
           arePiecesDraggable={arePiecesDragable}
+          boardOrientation={boardOrientation}
         />
         {gameOver && (
           <div className="flex h-10 p-10 z-10 absolute top-24 left-1/2 bg-white/10 rounded">
@@ -213,59 +237,26 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         )}
         <div className="flex justify-center w-5 relative">
           <div
-            className="w-3 h-3 bg-blue-600 rounded-full absolute transition-all duration-300 bottom-0"
-            style={turn === "w" ? styleBottom : styleTop}
+            className={turn === props.playerColor ? classBottom() : classTop()}
+            style={turn === props.playerColor ? styleBottom : styleTop}
           ></div>
         </div>
       </div>
-      <div className="flex">
-        <IconContext.Provider
-          value={{ className: "h-5 w-5 text-black stroke-[10] stroke-white" }}
-        >
-          <div className="flex gap-2">
-            {lostPieces.p > 0 && (
-              <div className="flex gap-1">
-                <FaChessPawn />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.p}
-                </span>
-              </div>
-            )}
-            {lostPieces.n > 0 && (
-              <div className="flex gap-1">
-                <FaChessKnight />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.n}
-                </span>
-              </div>
-            )}
-            {lostPieces.b > 0 && (
-              <div className="flex gap-1">
-                <FaChessBishop />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.b}
-                </span>
-              </div>
-            )}
-            {lostPieces.q > 0 && (
-              <div className="flex gap-1">
-                <FaChessQueen />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.q}
-                </span>
-              </div>
-            )}
-            {lostPieces.r > 0 && (
-              <div className="flex gap-1">
-                <FaChessRook />
-                <span className="font-roboto font-normal text-white/50">
-                  {lostPieces.r}
-                </span>
-              </div>
-            )}
-          </div>
-        </IconContext.Provider>
-      </div>
+      <LostPieces
+        r={lostPieces.r}
+        n={lostPieces.n}
+        b={lostPieces.b}
+        q={lostPieces.q}
+        k={lostPieces.k}
+        p={lostPieces.p}
+        P={lostPieces.P}
+        R={lostPieces.R}
+        N={lostPieces.N}
+        B={lostPieces.B}
+        Q={lostPieces.Q}
+        K={lostPieces.K}
+        color={props.playerColor}
+      />
     </div>
   );
 };
