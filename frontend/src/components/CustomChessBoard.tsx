@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Chessboard } from "react-chessboard";
+import { Chessboard, Pieces } from "react-chessboard";
 import { Chess, Square } from "chess.js";
 import { IconContext } from "react-icons";
 import { Howl } from "howler";
@@ -63,6 +63,19 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   interface BestMove {
     best_move: string;
   }
+  interface Promotion {
+    promotion: boolean;
+    player: string;
+  }
+  axiosRetry(axios, {
+    retries: 3,
+    retryDelay: (retryCount: number) => {
+      return retryCount * 2000;
+    },
+    retryCondition: (error) => {
+      return error.response?.status === 502;
+    },
+  });
   function showLostPieces() {
     setArePiecesDragable(false);
     axios
@@ -86,15 +99,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     }
   }
   async function computerMove() {
-    axiosRetry(axios, {
-      retries: 3,
-      retryDelay: (retryCount: number) => {
-        return retryCount * 2000;
-      },
-      retryCondition: (error) => {
-        return error.response?.status === 502;
-      }
-    });
     await axios
       .get<BestMove>(
         `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
@@ -114,8 +118,14 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     setGameOver(game.isGameOver());
     gameOverState();
   }
-  function onDrop(source: Square, target: Square) {
-    let result = game.move({ from: source, to: target });
+  function onDrop(source: Square, target: Square, piece: Pieces) {
+    let result = null;
+    if (piece === "wP" || piece === "bP") {
+      result = game.move({ from: source, to: target, promotion: "q" });
+      if (result === null) result = game.move({ from: source, to: target });
+    } else {
+      result = game.move({ from: source, to: target });
+    }
     if (result != null) {
       showLostPieces();
       setFen(game.fen());
