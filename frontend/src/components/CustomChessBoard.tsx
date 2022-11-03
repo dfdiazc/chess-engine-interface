@@ -38,9 +38,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     src: [chessMoveSound],
   });
   const [arePiecesDragable, setArePiecesDragable] = useState(false);
-  const [newTimeout, setNewTimeout] = useState<null | ReturnType<
-    typeof setTimeout
-  >>(null);
   const [boardOrientation, setBoardOrientation] = useState<
     "white" | "black" | undefined
   >(() => {
