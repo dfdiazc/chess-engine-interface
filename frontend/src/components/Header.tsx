@@ -55,7 +55,7 @@ const Header = () => {
                 Log In
               </Link>
             </div>
-              <button className="text-white w-10 z-20 h-10 relative focus:outline-none rounded-lg md:hidden" onClick={() => setSideBarOpen(!sidebarOpen)}>
+              <button className="text-white w-10 z-30 h-10 relative focus:outline-none rounded-lg md:hidden" onClick={() => setSideBarOpen(!sidebarOpen)}>
                 <div className="block w-5 absolute right-0 transform -translate-x-1/2 -translate-y-1/2">
                     <div aria-hidden="true" className="block absolute h-0.5 w-5 rounded-full bg-current transform transition duration-500 ease-in-out rotate-45" style={sidebarOpen ? {transform: "rotate(45deg)"} : {transform: "translateY(-6px)"}}></div>
                     <div aria-hidden="true" className="block absolute h-0.5 w-5 rounded-full bg-current transform transition duration-500 ease-in-out" style={sidebarOpen ? {opacity: "0%"} : {opacity: "100%"}}></div>
@@ -63,7 +63,7 @@ const Header = () => {
                 </div>
             </button>
               <div
-                className="flex flex-col gap-3 justify-center bg-[#164150] px-5 h-full w-full fixed top-0 right-0 transition-all duration-300 z-10"
+                className="flex flex-col gap-3 justify-center z-20 bg-[#164150] px-5 h-full w-full fixed top-0 right-0 transition-all duration-300"
                 style={
                   sidebarOpen
                     ? { transform: "translateX(0%)" }

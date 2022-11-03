@@ -46,8 +46,8 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     }
     return "black";
   });
-  function resetGame(){
-    game.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  function resetGame() {
+    game.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
     setFen(game.fen());
     setTurn(game.turn());
     showLostPieces();
@@ -229,6 +229,9 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           position={fen}
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
+          customBoardStyle={{ userSelect: "none" }}
+          customDarkSquareStyle={{ backgroundColor: "#517879" }}
+          customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
           arePiecesDraggable={arePiecesDragable}
           boardOrientation={boardOrientation}
           animationDuration={350}
