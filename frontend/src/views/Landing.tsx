@@ -14,7 +14,7 @@ const Landing = () => {
           <div className="flex flex-col">
             <div className="flex justify-center">
               <Helmet>
-                <style>{"body {background-color: #121B1E}"}</style>
+                <style>{"body {background-color: #1C2021}"}</style>
               </Helmet>
               <LandingHeader />
             </div>
@@ -55,8 +55,8 @@ const Landing = () => {
                       <Link
                         to="/play"
                         className="grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium 
-                        select-none p-3 bg-blue-500 rounded-full border-b-4 border-blue-600 transition duration-300 
-                        hover:bg-blue-500/80 hover:border-blue-600/80 hover:shadow text-center"
+                        select-none p-3 bg-flamingo-100 rounded-full border-b-4 border-flamingo-200 transition duration-300 
+                        hover:bg-flamingo-200/80 hover:border-flamingo-300 hover:shadow text-center"
                       >
                         Play now!
                       </Link>

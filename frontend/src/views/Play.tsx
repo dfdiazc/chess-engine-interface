@@ -22,9 +22,9 @@ const Play = () => {
     window.addEventListener("resize", handleResize);
   });
   const activeButtonStyle =
-    "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-10 py-3 bg-blue-500 rounded-full border-b-4 border-blue-600 transition duration-300 hover:bg-blue-500/80 hover:border-blue-600/80 hover:shadow text-center mt-10";
+    "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-10 py-3 bg-flamingo-100 rounded-full border-b-4 border-flamingo-200 transition duration-300 hover:bg-flamingo-200/80 hover:border-flamingo-300/80 hover:shadow text-center mt-10";
   const disabledButtonStyle =
-    "block grow whitespace-nowrap self-center text-xl text-white/50 font-roboto font-medium select-none px-10 py-3 bg-blue-500/50 rounded-full border-b-4 border-blue-800/50 transition duration-300 text-center mt-10";
+    "block grow whitespace-nowrap self-center text-xl text-white/50 font-roboto font-medium select-none px-10 py-3 bg-flamingo-100/50 rounded-full border-b-4 border-flamingo-300/30 transition duration-300 text-center mt-10";
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-center">
@@ -32,7 +32,7 @@ const Play = () => {
           <div className="flex flex-col">
             <div className="flex justify-center">
               <Helmet>
-                <style>{"body {background-color: #121B1E; overflow-x: hidden}"}</style>
+                <style>{"body {background-color: #1C2021; overflow-x: hidden}"}</style>
               </Helmet>
               <Header />
             </div>
