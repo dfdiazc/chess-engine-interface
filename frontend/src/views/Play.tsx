@@ -32,7 +32,7 @@ const Play = () => {
           <div className="flex flex-col">
             <div className="flex justify-center">
               <Helmet>
-                <style>{"body {background-color: #121B1E}"}</style>
+                <style>{"body {background-color: #121B1E; overflow: hidden}"}</style>
               </Helmet>
               <Header />
             </div>
