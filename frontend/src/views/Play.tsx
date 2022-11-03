@@ -43,6 +43,7 @@ const Play = () => {
                 boardWidth={boardWidth}
                 elo={elo}
                 startGame={startGame}
+                setStartGame={setStartGame}
                 playerColor={playerColor}
               />
             </div>

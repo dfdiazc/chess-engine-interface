@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Chessboard, Pieces } from "react-chessboard";
 import { Chess, Square } from "chess.js";
 import { IconContext } from "react-icons";
@@ -20,10 +20,11 @@ interface CustomChessBoardProps {
   elo: string;
   startGame: boolean;
   playerColor: string;
+  setStartGame: Dispatch<SetStateAction<boolean>>;
 }
 
 const CustomChessBoard = (props: CustomChessBoardProps) => {
-  const [game] = useState(new Chess());
+  const [game, setGame] = useState(new Chess());
   const [fen, setFen] = useState(game.fen());
   const [turn, setTurn] = useState(game.turn());
   const [gameState, setGameState] = useState<string>();
@@ -48,7 +49,13 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     }
     return "black";
   });
-
+  function resetGame(){
+    game.load("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    setFen(game.fen());
+    setTurn(game.turn());
+    showLostPieces();
+    props.setStartGame(false);
+  }
   useEffect(() => {
     if (props.playerColor === "w") {
       setBoardOrientation("white");
@@ -66,8 +73,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setArePiecesDragable(false);
         computerMove();
       }
-    }
-    else if (game.isGameOver()) {
+    } else if (game.isGameOver()) {
       gameOverState();
     }
   }, [turn, props.startGame]);
@@ -231,10 +237,25 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           animationDuration={350}
         />
         {game.isGameOver() && (
-          <div className="flex p-10 z-10 absolute top-24 left-1/2 bg-white/10 rounded">
-            <span className="font-roboto font-normal text-white">
+          <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#357c93]/90 rounded-xl justify-center">
+            <span className="font-roboto font-normal text-white text-xl self-center text-center">
               {gameState}
             </span>
+            {game.isCheckmate() && (
+              <span className="font-roboto font-normal text-white text-lg self-center text-center">
+                You {turn === props.playerColor ? "Lost" : "Won"}!
+              </span>
+            )}
+            <button
+              onClick={() => {
+                resetGame();
+              }}
+              className={
+                "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-10 py-3 bg-blue-500 rounded-full border-b-4 border-blue-600 transition duration-300 hover:bg-blue-500/80 hover:border-blue-600/80 hover:shadow text-center mt-10"
+              }
+            >
+              Play Again!
+            </button>
           </div>
         )}
         <div className="flex justify-center w-5 relative">

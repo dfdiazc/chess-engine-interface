@@ -63,7 +63,7 @@ const Header = () => {
                 </div>
             </button>
               <div
-                className="flex flex-col gap-3 justify-center bg-[#164150] px-5 h-full w-full fixed top-0 right-0 transition-all duration-100 z-10 justify-center"
+                className="flex flex-col gap-3 justify-center bg-[#164150] px-5 h-full w-full fixed top-0 right-0 transition-all duration-300 z-10"
                 style={
                   sidebarOpen
                     ? { transform: "translateX(0%)" }
