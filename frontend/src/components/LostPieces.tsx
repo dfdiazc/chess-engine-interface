@@ -26,7 +26,7 @@ interface LostPiecesProps {
 const LostPieces = (props: LostPiecesProps) => {
   if (props.color === "w") {
     return (
-      <div className="flex">
+      <div className="flex h-6">
         <IconContext.Provider
           value={{ className: "h-5 w-5 text-black stroke-[10] stroke-white" }}
         >
@@ -77,7 +77,7 @@ const LostPieces = (props: LostPiecesProps) => {
     );
   } else {
     return (
-      <div className="flex">
+      <div className="flex h-6">
         <IconContext.Provider value={{ className: "h-5 w-5 text-white" }}>
           <div className="flex gap-2">
             {props.P > 0 && (
