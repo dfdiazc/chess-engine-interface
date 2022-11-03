@@ -132,7 +132,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       } else if (draw) {
         setGameState("Draw");
       }
-      console.log("Game Over");
       setArePiecesDragable(false);
     }
   }
