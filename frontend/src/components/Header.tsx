@@ -44,13 +44,13 @@ const Header = () => {
             <div className="hidden md:flex gap-3">
               <Link
                 to="/register"
-                className="px-8 py-2 bg-blue-500 rounded-full text-roboto text-md text-white"
+                className="px-8 py-2 bg-flamingo-100 rounded-full text-roboto text-md text-white"
               >
                 Sign Up
               </Link>
               <Link
                 to="/login"
-                className="px-8 py-2 bg-transparent rounded-full border-2 border-blue-500 text-roboto text-md text-white"
+                className="px-8 py-2 bg-transparent rounded-full border-2 border-flamingo-100 text-roboto text-md text-white"
               >
                 Log In
               </Link>
@@ -72,13 +72,13 @@ const Header = () => {
               >
                 <Link
                   to="/register"
-                  className="px-8 py-2 bg-blue-500 rounded-full text-roboto text-md text-white"
+                  className="px-8 py-2 bg-flamingo-100 rounded-full text-roboto text-md text-white"
                 >
                   Sign Up
                 </Link>
                 <Link
                   to="/login"
-                  className="px-8 py-2 bg-transparent rounded-full border-2 border-blue-500 text-roboto text-md text-white"
+                  className="px-8 py-2 bg-transparent rounded-full border-2 border-flamingo-100 text-roboto text-md text-white"
                 >
                   Log In
                 </Link>

@@ -55,8 +55,8 @@ const Landing = () => {
                       <Link
                         to="/play"
                         className="grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium 
-                        select-none p-3 bg-[#DC5A41] rounded-full border-b-4 border-[#8F3C2B] transition duration-300 
-                        hover:bg-[#DC5A41]/80 hover:[#8F3C2B]/80 hover:shadow text-center"
+                        select-none p-3 bg-flamingo-100 rounded-full border-b-4 border-flamingo-200 transition duration-300 
+                        hover:bg-flamingo-200/80 hover:border-flamingo-300 hover:shadow text-center"
                       >
                         Play now!
                       </Link>
