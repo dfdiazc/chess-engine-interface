@@ -26,7 +26,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [game] = useState(new Chess());
   const [fen, setFen] = useState(game.fen());
   const [turn, setTurn] = useState(game.turn());
-  const [gameOver, setGameOver] = useState(false);
   const [gameState, setGameState] = useState<string>();
   const [computerColor, setComputerColor] = useState<string>(() => {
     if (props.playerColor === "w") {
@@ -60,12 +59,16 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     }
   }, [props.playerColor]);
   useEffect(() => {
-    if (props.startGame) {
+    if (props.startGame && !game.isGameOver()) {
       if (turn === props.playerColor) {
         setArePiecesDragable(true);
       } else if (turn === computerColor) {
+        setArePiecesDragable(false);
         computerMove();
       }
+    }
+    else if (game.isGameOver()) {
+      gameOverState();
     }
   }, [turn, props.startGame]);
   interface pieces {
@@ -120,13 +123,16 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       });
   }
   function gameOverState() {
-    const checkmate = game.isCheckmate();
-    const draw = game.isDraw();
+    if (game.isGameOver()) {
+      const checkmate = game.isCheckmate();
+      const draw = game.isDraw();
 
-    if (checkmate) {
-      setGameState("Checkmate");
-    } else if (draw) {
-      setGameState("Draw");
+      if (checkmate) {
+        setGameState("Checkmate");
+      } else if (draw) {
+        setGameState("Draw");
+      }
+      setArePiecesDragable(false);
     }
   }
   async function computerMove() {
@@ -150,9 +156,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     setFen(game.fen());
     setTurn(game.turn());
     moveSound.play();
-    setArePiecesDragable(true);
-    setGameOver(game.isGameOver());
-    gameOverState();
   }
   function onDrop(source: Square, target: Square, piece: Pieces) {
     let result = null;
@@ -167,8 +170,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       setFen(game.fen());
       setTurn(game.turn());
       moveSound.play();
-      setArePiecesDragable(false);
-      setGameOver(game.isGameOver());
       return true;
     }
     return false;
@@ -227,9 +228,10 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           boardWidth={props.boardWidth}
           arePiecesDraggable={arePiecesDragable}
           boardOrientation={boardOrientation}
+          animationDuration={350}
         />
-        {gameOver && (
-          <div className="flex h-10 p-10 z-10 absolute top-24 left-1/2 bg-white/10 rounded">
+        {game.isGameOver() && (
+          <div className="flex p-10 z-10 absolute top-24 left-1/2 bg-white/10 rounded">
             <span className="font-roboto font-normal text-white">
               {gameState}
             </span>

@@ -37,7 +37,7 @@ const Play = () => {
               <Header />
             </div>
           </div>
-          <div className="flex flex-col gap-5 lg:flex-row justify-center items-center h-full shrink-0 relative">
+          <div className="flex flex-col gap-5 lg:flex-row justify-center items-center h-full shrink-0 relative ">
             <div className="pl-10 pr-3 py-10">
               <CustomChessBoard
                 boardWidth={boardWidth}
@@ -46,7 +46,7 @@ const Play = () => {
                 playerColor={playerColor}
               />
             </div>
-            <div className="px-5 py-3 w-full gap-5">
+            <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
               <div className="px-5 py-3 bg-[#102B34] flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
                 <div className="flex flex-col self-center w-full">
                   <span className="font-roboto font-medium text-lg text-white text-center">
