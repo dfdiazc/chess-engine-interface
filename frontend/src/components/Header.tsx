@@ -24,9 +24,9 @@ const Header = () => {
         {token ? (
           <Link
             to="/profile"
-            className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-gray-600 hover:bg-gray-500"
+            className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-flamingo-100 hover:bg-flamingo-200"
           >
-            <div className="bg-white rounded-full">
+            <div className="bg-gray-200 rounded-full">
               <IconContext.Provider
                 value={{ className: "h-5 w-5 text-gray-500 m-1" }}
               >
@@ -34,7 +34,7 @@ const Header = () => {
               </IconContext.Provider>
             </div>
             <IconContext.Provider
-              value={{ className: "h-5 w-5 text-white m-1" }}
+              value={{ className: "h-5 w-5 text-gray-300 m-1" }}
             >
               <FiChevronDown />
             </IconContext.Provider>

@@ -7,13 +7,15 @@ const Play = () => {
   const [boardWidth, setBoardWidth] = useState(initialBoardSize);
   function initialBoardSize() {
     let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
     if (windowWidth < 768) return windowWidth * 0.8;
-    else return 600;
+    else return windowHeight*0.75;
   }
   const handleResize = () => {
     let windowWidth = window.innerWidth;
+    let windowHeight = window.innerHeight;
     if (windowWidth < 768) setBoardWidth(windowWidth * 0.8);
-    else setBoardWidth(600);
+    else setBoardWidth(windowHeight*0.75);
   };
   const [elo, setElo] = useState<string>("1350");
   const [startGame, setStartGame] = useState(false);
@@ -38,7 +40,7 @@ const Play = () => {
             </div>
           </div>
           <div className="flex flex-col gap-5 lg:flex-row justify-center items-center h-full shrink-0 relative ">
-            <div className="pl-10 pr-3 py-10">
+            <div className="pl-10 pr-3 py-5">
               <CustomChessBoard
                 boardWidth={boardWidth}
                 elo={elo}
@@ -48,9 +50,9 @@ const Play = () => {
               />
             </div>
             <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
-              <div className="px-5 py-3 bg-[#102B34] flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
+              <div className="px-5 py-3 bg-[#2B3133] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
                 <div className="flex flex-col self-center w-full">
-                  <span className="font-roboto font-medium text-lg text-white text-center">
+                  <span className="font-roboto font-medium text-lg text-white text-center select-none">
                     Difficulty
                   </span>
                   <span className="w-full mr-3 mt-3 h-px bg-white"></span>
@@ -65,7 +67,7 @@ const Play = () => {
                       setElo((event.target as HTMLInputElement).value);
                     }}
                   />
-                  <span className="font-roboto font-normal text-white text-center mt-2">
+                  <span className="font-roboto font-normal text-white text-center mt-2 select-none">
                     {elo} Elo
                   </span>
                 </div>
@@ -77,12 +79,12 @@ const Play = () => {
                       : { pointerEvents: "all" }
                   }
                 >
-                  <span className="font-roboto font-medium text-lg text-white text-center mt-10">
+                  <span className="font-roboto font-medium text-lg text-white text-center mt-10 select-none">
                     Piece Color
                   </span>
                   <span className="w-full mr-3 mt-3 h-px bg-white"></span>
                   <div className="flex flex-row gap-5 self-center mt-2">
-                    <span className="font-roboto font-normal text-md text-white">
+                    <span className="font-roboto font-normal text-md text-white select-none">
                       White
                     </span>
                     <input
@@ -93,7 +95,7 @@ const Play = () => {
                         setPlayerColor("w");
                       }}
                     />
-                    <span className="font-roboto font-normal text-md text-white">
+                    <span className="font-roboto font-normal text-md text-white select-none">
                       Black
                     </span>
                     <input

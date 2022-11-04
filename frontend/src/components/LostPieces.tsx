@@ -28,7 +28,7 @@ const LostPieces = (props: LostPiecesProps) => {
     return (
       <div className="flex h-6">
         <IconContext.Provider
-          value={{ className: "h-5 w-5 text-black stroke-[10] stroke-white" }}
+          value={{ className: "h-5 w-5 text-black stroke-[15] stroke-white" }}
         >
           <div className="flex gap-2">
             {props.p > 0 && (
