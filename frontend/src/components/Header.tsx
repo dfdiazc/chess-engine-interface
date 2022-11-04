@@ -4,11 +4,29 @@ import { AiOutlineUser } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { selectCurrentAccessToken } from "features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "app/store";
+import { useLogoutMutation } from "features/auth/authApiSlice";
+import { logOut } from "features/auth/authSlice";
+import { useSelector } from "react-redux";
+import { selectCurrentRefreshToken } from "features/auth/authSlice";
 
 const Header = () => {
-  const token = useSelector(selectCurrentAccessToken);
+  const [logout, { isLoading }] = useLogoutMutation();
+  const dispatch = useDispatch<AppDispatch>();
+  const token = useSelector(selectCurrentRefreshToken);
+  const navigate = useNavigate();
+  function handleLogOut() {
+    try {
+      logout({ refresh: token });
+      dispatch(logOut());
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  }
   const [sidebarOpen, setSideBarOpen] = useState<boolean>(false);
   return (
     <header className="flex items-center justify-between h-16 pl-6 pr-5 sm:pl-10 w-full bg-transparent shadow max-w-[1920px]">
@@ -26,14 +44,14 @@ const Header = () => {
             to="/profile"
             className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-flamingo-100 hover:bg-flamingo-200"
           >
-            <div className="bg-gray-200 rounded-full">
+            <button className="bg-gray-200 rounded-full" onClick={handleLogOut}>
               <IconContext.Provider
                 value={{ className: "h-5 w-5 text-gray-500 m-1" }}
               >
                 <AiOutlineUser />
               </IconContext.Provider>
-            </div>
-            <span className="font-roboto font-normal text-gray-100 text-md ml-3 mr-1 text-center self-center">My Profile</span>
+            </button>
+            <span className="font-roboto font-normal text-gray-100 text-md ml-3 mr-1 text-center self-center">Sign Out</span>
             {/*<IconContext.Provider
               value={{ className: "h-5 w-5 text-gray-300 m-1" }}
             >

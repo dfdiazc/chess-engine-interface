@@ -27,7 +27,7 @@ const ProfileSidebar = () => {
     }
   }
   return (
-    <div className="flex flex-col w-64 pb-5 h-screen bg-[#2B3133] drop-shadow-lg">
+    <div className="flex flex-col w-fit pr-5 pb-5 h-full bg-[#2B3133] drop-shadow-lg">
       <div className="flex h-16">
         <Link to="/" className="flex gap-5 ml-10 w-fit h-fit self-center">
           <IconContext.Provider
@@ -35,7 +35,7 @@ const ProfileSidebar = () => {
           >
             <FaChess />
           </IconContext.Provider>
-          <span className="text-roboto font-medium text-xl text-white text-center select-none self-center">
+          <span className="text-roboto font-medium text-xl text-white text-center select-none self-center whitespace-nowrap">
             Un-Real Chess
           </span>
         </Link>
@@ -52,7 +52,7 @@ const ProfileSidebar = () => {
           >
             <AiOutlineUser />
           </IconContext.Provider>
-          <span className="font-roboto font-normal text-md hover:underline self-center ml-3">
+          <span className="font-roboto font-normal text-md hover:underline self-center ml-3 whitespace-nowrap">
             My Account
           </span>
         </NavLink>
@@ -67,7 +67,7 @@ const ProfileSidebar = () => {
         >
           <BiLogOut />
         </IconContext.Provider>
-        <span className="font-roboto font-normal text-md text-red-500 text-center self-center ml-3 px-3 py-1">
+        <span className="font-roboto font-normal text-md text-red-500 text-center self-center ml-3 px-3 py-1 whitespace-nowrap">
           Sign Out
         </span>
       </button>
