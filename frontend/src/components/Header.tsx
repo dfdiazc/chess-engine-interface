@@ -41,7 +41,7 @@ const Header = () => {
       <div className="flex items-center text-center self-center">
         {token ? (
           <Link
-            to="/profile"
+            to="/login"
             className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-flamingo-100 hover:bg-flamingo-200"
           >
             <button className="bg-gray-200 rounded-full" onClick={handleLogOut}>
