@@ -1,34 +1,28 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "app/store";
-import { useLogoutMutation } from "features/auth/authApiSlice";
-import { logOut } from "features/auth/authSlice";
-import { useSelector } from "react-redux";
-import { selectCurrentRefreshToken } from "features/auth/authSlice";
+import { Helmet } from "react-helmet";
+import { ProfileSidebar } from "components";
 
 const Profile = () => {
-  const [logout, { isLoading }] = useLogoutMutation();
-  const dispatch = useDispatch<AppDispatch>();
-  const token = useSelector(selectCurrentRefreshToken);
-  const navigate = useNavigate();
-  function handleLogOut() {
-    try {
-      logout({ refresh: token });
-      dispatch(logOut());
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  }
   return (
-    <div>
-      <button
-        className="px-10 py-5 bg-blue-200 rounded-full"
-        onClick={handleLogOut}
-      >
-        Logout
-      </button>
+    <div className="flex">
+      <Helmet>
+        <style>{"body {background-color: #1C2021; overflow-x: hidden}"}</style>
+      </Helmet>
+      <ProfileSidebar />
+      <div className="flex flex-col px-52 py-32">
+        <span className="font-roboto font-medium text-3xl text-white">
+          My Data
+        </span>
+        <span className="my-5 w-56 h-px bg-white"></span>
+        <div className="flex">
+        <span className="font-roboto font-normal text-lg text-white text-center self-center">
+          My email: 
+        </span>
+        <span className="font-roboto font-light text-md text-white text-center self-center ml-3">
+          {localStorage.getItem("username")}
+        </span>
+        </div>
+      </div>
     </div>
   );
 };

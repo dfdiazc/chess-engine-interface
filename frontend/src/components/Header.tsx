@@ -33,11 +33,12 @@ const Header = () => {
                 <AiOutlineUser />
               </IconContext.Provider>
             </div>
-            <IconContext.Provider
+            <span className="font-roboto font-normal text-gray-100 text-md ml-3 mr-1 text-center self-center">My Profile</span>
+            {/*<IconContext.Provider
               value={{ className: "h-5 w-5 text-gray-300 m-1" }}
             >
               <FiChevronDown />
-            </IconContext.Provider>
+        </IconContext.Provider>*/}
           </Link>
         ) : (
           <>
