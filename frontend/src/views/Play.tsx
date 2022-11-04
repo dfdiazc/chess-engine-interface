@@ -120,13 +120,13 @@ const Play = () => {
                 </div>
               </div>
             </div>
-            <div className="hidden lg:flex w-[200px] h-[600px]">
+            {/*<div className="hidden lg:flex w-[200px] h-[600px]">
               <Adsense
                 client="ca-pub-7640562161899788"
                 slot="7259870550"
                 format=""
               />
-            </div>
+                  </div>*/}
           </div>
         </div>
       </div>

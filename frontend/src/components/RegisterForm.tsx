@@ -48,10 +48,11 @@ const RegisterForm = () => {
   });
   const onSubmit = handleSubmit(async (data: RegisterFormData) => {
     try {
-      await registerUser({
+      const response = await registerUser({
         username: data.username,
         password: data.password,
       }).unwrap();
+      localStorage.setItem("username", response.username)
       navigate("/login");
       } catch (error: any) {
       const errors = error.data;

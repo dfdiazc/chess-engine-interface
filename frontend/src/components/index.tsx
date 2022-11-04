@@ -5,3 +5,4 @@ export { default as Header } from './Header';
 export { default as CustomChessBoard } from './CustomChessBoard';
 export { default as LandingFooter } from './LandingFooter';
 export { default as LostPieces } from './LostPieces';
+export { default as ProfileSidebar } from './ProfileSidebar';
