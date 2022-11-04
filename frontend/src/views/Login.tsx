@@ -34,7 +34,7 @@ const Login = () => {
             <span className="font-roboto font-normal text-gray-800">or</span>
             <span className="grow ml-3 h-px bg-black/20"></span>
           </div>
-          <div className="flex flex-col pb-10 gap-2">
+          {/*<div className="flex flex-col pb-10 gap-2">
             <Link
               to="#"
               className="flex items-center justify-center gap-5 select-none grow whitespace-nowrap text-md text-gray-800 font-roboto font-medium p-3 bg-white border rounded-lg transition duration-300"
@@ -90,7 +90,7 @@ const Login = () => {
               </IconContext.Provider>
               <span className="">Log In with GitHub</span>
             </Link>
-          </div>
+  </div>*/}
           <div className="font-roboto fonto-normal text-gray-800 text-sm">
             New here?&nbsp;
             <Link

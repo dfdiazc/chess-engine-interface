@@ -229,20 +229,21 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           position={fen}
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
-          customBoardStyle={{ userSelect: "none" }}
+          customBoardStyle={{ userSelect: "none", borderRadius: "5px" }}
           customDarkSquareStyle={{ backgroundColor: "#517879" }}
           customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
           arePiecesDraggable={arePiecesDragable}
           boardOrientation={boardOrientation}
           animationDuration={350}
+          customDropSquareStyle={{ boxShadow: "0px 0px 0px 5px #F5FAF8 inset" }}
         />
         {game.isGameOver() && (
-          <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#357c93]/90 rounded-xl justify-center">
-            <span className="font-roboto font-normal text-white text-xl self-center text-center">
+          <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
+            <span className="font-roboto font-medium text-white text-3xl self-center text-center select-none">
               {gameState}
             </span>
             {game.isCheckmate() && (
-              <span className="font-roboto font-normal text-white text-lg self-center text-center">
+              <span className="font-roboto font-normal text-white text-xl self-center text-center select-none">
                 You {turn === props.playerColor ? "Lost" : "Won"}!
               </span>
             )}
@@ -251,7 +252,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
                 resetGame();
               }}
               className={
-                "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-10 py-3 bg-blue-500 rounded-full border-b-4 border-blue-600 transition duration-300 hover:bg-blue-500/80 hover:border-blue-600/80 hover:shadow text-center mt-10"
+                "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-10 py-3 bg-flamingo-100 rounded-full border-b-4 border-flamingo-200 transition duration-300 hover:bg-flamingo-200/80 hover:border-flamingo-300 hover:shadow text-center mt-10"
               }
             >
               Play Again!

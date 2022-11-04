@@ -31,6 +31,7 @@ const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: yupResolver(validationSchema),
@@ -40,9 +41,16 @@ const LoginForm = () => {
       const response = await login(data).unwrap();
       dispatch(setCredentials(response));
       navigate("/play");
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error: any) {
+        const errors = error.data;
+        if (errors.detail) {
+          setError("password", {
+            type: "server",
+            message: errors.detail + ".",
+            
+          })
+        }
+      }
   });
 
   return (
@@ -75,7 +83,7 @@ const LoginForm = () => {
           </p>
         )}
       </div>
-      <div className="flex justify-between items-center mt-3">
+      {/*<div className="flex justify-between items-center mt-3">
         <div className="form-group form-check">
           <input
             type="checkbox"
@@ -95,11 +103,11 @@ const LoginForm = () => {
         >
           Forgot password?
         </Link>
-      </div>
+        </div>*/}
       <div className="flex mt-10">
         <button
           type="submit"
-          className="select-none grow whitespace-nowrap text-xl text-white font-roboto font-medium p-3 bg-blue-400 rounded-lg border-b-4 border-blue-500 transition duration-300 hover:bg-blue-400/80 hover:border-blue-500/80 hover:shadow text-center"
+          className="select-none grow whitespace-nowrap text-xl text-white font-roboto font-medium p-3 bg-flamingo-100 rounded-lg border-b-4 border-flamingo-200 transition duration-300 hover:bg-flamingo-200 hover:border-flamingo-300 hover:shadow text-center"
         >
           Log In
         </button>
