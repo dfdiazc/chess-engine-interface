@@ -76,10 +76,10 @@ class PromotionView(generics.GenericAPIView):
 
 class GetKomodoMove(generics.GenericAPIView):
 
-    def get(self, request, FEN):
+    def get(self, request, skill, FEN):
 
         new_FEN = fix_fen(FEN)
 
-        best_move = mods.get_komodo_move(new_FEN)
+        best_move = mods.get_komodo_move(skill, new_FEN)
 
         return Response({"best_move": best_move})

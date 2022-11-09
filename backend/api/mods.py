@@ -140,10 +140,11 @@ def will_promote(move:str, FEN:str)->bool:
 
     return player, promotion_intended
 
-def get_komodo_move(FEN:str)->str:
+def get_komodo_move(skill:int, FEN:str)->str:
 
     komodo = load_komodo()
     board = chess.Board(FEN)
+    komodo.configure({"Skill": skill})
     result = komodo.play(board, chess.engine.Limit(time = 0.1))
     komodo.quit()
 

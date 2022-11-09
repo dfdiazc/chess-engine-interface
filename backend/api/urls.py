@@ -10,5 +10,5 @@ urlpatterns = [
     path("move/create", views.CreateMoveView.as_view()),
     path("play/stockfish/suggest/<str:FEN>", views.GetStockfishBestMoves.as_view()),
     path("play/stockfish/<int:ELO>/<str:FEN>", views.GetStockfishMoveELO.as_view()),
-    path("play/komodo/<str:FEN>", views.GetKomodoMove.as_view()),
+    path("play/komodo/<int:skill>/<str:FEN>", views.GetKomodoMove.as_view()),
 ]
