@@ -36,16 +36,6 @@ class CreateMoveView(generics.CreateAPIView):
     queryset = Moves.objects.all()
     serializer_class = MoveSerializer
 
-class GetStockfishMove(generics.GenericAPIView):
-
-    def get(self, request, FEN):
-
-        new_FEN = fix_fen(FEN)
-
-        best_move = mods.get_stockfish_move(new_FEN)
-
-        return Response({"best_move": best_move})
-
 class GetStockfishBestMoves(generics.GenericAPIView):
 
     def get(self, request, FEN):
@@ -83,3 +73,13 @@ class PromotionView(generics.GenericAPIView):
             "promotion": promotion_intended,
             "player": player
         })
+
+class GetKomodoMove(generics.GenericAPIView):
+
+    def get(self, request, FEN):
+
+        new_FEN = fix_fen(FEN)
+
+        best_move = mods.get_komodo_move(new_FEN)
+
+        return Response({"best_move": best_move})
