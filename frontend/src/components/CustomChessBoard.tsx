@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Chessboard, Pieces } from "react-chessboard";
 import { Chess, Square } from "chess.js";
 import { Howl } from "howler";
@@ -43,6 +49,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [moveSquares, setMoveSquares] = useState<any>({});
   const [optionSquares, setOptionSquares] = useState<any>({});
   const [checkSquares, setCheckSquares] = useState<any>({});
+  const [moveFrom, setMoveFrom] = useState("");
   function resetGame() {
     game.reset();
     (chessboardRef.current as any).clearPremoves();
@@ -69,6 +76,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       if (turn === props.playerColor) {
         setArePiecesDragable(true);
       } else if (turn === computerColor) {
+        setArePiecesDragable(false);
         computerMove();
       }
     } else if (game.isGameOver()) {
@@ -155,7 +163,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         background:
           game.get(move.to) &&
           game.get(move.to).color !== game.get(square).color
-            ? "radial-gradient(circle, rgba(0,0,0,.1) 85%, transparent 85%)"
+            ? "radial-gradient(circle, rgba(0,0,0,0.1) 85%, transparent 85%)"
             : "radial-gradient(circle, rgba(0,0,0,.1) 25%, transparent 25%)",
         borderRadius: "50%",
       };
@@ -166,13 +174,10 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     };
     setOptionSquares(newSquares);
   }
-  function onSquareClick() {
-    setRightClickedSquares([]);
-  }
 
   function onSquareRightClick(square: any) {
     const colour = "rgba(0, 0, 255, 0.4)";
-    setRightClickedSquares({  
+    setRightClickedSquares({
       ...rightClickedSquares,
       [square]:
         rightClickedSquares[square as keyof typeof rightClickedSquares] &&
@@ -182,15 +187,64 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           : { backgroundColor: colour },
     });
   }
-  function onPieceDragBegin(square: Square) {
-    if (props.startGame){
+  function onMouseOverSquare(square: Square) {
+    if (props.startGame && !moveFrom && turn === props.playerColor) {
       getMoveOptions(square);
     }
   }
   function onMouseOutSquare() {
-    if (Object.keys(optionSquares).length !== 0) setOptionSquares([]);
+    if (
+      Object.keys(optionSquares).length !== 0 &&
+      !moveFrom &&
+      turn === props.playerColor
+    )
+      setOptionSquares([]);
+  }
+  function onSquareClick(square: Square) {
+    function resetFirstMove(square: Square) {
+      setMoveFrom(square);
+      getMoveOptions(square);
+    }
+
+    if (turn === props.playerColor) {
+      setRightClickedSquares({});
+
+      if (!moveFrom) {
+        resetFirstMove(square);
+        return;
+      }
+
+      const piece = game.get(square);
+
+      let result = null;
+      if (piece.type === "p") {
+        result = game.move({ from: moveFrom, to: square, promotion: "q" });
+        if (result === null) result = game.move({ from: moveFrom, to: square });
+      } else {
+        result = game.move({ from: moveFrom, to: square });
+      }
+      if (result != null) {
+        setMoveSquares({
+          [moveFrom]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+          [square]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+        });
+        setOptionSquares({});
+        showLostPieces();
+        setFen(game.fen());
+        setTurn(game.turn());
+        setMoveFrom("");
+        moveSound.play();
+      } else {
+        resetFirstMove(square);
+        return;
+      }
+    }
+  }
+  function timeout(delay: number) {
+    return new Promise((res) => setTimeout(res, delay));
   }
   async function computerMove() {
+    await timeout(1000);
     await axios
       .get<BestMove>(
         `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
@@ -206,6 +260,10 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         } else {
           game.move({ from: source, to: target });
         }
+        setMoveSquares({
+          [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+          [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+        });
       });
     showLostPieces();
     setFen(game.fen());
@@ -225,6 +283,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
         [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
       });
+      setOptionSquares({});
       showLostPieces();
       setFen(game.fen());
       setTurn(game.turn());
@@ -293,10 +352,10 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           boardOrientation={boardOrientation}
           animationDuration={350}
           customDropSquareStyle={{ boxShadow: "0px 0px 0px 5px #F5FAF8 inset" }}
-          onMouseOverSquare={onPieceDragBegin}
+          onMouseOverSquare={onMouseOverSquare}
           onMouseOutSquare={onMouseOutSquare}
-          onSquareClick={onSquareClick}
           onSquareRightClick={onSquareRightClick}
+          onSquareClick={onSquareClick}
           customSquareStyles={{
             ...moveSquares,
             ...optionSquares,

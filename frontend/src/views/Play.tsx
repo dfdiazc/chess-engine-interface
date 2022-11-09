@@ -40,7 +40,7 @@ const Play = () => {
             </div>
           </div>
           <div className="flex flex-col gap-5 lg:flex-row justify-center items-center h-full shrink-0 relative ">
-            <div className="pl-10 pr-3 py-5">
+            <div className="pl-10 pr-3">
               <CustomChessBoard
                 boardWidth={boardWidth}
                 elo={elo}
