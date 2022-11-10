@@ -9,14 +9,15 @@ const Play = () => {
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
     if (windowWidth < 768) return windowWidth * 0.8;
-    else return windowHeight*0.75;
+    else return windowHeight * 0.75;
   }
   const handleResize = () => {
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
     if (windowWidth < 768) setBoardWidth(windowWidth * 0.8);
-    else setBoardWidth(windowHeight*0.75);
+    else setBoardWidth(windowHeight * 0.75);
   };
+  const [engine, setEngine] = useState<string>("Stockfish");
   const [elo, setElo] = useState<string>("1350");
   const [startGame, setStartGame] = useState(false);
   const [playerColor, setPlayerColor] = useState<string>("w");
@@ -34,7 +35,9 @@ const Play = () => {
           <div className="flex flex-col">
             <div className="flex justify-center">
               <Helmet>
-                <style>{"body {background-color: #1C2021; overflow-x: hidden}"}</style>
+                <style>
+                  {"body {background-color: #1C2021; overflow-x: hidden}"}
+                </style>
               </Helmet>
               <Header />
             </div>
@@ -47,12 +50,55 @@ const Play = () => {
                 startGame={startGame}
                 setStartGame={setStartGame}
                 playerColor={playerColor}
+                engine={engine.toLowerCase()}
               />
             </div>
             <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
               <div className="px-5 py-3 bg-[#2B3133] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
                 <div className="flex flex-col self-center w-full">
                   <span className="font-roboto font-medium text-lg text-white text-center select-none">
+                    Engine: {engine}
+                  </span>
+                  <span className="w-full mr-3 mt-3 h-px bg-white"></span>
+                  <div className="flex gap-2 mt-3 self-center">
+                    <button
+                      onClick={() => {
+                        setEngine("Stockfish");
+                      }}
+                      className={
+                        engine === "Stockfish"
+                          ? "w-16 h-16 bg-[url('assets/images/stockfish.png')] bg-cover rounded-lg ring-2 ring-flamingo-100"
+                          : "w-16 h-16 bg-[url('assets/images/stockfish.png')] bg-cover rounded-lg"
+                      }
+                    />
+                    <div
+                      className={
+                        engine === "Leela"
+                          ? "flex w-16 h-16 self-center rounded-lg justify-center ring-2 ring-flamingo-100"
+                          : "flex w-16 h-16 self-center rounded-lg justify-center"
+                      }
+                    >
+                      <button
+                        onClick={() => {
+                          setEngine("Leela");
+                        }}
+                        className="flex bg-white rounded-lg w-14 h-14 self-center"
+                      >
+                        <div className="self-center bg-[url('assets/images/leela.svg')] relative -m-1.5 w-14 h-14 bg-cover" />
+                      </button>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setEngine("Komodo");
+                      }}
+                      className={
+                        engine === "Komodo"
+                          ? "w-16 h-16 bg-[url('assets/images/komodo.png')] bg-cover rounded-lg ring-2 ring-flamingo-100"
+                          : "w-16 h-16 bg-[url('assets/images/komodo.png')] bg-cover rounded-lg"
+                      }
+                    />
+                  </div>
+                  <span className="font-roboto font-medium text-lg text-white text-center select-none mt-10">
                     Difficulty
                   </span>
                   <span className="w-full mr-3 mt-3 h-px bg-white"></span>

@@ -19,6 +19,7 @@ interface CustomChessBoardProps {
   startGame: boolean;
   playerColor: string;
   setStartGame: Dispatch<SetStateAction<boolean>>;
+  engine: string;
 }
 
 const CustomChessBoard = (props: CustomChessBoardProps) => {
@@ -76,7 +77,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       if (turn === props.playerColor) {
         setArePiecesDragable(true);
       } else if (turn === computerColor) {
-        setArePiecesDragable(false);
+        setArePiecesDragable(true);
         computerMove();
       }
     } else if (game.isGameOver()) {
@@ -206,7 +207,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       getMoveOptions(square);
     }
 
-    if (turn === props.playerColor) {
+    if (props.startGame && turn === props.playerColor) {
       setRightClickedSquares({});
 
       if (!moveFrom) {
@@ -245,26 +246,34 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   }
   async function computerMove() {
     await timeout(1000);
-    await axios
-      .get<BestMove>(
-        `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
+    const url = () => {
+      if (props.engine === "stockfish") {
+        return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
           props.elo
-        }/${game.fen().replaceAll("/", "-")}`
-      )
-      .then((response) => {
-        const source = response.data.best_move.substring(0, 2);
-        const target = response.data.best_move.substring(2, 4);
-        if (response.data.best_move.length === 5) {
-          const promoPiece = response.data.best_move.substring(4);
-          game.move({ from: source, to: target, promotion: promoPiece });
-        } else {
-          game.move({ from: source, to: target });
-        }
-        setMoveSquares({
-          [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-          [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-        });
+        }/${game.fen().replaceAll("/", "-")}`;
+      } else if (props.engine === "komodo") {
+        return `https://unrealchess.pythonanywhere.com/api/play/komodo/1/${game
+          .fen()
+          .replaceAll("/", "-")}`;
+      }
+      return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
+        props.elo
+      }/${game.fen().replaceAll("/", "-")}`;
+    };
+    await axios.get<BestMove>(url()).then((response) => {
+      const source = response.data.best_move.substring(0, 2);
+      const target = response.data.best_move.substring(2, 4);
+      if (response.data.best_move.length === 5) {
+        const promoPiece = response.data.best_move.substring(4);
+        game.move({ from: source, to: target, promotion: promoPiece });
+      } else {
+        game.move({ from: source, to: target });
+      }
+      setMoveSquares({
+        [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+        [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
       });
+    });
     showLostPieces();
     setFen(game.fen());
     setTurn(game.turn());
