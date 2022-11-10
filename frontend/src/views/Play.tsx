@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ChessSettings, CustomChessBoard, Header } from "components";
+import { ChessSettings, CustomChessboard, Header, TurnIndicator } from "components";
 import { Helmet } from "react-helmet";
 import { Adsense } from "@ctrl/react-adsense";
 
@@ -35,10 +35,8 @@ const Play = () => {
             </div>
           </div>
           <div className="flex flex-col gap-5 lg:flex-row justify-center items-center h-full shrink-0 relative ">
-            <div className="pl-10 pr-3">
-              <CustomChessBoard
-                boardWidth={boardWidth}
-              />
+            <div className="flex flex-row pl-10 pr-3">
+              <CustomChessboard boardWidth={boardWidth} />
             </div>
             <ChessSettings />
             {/*<div className="hidden lg:flex w-[200px] h-[600px]">

@@ -37,7 +37,7 @@ const ChessSettings = () => {
                   : "w-16 h-16 bg-[url('assets/images/stockfish.png')] bg-cover rounded-lg"
               }
             />
-            <div
+            {/*<div
               className={
                 engine === "Leela"
                   ? "flex w-16 h-16 self-center rounded-lg justify-center ring-2 ring-flamingo-100"
@@ -52,7 +52,7 @@ const ChessSettings = () => {
               >
                 <div className="self-center bg-[url('assets/images/leela.svg')] relative -m-1.5 w-14 h-14 bg-cover" />
               </button>
-            </div>
+              </div>*/}
             <button
               onClick={() => {
                 dispatch(setEngine("Komodo"));

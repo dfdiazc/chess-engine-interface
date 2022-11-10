@@ -14,20 +14,25 @@ import {
   selectCurrentEngine,
   selectCurrentGameStart,
   setGameStart,
+  selectCurrentTurn,
+  setTurn,
+  selectCurrentFen,
+  setFen,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
+import TurnIndicator from "./TurnIndicator";
 
-interface CustomChessBoardProps {
+interface CustomChessboardProps {
   boardWidth: number;
 }
 
-const CustomChessBoard = (props: CustomChessBoardProps) => {
+const CustomChessboard = (props: CustomChessboardProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const [game] = useState(new Chess());
-  const [fen, setFen] = useState(game.fen());
-  const [turn, setTurn] = useState(game.turn());
+  const fen = useSelector(selectCurrentFen);
   const [gameState, setGameState] = useState<string>();
   const playerColor = useSelector(selectCurrentPlayerColor);
+  const turn = useSelector(selectCurrentTurn);
   const engine = useSelector(selectCurrentEngine).toLowerCase();
   const gameStart = useSelector(selectCurrentGameStart);
   const [computerColor, setComputerColor] = useState<string>(() => {
@@ -57,8 +62,8 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   function resetGame() {
     game.reset();
     (chessboardRef.current as any).clearPremoves();
-    setFen(game.fen());
-    setTurn(game.turn());
+    dispatch(setFen(game.fen()));
+    dispatch(setTurn(game.turn()));
     showLostPieces();
     setMoveSquares({});
     setCheckSquares({});
@@ -139,17 +144,21 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setLostPieces(response.data);
       });
   }
-  const getPiecePositions = (piece:Piece) => {
-    return ([] as any).concat(...game.board()).map((p:Piece, index: number) => {
-      if (p !== null && p.type === piece.type && p.color === piece.color) {
-        return index
-      }
-    }).filter(Number.isInteger).map((piece_index:number) => {
-      const row = 'abcdefgh'[piece_index % 8]
-      const column = Math.ceil((64 - piece_index) / 8)
-      return row + column
-    })
-  }
+  const getPiecePositions = (piece: Piece) => {
+    return ([] as any)
+      .concat(...game.board())
+      .map((p: Piece, index: number) => {
+        if (p !== null && p.type === piece.type && p.color === piece.color) {
+          return index;
+        }
+      })
+      .filter(Number.isInteger)
+      .map((piece_index: number) => {
+        const row = "abcdefgh"[piece_index % 8];
+        const column = Math.ceil((64 - piece_index) / 8);
+        return row + column;
+      });
+  };
   function gameOverState() {
     if (game.isGameOver()) {
       const checkmate = game.isCheckmate();
@@ -189,10 +198,10 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     };
     setOptionSquares(newSquares);
   }
-  function addCheckSquares(square: Square){
+  function addCheckSquares(square: Square) {
     checkSquares[square] = {
-      background: "rgba(222, 53, 62, 0.9)"
-    }
+      background: "rgba(222, 53, 62, 0.9)",
+    };
     setCheckSquares(checkSquares);
   }
 
@@ -226,18 +235,14 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       setMoveFrom(square);
       getMoveOptions(square);
     }
-
     if (gameStart && turn === playerColor) {
       setRightClickedSquares({});
       setOptionSquares({});
-
       if (!moveFrom) {
         resetFirstMove(square);
         return;
       }
-
       const piece = game.get(square);
-
       let result = null;
       if (piece.type === "p") {
         result = game.move({ from: moveFrom, to: square, promotion: "q" });
@@ -252,15 +257,17 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         });
         setOptionSquares({});
         showLostPieces();
-        setFen(game.fen());
-        if (game.isCheck()){
-          const computerKingSquare:Square = getPiecePositions({color: (computerColor as Color), type: "k"})[0];
+        dispatch(setFen(game.fen()));
+        if (game.isCheck()) {
+          const computerKingSquare: Square = getPiecePositions({
+            color: computerColor as Color,
+            type: "k",
+          })[0];
           addCheckSquares(computerKingSquare);
-        }
-        else {
+        } else {
           setCheckSquares({});
         }
-        setTurn(game.turn());
+        dispatch(setTurn(game.turn()));
         setMoveFrom("");
         moveSound.play();
       } else {
@@ -303,15 +310,17 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       });
     });
     showLostPieces();
-    setFen(game.fen());
-    if (game.isCheck()){
-      const playerKingSquare:Square = getPiecePositions({color: (playerColor as Color), type: "k"})[0];
+    dispatch(setFen(game.fen()));
+    if (game.isCheck()) {
+      const playerKingSquare: Square = getPiecePositions({
+        color: playerColor as Color,
+        type: "k",
+      })[0];
       addCheckSquares(playerKingSquare);
-    }
-    else {
+    } else {
       setCheckSquares({});
     }
-    setTurn(game.turn());
+    dispatch(setTurn(game.turn()));
     moveSound.play();
   }
   function onDrop(source: Square, target: Square, piece: Pieces) {
@@ -329,49 +338,21 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       });
       setOptionSquares({});
       showLostPieces();
-      setFen(game.fen());
-      if (game.isCheck()){
-        const computerKingSquare:Square = getPiecePositions({color: (computerColor as Color), type: "k"})[0];
+      dispatch(setFen(game.fen()));
+      if (game.isCheck()) {
+        const computerKingSquare: Square = getPiecePositions({
+          color: computerColor as Color,
+          type: "k",
+        })[0];
         addCheckSquares(computerKingSquare);
-      }
-      else {
+      } else {
         setCheckSquares({});
       }
-      setTurn(game.turn());
+      dispatch(setTurn(game.turn()));
       moveSound.play();
       return true;
     }
     return false;
-  }
-  let styleTop = {
-    transform: `translateY(-${props.boardWidth - 16}px)`,
-    borderWidth: "1px",
-  };
-  let styleBottom = {
-    transform: "translateY(0%)",
-    borderWidth: "1px",
-  };
-  function classTop() {
-    let className =
-      "w-3 h-3 rounded-full absolute transition-all duration-300 bottom-0";
-
-    if (playerColor === "w") {
-      className += " bg-black";
-    } else {
-      className += " bg-white";
-    }
-    return className;
-  }
-  function classBottom() {
-    let className =
-      "w-3 h-3 rounded-full absolute transition-all duration-300 bottom-0";
-
-    if (playerColor === "w") {
-      className += " bg-white";
-    } else {
-      className += " bg-black";
-    }
-    return className;
   }
   return (
     <div className="flex flex-col gap-2">
@@ -415,6 +396,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
           }}
           ref={chessboardRef}
         />
+        <TurnIndicator boardWidth={props.boardWidth} />
         {game.isGameOver() && (
           <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
             <span className="font-roboto font-medium text-white text-3xl self-center text-center select-none">
@@ -437,12 +419,6 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
             </button>
           </div>
         )}
-        <div className="flex justify-center w-5 relative">
-          <div
-            className={turn === playerColor ? classBottom() : classTop()}
-            style={turn === playerColor ? styleBottom : styleTop}
-          ></div>
-        </div>
       </div>
       <LostPieces
         r={lostPieces.r}
@@ -463,4 +439,4 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   );
 };
 
-export default CustomChessBoard;
+export default CustomChessboard;
