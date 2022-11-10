@@ -209,6 +209,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
 
     if (props.startGame && turn === props.playerColor) {
       setRightClickedSquares({});
+      setOptionSquares({});
 
       if (!moveFrom) {
         resetFirstMove(square);
