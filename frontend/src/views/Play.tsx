@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CustomChessBoard, Header } from "components";
+import { ChessSettings, CustomChessBoard, Header } from "components";
 import { Helmet } from "react-helmet";
 import { Adsense } from "@ctrl/react-adsense";
 
@@ -17,17 +17,9 @@ const Play = () => {
     if (windowWidth < 768) setBoardWidth(windowWidth * 0.8);
     else setBoardWidth(windowHeight * 0.75);
   };
-  const [engine, setEngine] = useState<string>("Stockfish");
-  const [elo, setElo] = useState<string>("1350");
-  const [startGame, setStartGame] = useState(false);
-  const [playerColor, setPlayerColor] = useState<string>("w");
   useEffect(() => {
     window.addEventListener("resize", handleResize);
   });
-  const activeButtonStyle =
-    "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-10 py-3 bg-flamingo-100 rounded-full border-b-4 border-flamingo-200 transition duration-300 hover:bg-flamingo-200/80 hover:border-flamingo-300/80 hover:shadow text-center mt-10";
-  const disabledButtonStyle =
-    "block grow whitespace-nowrap self-center text-xl text-white/50 font-roboto font-medium select-none px-10 py-3 bg-flamingo-100/50 rounded-full border-b-4 border-flamingo-300/30 transition duration-300 text-center mt-10";
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-center">
@@ -46,126 +38,9 @@ const Play = () => {
             <div className="pl-10 pr-3">
               <CustomChessBoard
                 boardWidth={boardWidth}
-                elo={elo}
-                startGame={startGame}
-                setStartGame={setStartGame}
-                playerColor={playerColor}
-                engine={engine.toLowerCase()}
               />
             </div>
-            <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
-              <div className="px-5 py-3 bg-[#2B3133] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
-                <div className="flex flex-col self-center w-full">
-                  <span className="font-roboto font-medium text-lg text-white text-center select-none">
-                    Engine: {engine}
-                  </span>
-                  <span className="w-full mr-3 mt-3 h-px bg-white"></span>
-                  <div className="flex gap-2 mt-3 self-center">
-                    <button
-                      onClick={() => {
-                        setEngine("Stockfish");
-                      }}
-                      className={
-                        engine === "Stockfish"
-                          ? "w-16 h-16 bg-[url('assets/images/stockfish.png')] bg-cover rounded-lg ring-2 ring-flamingo-100"
-                          : "w-16 h-16 bg-[url('assets/images/stockfish.png')] bg-cover rounded-lg"
-                      }
-                    />
-                    <div
-                      className={
-                        engine === "Leela"
-                          ? "flex w-16 h-16 self-center rounded-lg justify-center ring-2 ring-flamingo-100"
-                          : "flex w-16 h-16 self-center rounded-lg justify-center"
-                      }
-                    >
-                      <button
-                        onClick={() => {
-                          setEngine("Leela");
-                        }}
-                        className="flex bg-white rounded-lg w-14 h-14 self-center"
-                      >
-                        <div className="self-center bg-[url('assets/images/leela.svg')] relative -m-1.5 w-14 h-14 bg-cover" />
-                      </button>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setEngine("Komodo");
-                      }}
-                      className={
-                        engine === "Komodo"
-                          ? "w-16 h-16 bg-[url('assets/images/komodo.png')] bg-cover rounded-lg ring-2 ring-flamingo-100"
-                          : "w-16 h-16 bg-[url('assets/images/komodo.png')] bg-cover rounded-lg"
-                      }
-                    />
-                  </div>
-                  <span className="font-roboto font-medium text-lg text-white text-center select-none mt-10">
-                    Difficulty
-                  </span>
-                  <span className="w-full mr-3 mt-3 h-px bg-white"></span>
-                  <input
-                    type="range"
-                    className="w-full mt-5 hover:cursor-pointer"
-                    min="1350"
-                    max="2850"
-                    step="1"
-                    defaultValue={elo}
-                    onChange={(event) => {
-                      setElo((event.target as HTMLInputElement).value);
-                    }}
-                  />
-                  <span className="font-roboto font-normal text-white text-center mt-2 select-none">
-                    {elo} Elo
-                  </span>
-                </div>
-                <div
-                  className="flex flex-col self-center w-full"
-                  style={
-                    startGame
-                      ? { pointerEvents: "none" }
-                      : { pointerEvents: "all" }
-                  }
-                >
-                  <span className="font-roboto font-medium text-lg text-white text-center mt-10 select-none">
-                    Piece Color
-                  </span>
-                  <span className="w-full mr-3 mt-3 h-px bg-white"></span>
-                  <div className="flex flex-row gap-5 self-center mt-2">
-                    <span className="font-roboto font-normal text-md text-white select-none">
-                      White
-                    </span>
-                    <input
-                      type="radio"
-                      value="White"
-                      checked={playerColor === "w"}
-                      onChange={() => {
-                        setPlayerColor("w");
-                      }}
-                    />
-                    <span className="font-roboto font-normal text-md text-white select-none">
-                      Black
-                    </span>
-                    <input
-                      type="radio"
-                      value="Black"
-                      checked={playerColor === "b"}
-                      onChange={() => {
-                        setPlayerColor("b");
-                      }}
-                    />
-                  </div>
-                  <button
-                    onClick={() => {
-                      setStartGame(true);
-                    }}
-                    className={
-                      startGame ? disabledButtonStyle : activeButtonStyle
-                    }
-                  >
-                    Start Game
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ChessSettings />
             {/*<div className="hidden lg:flex w-[200px] h-[600px]">
               <Adsense
                 client="ca-pub-7640562161899788"

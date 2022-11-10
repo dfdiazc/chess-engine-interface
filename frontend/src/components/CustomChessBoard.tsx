@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Chessboard, Pieces } from "react-chessboard";
 import { Chess, Square } from "chess.js";
 import { Howl } from "howler";
@@ -12,23 +6,32 @@ import chessMoveSound from "assets/sounds/chess-move.mp3";
 import axios from "axios";
 import axiosRetry from "axios-retry";
 import LostPieces from "./LostPieces";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "app/store";
+import {
+  selectCurrentPlayerColor,
+  selectCurrentEngine,
+  selectCurrentGameStart,
+  setGameStart,
+} from "features/chess/chessSlice";
+import { Piece, Color } from "chess.js";
 
 interface CustomChessBoardProps {
   boardWidth: number;
-  elo: string;
-  startGame: boolean;
-  playerColor: string;
-  setStartGame: Dispatch<SetStateAction<boolean>>;
-  engine: string;
 }
 
 const CustomChessBoard = (props: CustomChessBoardProps) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [game] = useState(new Chess());
   const [fen, setFen] = useState(game.fen());
   const [turn, setTurn] = useState(game.turn());
   const [gameState, setGameState] = useState<string>();
+  const playerColor = useSelector(selectCurrentPlayerColor);
+  const engine = useSelector(selectCurrentEngine).toLowerCase();
+  const gameStart = useSelector(selectCurrentGameStart);
   const [computerColor, setComputerColor] = useState<string>(() => {
-    if (props.playerColor === "w") {
+    if (playerColor === "w") {
       return "b";
     }
     return "w";
@@ -41,7 +44,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   const [boardOrientation, setBoardOrientation] = useState<
     "white" | "black" | undefined
   >(() => {
-    if (props.playerColor === "w") {
+    if (playerColor === "w") {
       return "white";
     }
     return "black";
@@ -61,20 +64,20 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     setCheckSquares({});
     setOptionSquares({});
     setRightClickedSquares({});
-    props.setStartGame(false);
+    dispatch(setGameStart(false));
   }
   useEffect(() => {
-    if (props.playerColor === "w") {
+    if (playerColor === "w") {
       setBoardOrientation("white");
       setComputerColor("b");
     } else {
       setBoardOrientation("black");
       setComputerColor("w");
     }
-  }, [props.playerColor]);
+  }, [playerColor]);
   useEffect(() => {
-    if (props.startGame && !game.isGameOver()) {
-      if (turn === props.playerColor) {
+    if (gameStart && !game.isGameOver()) {
+      if (turn === playerColor) {
         setArePiecesDragable(true);
       } else if (turn === computerColor) {
         setArePiecesDragable(true);
@@ -84,7 +87,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       gameOverState();
       setArePiecesDragable(false);
     }
-  }, [turn, props.startGame]);
+  }, [turn, gameStart]);
   interface pieces {
     r: number;
     n: number;
@@ -136,6 +139,17 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setLostPieces(response.data);
       });
   }
+  const getPiecePositions = (piece:Piece) => {
+    return ([] as any).concat(...game.board()).map((p:Piece, index: number) => {
+      if (p !== null && p.type === piece.type && p.color === piece.color) {
+        return index
+      }
+    }).filter(Number.isInteger).map((piece_index:number) => {
+      const row = 'abcdefgh'[piece_index % 8]
+      const column = Math.ceil((64 - piece_index) / 8)
+      return row + column
+    })
+  }
   function gameOverState() {
     if (game.isGameOver()) {
       const checkmate = game.isCheckmate();
@@ -175,6 +189,12 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     };
     setOptionSquares(newSquares);
   }
+  function addCheckSquares(square: Square){
+    checkSquares[square] = {
+      background: "rgba(222, 53, 62, 0.9)"
+    }
+    setCheckSquares(checkSquares);
+  }
 
   function onSquareRightClick(square: any) {
     const colour = "rgba(0, 0, 255, 0.4)";
@@ -189,7 +209,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     });
   }
   function onMouseOverSquare(square: Square) {
-    if (props.startGame && !moveFrom && turn === props.playerColor) {
+    if (gameStart && !moveFrom && turn === playerColor) {
       getMoveOptions(square);
     }
   }
@@ -197,7 +217,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     if (
       Object.keys(optionSquares).length !== 0 &&
       !moveFrom &&
-      turn === props.playerColor
+      turn === playerColor
     )
       setOptionSquares([]);
   }
@@ -207,7 +227,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       getMoveOptions(square);
     }
 
-    if (props.startGame && turn === props.playerColor) {
+    if (gameStart && turn === playerColor) {
       setRightClickedSquares({});
       setOptionSquares({});
 
@@ -233,6 +253,13 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         setOptionSquares({});
         showLostPieces();
         setFen(game.fen());
+        if (game.isCheck()){
+          const computerKingSquare:Square = getPiecePositions({color: (computerColor as Color), type: "k"})[0];
+          addCheckSquares(computerKingSquare);
+        }
+        else {
+          setCheckSquares({});
+        }
         setTurn(game.turn());
         setMoveFrom("");
         moveSound.play();
@@ -248,18 +275,18 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
   async function computerMove() {
     await timeout(1000);
     const url = () => {
-      if (props.engine === "stockfish") {
-        return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
-          props.elo
-        }/${game.fen().replaceAll("/", "-")}`;
-      } else if (props.engine === "komodo") {
+      if (engine === "stockfish") {
+        return `https://unrealchess.pythonanywhere.com/api/play/stockfish/1350/${game
+          .fen()
+          .replaceAll("/", "-")}`;
+      } else if (engine === "komodo") {
         return `https://unrealchess.pythonanywhere.com/api/play/komodo/1/${game
           .fen()
           .replaceAll("/", "-")}`;
       }
-      return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${
-        props.elo
-      }/${game.fen().replaceAll("/", "-")}`;
+      return `https://unrealchess.pythonanywhere.com/api/play/stockfish/1350/${game
+        .fen()
+        .replaceAll("/", "-")}`;
     };
     await axios.get<BestMove>(url()).then((response) => {
       const source = response.data.best_move.substring(0, 2);
@@ -277,6 +304,13 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     });
     showLostPieces();
     setFen(game.fen());
+    if (game.isCheck()){
+      const playerKingSquare:Square = getPiecePositions({color: (playerColor as Color), type: "k"})[0];
+      addCheckSquares(playerKingSquare);
+    }
+    else {
+      setCheckSquares({});
+    }
     setTurn(game.turn());
     moveSound.play();
   }
@@ -296,6 +330,13 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
       setOptionSquares({});
       showLostPieces();
       setFen(game.fen());
+      if (game.isCheck()){
+        const computerKingSquare:Square = getPiecePositions({color: (computerColor as Color), type: "k"})[0];
+        addCheckSquares(computerKingSquare);
+      }
+      else {
+        setCheckSquares({});
+      }
       setTurn(game.turn());
       moveSound.play();
       return true;
@@ -314,7 +355,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     let className =
       "w-3 h-3 rounded-full absolute transition-all duration-300 bottom-0";
 
-    if (props.playerColor === "w") {
+    if (playerColor === "w") {
       className += " bg-black";
     } else {
       className += " bg-white";
@@ -325,7 +366,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
     let className =
       "w-3 h-3 rounded-full absolute transition-all duration-300 bottom-0";
 
-    if (props.playerColor === "w") {
+    if (playerColor === "w") {
       className += " bg-white";
     } else {
       className += " bg-black";
@@ -381,7 +422,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
             </span>
             {game.isCheckmate() && (
               <span className="font-roboto font-normal text-white text-xl self-center text-center select-none">
-                You {turn === props.playerColor ? "Lost" : "Won"}!
+                You {turn === playerColor ? "Lost" : "Won"}!
               </span>
             )}
             <button
@@ -398,8 +439,8 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         )}
         <div className="flex justify-center w-5 relative">
           <div
-            className={turn === props.playerColor ? classBottom() : classTop()}
-            style={turn === props.playerColor ? styleBottom : styleTop}
+            className={turn === playerColor ? classBottom() : classTop()}
+            style={turn === playerColor ? styleBottom : styleTop}
           ></div>
         </div>
       </div>
@@ -416,7 +457,7 @@ const CustomChessBoard = (props: CustomChessBoardProps) => {
         B={lostPieces.B}
         Q={lostPieces.Q}
         K={lostPieces.K}
-        color={props.playerColor}
+        color={playerColor}
       />
     </div>
   );
