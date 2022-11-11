@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ChessSettings, CustomChessboard, Header, TurnIndicator } from "components";
+import { ChessSettings, CustomChessboard, Header } from "components";
 import { Helmet } from "react-helmet";
 import { Adsense } from "@ctrl/react-adsense";
 
