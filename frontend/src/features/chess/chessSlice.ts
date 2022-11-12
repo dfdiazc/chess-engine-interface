@@ -10,6 +10,7 @@ const chessSlice = createSlice({
     engine: "Stockfish",
     gameStart: false,
     gameOver: false,
+    elo: 1350,
   },
   reducers: {
     setPlayerColor: (state, action) => {
@@ -36,10 +37,14 @@ const chessSlice = createSlice({
       const gameOver = action.payload;
       state.gameOver = gameOver;
     },
+    setElo: (state, action) => {
+      const elo = action.payload;
+      state.elo = elo;
+    },
   },
 });
 
-export const { setPlayerColor, setTurn, setFen, setEngine, setGameStart, setGameOver } =
+export const { setPlayerColor, setTurn, setFen, setEngine, setGameStart, setGameOver, setElo } =
   chessSlice.actions;
 
 export default chessSlice.reducer;
@@ -52,3 +57,4 @@ export const selectCurrentEngine = (state: RootState) => state.chess.engine;
 export const selectCurrentGameStart = (state: RootState) =>
   state.chess.gameStart;
 export const selectCurrentGameOver = (state: RootState) => state.chess.gameOver;
+export const selectCurrentElo = (state: RootState) => state.chess.elo;
