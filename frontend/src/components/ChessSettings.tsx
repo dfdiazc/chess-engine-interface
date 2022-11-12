@@ -18,6 +18,7 @@ const ChessSettings = () => {
   const playerColor = useSelector(selectCurrentPlayerColor);
   const engine = useSelector(selectCurrentEngine);
   const elo = useSelector(selectCurrentElo);
+  const [eloSlider, setEloSlider] = useState(elo);
   const gameStart = useSelector(selectCurrentGameStart);
   return (
     <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
@@ -77,8 +78,11 @@ const ChessSettings = () => {
             step="1"
             defaultValue={elo}
             onChange={(event) => {
-              dispatch(setElo((event.target as HTMLInputElement).value));
+              setEloSlider((event.target as HTMLInputElement).value as unknown as number);
             }}
+            onMouseDown={(event) => {
+              dispatch(setElo((event.target as HTMLInputElement).value));}
+            }
           />
           <span className="font-roboto font-normal text-white text-center mt-2 select-none">
             {elo} Elo
