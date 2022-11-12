@@ -9,15 +9,16 @@ import {
   setEngine,
   selectCurrentGameStart,
   setGameStart,
+  selectCurrentElo,
+  setElo
 } from "features/chess/chessSlice";
 
 const ChessSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
   const playerColor = useSelector(selectCurrentPlayerColor);
   const engine = useSelector(selectCurrentEngine);
+  const elo = useSelector(selectCurrentElo);
   const gameStart = useSelector(selectCurrentGameStart);
-
-  const [elo, setElo] = useState<string>("1350");
   return (
     <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
       <div className="px-5 py-3 bg-[#2B3133] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
@@ -76,7 +77,7 @@ const ChessSettings = () => {
             step="1"
             defaultValue={elo}
             onChange={(event) => {
-              setElo((event.target as HTMLInputElement).value);
+              dispatch(setElo((event.target as HTMLInputElement).value));
             }}
           />
           <span className="font-roboto font-normal text-white text-center mt-2 select-none">

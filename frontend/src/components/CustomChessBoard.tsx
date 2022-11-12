@@ -18,6 +18,7 @@ import {
   setTurn,
   selectCurrentFen,
   setFen,
+  selectCurrentElo
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
@@ -34,6 +35,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const playerColor = useSelector(selectCurrentPlayerColor);
   const turn = useSelector(selectCurrentTurn);
   const engine = useSelector(selectCurrentEngine).toLowerCase();
+  const elo = useSelector(selectCurrentElo);
   const gameStart = useSelector(selectCurrentGameStart);
   const [computerColor, setComputerColor] = useState<string>(() => {
     if (playerColor === "w") {
@@ -283,15 +285,15 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     await timeout(1000);
     const url = () => {
       if (engine === "stockfish") {
-        return `https://unrealchess.pythonanywhere.com/api/play/stockfish/1350/${game
+        return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${elo}/${game
           .fen()
           .replaceAll("/", "-")}`;
       } else if (engine === "komodo") {
-        return `https://unrealchess.pythonanywhere.com/api/play/komodo/1/${game
+        return `https://unrealchess.pythonanywhere.com/api/play/komodo/25/${game
           .fen()
           .replaceAll("/", "-")}`;
       }
-      return `https://unrealchess.pythonanywhere.com/api/play/stockfish/1350/${game
+      return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${elo}/${game
         .fen()
         .replaceAll("/", "-")}`;
     };
