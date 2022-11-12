@@ -289,7 +289,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           .fen()
           .replaceAll("/", "-")}`;
       } else if (engine === "komodo") {
-        return `https://unrealchess.pythonanywhere.com/api/play/komodo/25/${game
+        return `https://unrealchess.pythonanywhere.com/api/play/komodo/15/${game
           .fen()
           .replaceAll("/", "-")}`;
       }
