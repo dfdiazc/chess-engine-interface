@@ -18,9 +18,9 @@ const ChessSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
   const playerColor = useSelector(selectCurrentPlayerColor);
   const engine = useSelector(selectCurrentEngine);
+  const elo = useSelector(selectCurrentElo);
   const [eloSlider, setEloSlider] = useState(elo);
   const gameStart = useSelector(selectCurrentGameStart);
-  const elo = useSelector(selectCurrentElo);
   const engineVariants = {
     hidden: { "display": "none" },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
