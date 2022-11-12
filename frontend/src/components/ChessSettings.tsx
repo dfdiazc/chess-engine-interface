@@ -124,12 +124,12 @@ const ChessSettings = () => {
             onChange={(event) => {
               setEloSlider((event.target as HTMLInputElement).value as unknown as number);
             }}
-            onMouseDown={(event) => {
+            onMouseUp={(event) => {
               dispatch(setElo((event.target as HTMLInputElement).value));}
             }
           />
           <span className="font-roboto font-normal text-white text-center mt-2 select-none">
-            {elo} Elo
+            {eloSlider} Elo
           </span>
         </div>
         <div
