@@ -18,7 +18,7 @@ import {
   setTurn,
   selectCurrentFen,
   setFen,
-  selectCurrentElo
+  selectCurrentElo,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
@@ -326,33 +326,36 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     moveSound.play();
   }
   function onDrop(source: Square, target: Square, piece: Pieces) {
-    let result = null;
-    if (piece === "wP" || piece === "bP") {
-      result = game.move({ from: source, to: target, promotion: "q" });
-      if (result === null) result = game.move({ from: source, to: target });
-    } else {
-      result = game.move({ from: source, to: target });
-    }
-    if (result != null) {
-      setMoveSquares({
-        [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-        [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-      });
-      setOptionSquares({});
-      showLostPieces();
-      dispatch(setFen(game.fen()));
-      if (game.isCheck()) {
-        const computerKingSquare: Square = getPiecePositions({
-          color: computerColor as Color,
-          type: "k",
-        })[0];
-        addCheckSquares(computerKingSquare);
+    if (turn === playerColor) {
+      let result = null;
+      if (piece === "wP" || piece === "bP") {
+        result = game.move({ from: source, to: target, promotion: "q" });
+        if (result === null) result = game.move({ from: source, to: target });
       } else {
-        setCheckSquares({});
+        result = game.move({ from: source, to: target });
       }
-      dispatch(setTurn(game.turn()));
-      moveSound.play();
-      return true;
+      if (result != null) {
+        setMoveSquares({
+          [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+          [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+        });
+        setOptionSquares({});
+        showLostPieces();
+        dispatch(setFen(game.fen()));
+        if (game.isCheck()) {
+          const computerKingSquare: Square = getPiecePositions({
+            color: computerColor as Color,
+            type: "k",
+          })[0];
+          addCheckSquares(computerKingSquare);
+        } else {
+          setCheckSquares({});
+        }
+        dispatch(setTurn(game.turn()));
+        moveSound.play();
+        return true;
+      }
+      return false;
     }
     return false;
   }
