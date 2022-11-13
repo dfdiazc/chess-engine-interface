@@ -18,8 +18,9 @@ const ChessSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
   const playerColor = useSelector(selectCurrentPlayerColor);
   const engine = useSelector(selectCurrentEngine);
-  const gameStart = useSelector(selectCurrentGameStart);
   const elo = useSelector(selectCurrentElo);
+  const [eloSlider, setEloSlider] = useState(elo);
+  const gameStart = useSelector(selectCurrentGameStart);
   const engineVariants = {
     hidden: { "display": "none" },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
@@ -121,11 +122,14 @@ const ChessSettings = () => {
             step="1"
             defaultValue={elo}
             onChange={(event) => {
-              dispatch(setElo((event.target as HTMLInputElement).value));
+              setEloSlider((event.target as HTMLInputElement).value as unknown as number);
             }}
+            onMouseUp={(event) => {
+              dispatch(setElo((event.target as HTMLInputElement).value));}
+            }
           />
           <span className="font-roboto font-normal text-white text-center mt-2 select-none">
-            {elo} Elo
+            {eloSlider} Elo
           </span>
         </div>
         <div
