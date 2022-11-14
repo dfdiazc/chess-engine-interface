@@ -20,6 +20,16 @@ def load_komodo():
 
     return komodo
 
+def load_leela():
+
+    dirname = os.path.dirname(__file__)
+    engine_location = "../engines/lc0/build/release/lc0"
+    engine_path = os.path.realpath(os.path.join(dirname, engine_location))
+    leela = chess.engine.SimpleEngine.popen_uci(engine_path)
+
+    return leela
+
+
 def get_player_turn(FEN:str)->str:
 
     return FEN.split(" ")[1]
@@ -149,3 +159,15 @@ def get_komodo_move(skill:int, FEN:str)->str:
     komodo.quit()
 
     return str(result.move)
+
+def get_leela_move(FEN:str)->str:
+
+    leela = load_leela()
+    board = chess.Board(FEN)
+    result = leela.play(board, chess.engine.Limit(time = 0.1))
+    leela.quit()
+
+    return str(result.move)
+
+FEN = "rnbqkbnr/ppp2ppp/8/3p4/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 4"
+print(get_leela_move(FEN))
