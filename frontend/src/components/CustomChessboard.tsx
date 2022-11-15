@@ -9,6 +9,7 @@ import LostPieces from "./LostPieces";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "app/store";
+import { useSuggestionsMutation } from "features/chess/chessApiSlice";
 import {
   selectCurrentPlayerColor,
   selectCurrentEngine,
@@ -24,7 +25,6 @@ import {
   setSuggestionPieces,
   selectCurrentAreSuggestionsShown,
   selectCurrentSuggestionShown,
-  setSuggestionShown,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
@@ -47,6 +47,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const suggestionShown = useSelector(selectCurrentSuggestionShown);
   const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
   const [suggestionArrows, setSuggestionArrows] = useState<string[][]>();
+  const [suggestions] = useSuggestionsMutation();
   const [computerColor, setComputerColor] = useState<string>(() => {
     if (playerColor === "w") {
       return "b";
@@ -106,7 +107,6 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       setArePiecesDragable(true);
       if (turn === playerColor) {
         setSuggestions();
-        dispatch(setSuggestionShown({ 1: false, 2: false, 3: false }));
       } else if (turn === computerColor) {
         setArePiecesDragable(true);
         computerMove();
@@ -117,8 +117,10 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     }
   }, [turn, gameStart]);
   useEffect(() => {
-    showSuggestionArrows();
-  }, [suggestionShown, areSuggestionsShown]);
+    if (suggestionShown) {
+      showSuggestionArrows();
+    }
+  }, [suggestionShown, areSuggestionsShown, suggestionMoves]);
   interface pieces {
     r: number;
     n: number;
@@ -354,23 +356,20 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       }
     }
   }
-  function setSuggestions() {
-    axios
-      .get(
-        `https://unrealchess.pythonanywhere.com/api/play/stockfish/suggest/${game
-          .fen()
-          .replaceAll("/", "-")}`
-      )
-      .then((response) => {
-        dispatch(setSuggestionMoves(response.data));
-        dispatch(
-          setSuggestionPieces({
-            1: game.get(response.data[1].substring(0, 2)).type,
-            2: game.get(response.data[2].substring(0, 2)).type,
-            3: game.get(response.data[3].substring(0, 2)).type,
-          })
-        );
-      });
+  async function setSuggestions() {
+    try {
+      const response = await suggestions(
+        game.fen().replaceAll("/", "-")
+      ).unwrap();
+      dispatch(setSuggestionMoves(response));
+      dispatch(
+        setSuggestionPieces({
+          1: game.get(response[1].substring(0, 2)).type,
+          2: game.get(response[2].substring(0, 2)).type,
+          3: game.get(response[3].substring(0, 2)).type,
+        })
+      );
+    } catch (error: any) {}
   }
   function timeout(delay: number) {
     return new Promise((res) => setTimeout(res, delay));
