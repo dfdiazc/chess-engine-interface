@@ -80,8 +80,8 @@ def get_stockfish_nbest_moves(FEN:str)->str:
 
     for i in range(n):
 
-        stockfish.configure({"UCI_Elo": elo[i], "UCI_LimitStrength": "true"})
-        result = stockfish.play(board, chess.engine.Limit(time = 0.1))
+        engine.configure({"UCI_Elo": elo[i], "UCI_LimitStrength": "true"})
+        result = engine.play(board, chess.engine.Limit(time = 0.1))
         moves[str(i + 1)] = str(result.move)
 
     engine.quit()
