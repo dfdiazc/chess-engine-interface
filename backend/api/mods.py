@@ -169,5 +169,3 @@ def get_leela_move(FEN:str)->str:
 
     return str(result.move)
 
-FEN = "rnbqkbnr/ppp2ppp/8/3p4/3P4/8/PPP2PPP/RNBQKBNR w KQkq - 0 4"
-print(get_leela_move(FEN))
