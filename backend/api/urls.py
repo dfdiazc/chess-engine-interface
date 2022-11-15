@@ -9,6 +9,5 @@ urlpatterns = [
     path("match/create", views.CreateMatchView.as_view()),
     path("move/create", views.CreateMoveView.as_view()),
     path("play/stockfish/suggest/<str:FEN>", views.GetStockfishBestMoves.as_view()),
-    path("play/stockfish/<int:ELO>/<str:FEN>", views.GetStockfishMoveELO.as_view()),
-    path("play/komodo/<int:skill>/<str:FEN>", views.GetKomodoMove.as_view()),
+    path("play/<str:engine>/<int:difficulty>/<str:FEN>", views.GetMove.as_view())
 ]

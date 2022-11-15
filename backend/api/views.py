@@ -15,7 +15,6 @@ def fix_fen(url_fen):
 
     return new_FEN
 
-
 # Views
 class LostView(generics.GenericAPIView):
 
@@ -46,16 +45,6 @@ class GetStockfishBestMoves(generics.GenericAPIView):
 
         return Response(moves)
 
-class GetStockfishMoveELO(generics.GenericAPIView):
-
-    def get(self, request, ELO, FEN):
-
-        new_FEN = fix_fen(FEN)
-
-        best_move_elo = mods.get_stockfish_move_elo(ELO, new_FEN)
-
-        return Response({"best_move": best_move_elo})
-
 class PromotionView(generics.GenericAPIView):
 
     def get(self, request, move, FEN):
@@ -68,12 +57,11 @@ class PromotionView(generics.GenericAPIView):
             "player": player
         })
 
-class GetKomodoMove(generics.GenericAPIView):
+class GetMove(generics.GenericAPIView):
 
-    def get(self, request, skill, FEN):
+    def get(self, request, engine, difficulty, FEN):
 
         new_FEN = fix_fen(FEN)
-
-        best_move = mods.get_komodo_move(skill, new_FEN)
+        best_move = mods.get_move(engine, difficulty, new_FEN)
 
         return Response({"best_move": best_move})

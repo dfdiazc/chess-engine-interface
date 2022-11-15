@@ -2,33 +2,23 @@ import chess
 import chess.engine
 import os
 
-def load_stockfish():
+global engines
+
+engines = {
+
+    "stockfish": "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linux_x64/stockfish_13_linux_x64",
+    "komodo": "../engines/komodo-13_201fd6/Linux/komodo-13.02-linux",
+    "leela": "../engines/lc0/build/release/lc0"
+}
+
+def load_engine(engine_name):
 
     dirname = os.path.dirname(__file__) # present working directory (equivalent of running pwd in the terminal)
-    engine_location = "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linux_x64/stockfish_13_linux_x64" # relative path to the engine
+    engine_location = engines[engine_name] # relative path to the engine
     engine_path = os.path.realpath(os.path.join(dirname, engine_location)) # Compute actual path to the engine
-    stockfish = chess.engine.SimpleEngine.popen_uci(engine_path)
+    engine = chess.engine.SimpleEngine.popen_uci(engine_path)
 
-    return stockfish
-
-def load_komodo():
-
-    dirname = os.path.dirname(__file__)
-    engine_location = "../engines/komodo-13_201fd6/Linux/komodo-13.02-linux"
-    engine_path = os.path.realpath(os.path.join(dirname, engine_location))
-    komodo = chess.engine.SimpleEngine.popen_uci(engine_path)
-
-    return komodo
-
-def load_leela():
-
-    dirname = os.path.dirname(__file__)
-    engine_location = "../engines/lc0/build/release/lc0"
-    engine_path = os.path.realpath(os.path.join(dirname, engine_location))
-    leela = chess.engine.SimpleEngine.popen_uci(engine_path)
-
-    return leela
-
+    return engine
 
 def get_player_turn(FEN:str)->str:
 
@@ -96,20 +86,6 @@ def get_stockfish_nbest_moves(FEN:str)->str:
 
     return moves
 
-def get_stockfish_move_elo(ELO:int, FEN:str)->str:
-    """
-    Determine the next best move according to the stockfish engine, given
-    a certain elo rating for the engine
-    """
-
-    stockfish = load_stockfish()
-    board = chess.Board(FEN)
-    stockfish.configure({"UCI_Elo": ELO, "UCI_LimitStrength": "true"})
-    result = stockfish.play(board, chess.engine.Limit(time = 0.1))
-    stockfish.quit()
-
-    return str(result.move)
-
 def will_promote(move:str, FEN:str)->bool:
     """
     Determine whether the result of a given move is a pawn promotion
@@ -150,22 +126,20 @@ def will_promote(move:str, FEN:str)->bool:
 
     return player, promotion_intended
 
-def get_komodo_move(skill:int, FEN:str)->str:
+def get_move(engine:str, difficulty:str, FEN:str):
 
-    komodo = load_komodo()
+    engine_settings = {"UCI_Elo": difficulty, "UCI_LimitStrength": "true"}
+
+    if(engine == "komodo"):
+
+        engine_settings = {"Skill": difficulty}
+
+    engine = load_engine(engine)
+    engine.configure(engine_settings)
+
     board = chess.Board(FEN)
-    komodo.configure({"Skill": skill})
-    result = komodo.play(board, chess.engine.Limit(time = 0.1))
-    komodo.quit()
+    result = engine.play(board, chess.engine.Limit(time = 0.1))
+
+    engine.quit()
 
     return str(result.move)
-
-def get_leela_move(FEN:str)->str:
-
-    leela = load_leela()
-    board = chess.Board(FEN)
-    result = leela.play(board, chess.engine.Limit(time = 0.1))
-    leela.quit()
-
-    return str(result.move)
-
