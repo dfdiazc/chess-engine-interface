@@ -148,6 +148,16 @@ def get_move(engine:str, difficulty:str, FEN:str):
 
     return str(result.move)
 
-def piece_count(FEN:str)->dict:
+def lost(current_FEN:str, previous_FEN:str)->dict:
+    """
+    Computes lost pieces from previous and current FEN codes
+    """
+    pieces = ['r', 'n', 'b', 'q', 'k', 'p',
+              'P', 'R', 'N', 'B', 'Q', 'K']
 
-    return None
+    current_board = current_FEN.split(" ")[0]
+    previous_board = previous_FEN.split(" ")[0]
+
+    count = {i: previous_board.count(i) - current_board.count(i) for i in pieces}
+
+    return count
