@@ -44,13 +44,7 @@ class GetStockfishBestMoves(generics.GenericAPIView):
 
         moves = mods.get_stockfish_nbest_moves(new_FEN)
 
-        dic = {}
-
-        for i in range(len(moves)):
-
-            dic[str(i+1)] = str(moves[i])
-
-        return Response(dic)
+        return Response(moves)
 
 class GetStockfishMoveELO(generics.GenericAPIView):
 
