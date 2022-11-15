@@ -39,7 +39,6 @@ class UserDetailView(generics.GenericAPIView):
 class UserUpdateView(generics.UpdateAPIView):
 
     serializer_class = UserUpdateSerializer
-    #lookup_field = "username"
     permission_classes = [IsAuthenticated, IsOwner]
     queryset = User.objects.all()
 

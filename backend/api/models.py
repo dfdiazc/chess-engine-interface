@@ -20,4 +20,5 @@ class Moves(models.Model):
     match = models.ForeignKey("Match", on_delete=models.CASCADE, related_name = "match")
     fen_code = models.CharField(max_length=100) # FEN code for the moment in the match
     move = models.CharField(max_length=10, default = "e2e4")
-    order = models.PositiveIntegerField() # The moment in the match in which the move was made
+    time = models.DateTimeField(auto_now_add=True)
+    # order = models.PositiveIntegerField() # The moment in the match in which the move was made
