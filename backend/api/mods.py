@@ -77,6 +77,7 @@ def get_stockfish_nbest_moves(FEN:str)->str:
 
     engine = load_engine("stockfish")
     board = chess.Board(FEN)
+    moves = {}
 
     for i in range(n):
 
