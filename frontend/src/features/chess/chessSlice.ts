@@ -11,6 +11,7 @@ const chessSlice = createSlice({
     gameStart: false,
     gameOver: false,
     elo: 1350,
+    areSuggestionShown: false,
   },
   reducers: {
     setPlayerColor: (state, action) => {
@@ -41,10 +42,14 @@ const chessSlice = createSlice({
       const elo = action.payload;
       state.elo = elo;
     },
+    setAreSuggestionShown: (state, action) => {
+      const areSuggestionShown = action.payload;
+      state.areSuggestionShown = areSuggestionShown;
+    },
   },
 });
 
-export const { setPlayerColor, setTurn, setFen, setEngine, setGameStart, setGameOver, setElo } =
+export const { setPlayerColor, setTurn, setFen, setEngine, setGameStart, setGameOver, setElo, setAreSuggestionShown } =
   chessSlice.actions;
 
 export default chessSlice.reducer;
@@ -58,3 +63,4 @@ export const selectCurrentGameStart = (state: RootState) =>
   state.chess.gameStart;
 export const selectCurrentGameOver = (state: RootState) => state.chess.gameOver;
 export const selectCurrentElo = (state: RootState) => state.chess.elo;
+export const selectCurrentAreSuggestionShown = (state: RootState) => state.chess.areSuggestionShown;

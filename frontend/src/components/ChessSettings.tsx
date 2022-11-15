@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "app/store";
 import { useSelector } from "react-redux";
-import { motion, useAnimationControls, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   selectCurrentPlayerColor,
   setPlayerColor,
@@ -11,7 +11,7 @@ import {
   selectCurrentGameStart,
   setGameStart,
   selectCurrentElo,
-  setElo
+  setElo,
 } from "features/chess/chessSlice";
 
 const ChessSettings = () => {
@@ -22,23 +22,38 @@ const ChessSettings = () => {
   const [eloSlider, setEloSlider] = useState(elo);
   const gameStart = useSelector(selectCurrentGameStart);
   const engineVariants = {
-    hidden: { "display": "none" },
+    hidden: { display: "none" },
     visible: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
     selected: {
       scale: 1.5,
-      "margin-left": "auto",
-      "margin-right": "auto",
       "margin-bottom": "25px",
       "margin-top": "10px",
       x: 0,
       y: 0,
-      "cursor": "default"
+      cursor: "default",
     },
+  };
+  const titleVariants = {
+    hidden: { display: "none" },
+    visible: { opacity: 1, scale: 1, transition: { duration: 0.1 } },
   };
   return (
     <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
       <div className="px-5 py-3 bg-[#2B3133] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
         <div className="flex flex-col self-center w-full">
+          <AnimatePresence>
+            {!gameStart && (
+              <motion.span
+                className="self-center font-roboto font-medium text-2xl text-white mb-3"
+                variants={titleVariants}
+                initial="visible"
+                animate="visible"
+                exit="hidden"
+              >
+                Play Against...
+              </motion.span>
+            )}
+          </AnimatePresence>
           <div className="flex gap-2 mt-3 self-center relative">
             <AnimatePresence>
               {((engine === "Stockfish" && gameStart) || !gameStart) && (
@@ -122,11 +137,13 @@ const ChessSettings = () => {
             step="1"
             defaultValue={elo}
             onChange={(event) => {
-              setEloSlider((event.target as HTMLInputElement).value as unknown as number);
+              setEloSlider(
+                (event.target as HTMLInputElement).value as unknown as number
+              );
             }}
             onMouseUp={(event) => {
-              dispatch(setElo((event.target as HTMLInputElement).value));}
-            }
+              dispatch(setElo((event.target as HTMLInputElement).value));
+            }}
           />
           <span className="font-roboto font-normal text-white text-center mt-2 select-none">
             {eloSlider} Elo

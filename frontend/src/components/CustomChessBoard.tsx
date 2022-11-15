@@ -73,6 +73,15 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     setRightClickedSquares({});
     dispatch(setGameStart(false));
   }
+  axiosRetry(axios, {
+    retries: 3,
+    retryDelay: (retryCount: number) => {
+      return retryCount * 2000;
+    },
+    retryCondition: (error) => {
+      return error.response?.status === 502;
+    },
+  });
   useEffect(() => {
     if (playerColor === "w") {
       setBoardOrientation("white");
@@ -126,15 +135,6 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   interface BestMove {
     best_move: string;
   }
-  axiosRetry(axios, {
-    retries: 3,
-    retryDelay: (retryCount: number) => {
-      return retryCount * 2000;
-    },
-    retryCondition: (error) => {
-      return error.response?.status === 502;
-    },
-  });
   function showLostPieces() {
     axios
       .get<pieces>(
@@ -161,6 +161,28 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         return row + column;
       });
   };
+  const customPieces = (pieceType:string) => {
+    const pieces = ['wP', 'wN', 'wB', 'wR', 'wQ', 'wK', 'bP', 'bN', 'bB', 'bR', 'bQ', 'bK'];
+    const returnPieces = {} as any;
+    pieces.map((p) => {
+      returnPieces[p] = ({ squareWidth }:any) => (
+        <div
+        className="bg-center bg-no-repeat"
+          style={{
+            width: squareWidth,
+            height: squareWidth,
+            backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/chess_pieces/${pieceType}/${p}.png)`,
+            backgroundSize: `${pieceType === "pixel" ? 80 : 100}%`,
+          }}
+        />
+      );
+      return null;
+    });
+    if (returnPieces){
+      return returnPieces;
+    }
+    return undefined;
+  }
   function gameOverState() {
     if (game.isGameOver()) {
       const checkmate = game.isCheckmate();
@@ -220,14 +242,14 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     });
   }
   function onMouseOverSquare(square: Square) {
-    if (gameStart && !moveFrom && turn === playerColor) {
+    if (gameStart && !game.get(moveFrom as Square) && turn === playerColor) {
       getMoveOptions(square);
     }
   }
   function onMouseOutSquare() {
     if (
       Object.keys(optionSquares).length !== 0 &&
-      !moveFrom &&
+      !game.get(moveFrom as Square) &&
       turn === playerColor
     )
       setOptionSquares([]);
@@ -382,6 +404,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
           customBoardStyle={{ userSelect: "none", borderRadius: "5px" }}
+          customPieces={customPieces("classic")}
           customDarkSquareStyle={{ backgroundColor: "#517879" }}
           customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
           arePiecesDraggable={arePiecesDragable}
