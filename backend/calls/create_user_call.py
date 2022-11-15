@@ -6,7 +6,7 @@ password = getpass("Enter password: ")
 endpoint = "http://127.0.0.1:8000/users/create"
 
 userdata = {
-        "username": "test_username",
+        "username": "test_username2",
         "password": password
 }
 
