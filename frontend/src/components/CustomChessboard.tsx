@@ -19,6 +19,12 @@ import {
   selectCurrentFen,
   setFen,
   selectCurrentElo,
+  selectCurrentSuggestionMoves,
+  setSuggestionMoves,
+  setSuggestionPieces,
+  selectCurrentAreSuggestionsShown,
+  selectCurrentSuggestionShown,
+  setSuggestionShown,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
@@ -37,6 +43,10 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const engine = useSelector(selectCurrentEngine).toLowerCase();
   const elo = useSelector(selectCurrentElo);
   const gameStart = useSelector(selectCurrentGameStart);
+  const areSuggestionsShown = useSelector(selectCurrentAreSuggestionsShown);
+  const suggestionShown = useSelector(selectCurrentSuggestionShown);
+  const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
+  const [suggestionArrows, setSuggestionArrows] = useState<string[][]>();
   const [computerColor, setComputerColor] = useState<string>(() => {
     if (playerColor === "w") {
       return "b";
@@ -93,8 +103,10 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   }, [playerColor]);
   useEffect(() => {
     if (gameStart && !game.isGameOver()) {
+      setArePiecesDragable(true);
       if (turn === playerColor) {
-        setArePiecesDragable(true);
+        setSuggestions();
+        dispatch(setSuggestionShown({ 1: false, 2: false, 3: false }));
       } else if (turn === computerColor) {
         setArePiecesDragable(true);
         computerMove();
@@ -104,6 +116,9 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       setArePiecesDragable(false);
     }
   }, [turn, gameStart]);
+  useEffect(() => {
+    showSuggestionArrows();
+  }, [suggestionShown, areSuggestionsShown]);
   interface pieces {
     r: number;
     n: number;
@@ -135,6 +150,32 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   interface BestMove {
     best_move: string;
   }
+  function showSuggestionArrows() {
+    if (suggestionShown[1] && areSuggestionsShown) {
+      setSuggestionArrows([
+        [
+          suggestionMoves[1].substring(0, 2),
+          suggestionMoves[1].substring(2, 4),
+        ],
+      ]);
+    } else if (suggestionShown[2] && areSuggestionsShown) {
+      setSuggestionArrows([
+        [
+          suggestionMoves[2].substring(0, 2),
+          suggestionMoves[2].substring(2, 4),
+        ],
+      ]);
+    } else if (suggestionShown[3] && areSuggestionsShown) {
+      setSuggestionArrows([
+        [
+          suggestionMoves[3].substring(0, 2),
+          suggestionMoves[3].substring(2, 4),
+        ],
+      ]);
+    } else {
+      setSuggestionArrows(undefined);
+    }
+  }
   function showLostPieces() {
     axios
       .get<pieces>(
@@ -161,13 +202,26 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         return row + column;
       });
   };
-  const customPieces = (pieceType:string) => {
-    const pieces = ['wP', 'wN', 'wB', 'wR', 'wQ', 'wK', 'bP', 'bN', 'bB', 'bR', 'bQ', 'bK'];
+  const customPieces = (pieceType: string) => {
+    const pieces = [
+      "wP",
+      "wN",
+      "wB",
+      "wR",
+      "wQ",
+      "wK",
+      "bP",
+      "bN",
+      "bB",
+      "bR",
+      "bQ",
+      "bK",
+    ];
     const returnPieces = {} as any;
     pieces.map((p) => {
-      returnPieces[p] = ({ squareWidth }:any) => (
+      returnPieces[p] = ({ squareWidth }: any) => (
         <div
-        className="bg-center bg-no-repeat"
+          className="bg-center bg-no-repeat"
           style={{
             width: squareWidth,
             height: squareWidth,
@@ -178,11 +232,11 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       );
       return null;
     });
-    if (returnPieces){
+    if (returnPieces) {
       return returnPieces;
     }
     return undefined;
-  }
+  };
   function gameOverState() {
     if (game.isGameOver()) {
       const checkmate = game.isCheckmate();
@@ -300,6 +354,24 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       }
     }
   }
+  function setSuggestions() {
+    axios
+      .get(
+        `https://unrealchess.pythonanywhere.com/api/play/stockfish/suggest/${game
+          .fen()
+          .replaceAll("/", "-")}`
+      )
+      .then((response) => {
+        dispatch(setSuggestionMoves(response.data));
+        dispatch(
+          setSuggestionPieces({
+            1: game.get(response.data[1].substring(0, 2)).type,
+            2: game.get(response.data[2].substring(0, 2)).type,
+            3: game.get(response.data[3].substring(0, 2)).type,
+          })
+        );
+      });
+  }
   function timeout(delay: number) {
     return new Promise((res) => setTimeout(res, delay));
   }
@@ -377,6 +449,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         moveSound.play();
         return true;
       }
+      showSuggestionArrows();
       return false;
     }
     return false;
@@ -416,6 +489,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           onMouseOutSquare={onMouseOutSquare}
           onSquareRightClick={onSquareRightClick}
           onSquareClick={onSquareClick}
+          customArrows={suggestionArrows}
           customSquareStyles={{
             ...moveSquares,
             ...optionSquares,
