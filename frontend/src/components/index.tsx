@@ -8,3 +8,6 @@ export { default as LostPieces } from "./LostPieces";
 export { default as ProfileSidebar } from "./ProfileSidebar";
 export { default as ChessSettings } from "./ChessSettings";
 export { default as TurnIndicator } from "./TurnIndicator";
+export { default as ChessSuggestionsPanel } from "./ChessSuggestionsPanel";
+export { default as ChessSuggestion } from "./ChessSuggestion";
+export { default as Spinner } from "./Spinner";

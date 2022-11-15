@@ -11,6 +11,10 @@ const chessSlice = createSlice({
     gameStart: false,
     gameOver: false,
     elo: 1350,
+    areSuggestionsShown: false,
+    suggestionShown: {1: false, 2: false, 3: false},
+    suggestionMoves: { 1: "e1e1", 2: "e1e1", 3: "e1e1" },
+    suggestionPieces: { 1: "p", 2: "p", 3: "p" },
   },
   reducers: {
     setPlayerColor: (state, action) => {
@@ -41,11 +45,38 @@ const chessSlice = createSlice({
       const elo = action.payload;
       state.elo = elo;
     },
+    setAreSuggestionsShown: (state, action) => {
+      const areSuggestionsShown = action.payload;
+      state.areSuggestionsShown = areSuggestionsShown;
+    },
+    setSuggestionMoves: (state, action) => {
+      const suggestionMoves = action.payload;
+      state.suggestionMoves = suggestionMoves;
+    },
+    setSuggestionPieces: (state, action) => {
+      const suggestionPieces = action.payload;
+      state.suggestionPieces = suggestionPieces;
+    },
+    setSuggestionShown: (state, action) => {
+      const suggestionShown = action.payload;
+      state.suggestionShown = suggestionShown;
+    },
   },
 });
 
-export const { setPlayerColor, setTurn, setFen, setEngine, setGameStart, setGameOver, setElo } =
-  chessSlice.actions;
+export const {
+  setPlayerColor,
+  setTurn,
+  setFen,
+  setEngine,
+  setGameStart,
+  setGameOver,
+  setElo,
+  setAreSuggestionsShown,
+  setSuggestionMoves,
+  setSuggestionPieces,
+  setSuggestionShown,
+} = chessSlice.actions;
 
 export default chessSlice.reducer;
 
@@ -58,3 +89,11 @@ export const selectCurrentGameStart = (state: RootState) =>
   state.chess.gameStart;
 export const selectCurrentGameOver = (state: RootState) => state.chess.gameOver;
 export const selectCurrentElo = (state: RootState) => state.chess.elo;
+export const selectCurrentAreSuggestionsShown = (state: RootState) =>
+  state.chess.areSuggestionsShown;
+export const selectCurrentSuggestionMoves = (state: RootState) =>
+  state.chess.suggestionMoves;
+export const selectCurrentSuggestionPieces = (state: RootState) =>
+  state.chess.suggestionPieces;
+  export const selectCurrentSuggestionShown = (state: RootState) =>
+  state.chess.suggestionShown;

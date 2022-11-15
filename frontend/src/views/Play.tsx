@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { ChessSettings, CustomChessboard, Header } from "components";
+import {
+  ChessSettings,
+  ChessSuggestionsPanel,
+  CustomChessboard,
+  Header,
+} from "components";
+import { useSelector } from "react-redux";
+import { selectCurrentGameStart } from "features/chess/chessSlice";
 import { Helmet } from "react-helmet";
 import { Adsense } from "@ctrl/react-adsense";
 
 const Play = () => {
+  const gameStart = useSelector(selectCurrentGameStart);
   const [boardWidth, setBoardWidth] = useState(initialBoardSize);
   function initialBoardSize() {
     let windowWidth = window.innerWidth;
@@ -38,7 +46,10 @@ const Play = () => {
             <div className="flex flex-row pl-10 pr-3">
               <CustomChessboard boardWidth={boardWidth} />
             </div>
-            <ChessSettings />
+            <div className="flex flex-col gap-1 w-full grow lg:max-w-sm">
+              <ChessSettings />
+              {gameStart ? <ChessSuggestionsPanel /> : null}
+            </div>
             {/*<div className="hidden lg:flex w-[200px] h-[600px]">
               <Adsense
                 client="ca-pub-7640562161899788"

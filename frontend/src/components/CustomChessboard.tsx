@@ -9,6 +9,7 @@ import LostPieces from "./LostPieces";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "app/store";
+import { useSuggestionsMutation } from "features/chess/chessApiSlice";
 import {
   selectCurrentPlayerColor,
   selectCurrentEngine,
@@ -18,7 +19,12 @@ import {
   setTurn,
   selectCurrentFen,
   setFen,
-  selectCurrentElo
+  selectCurrentElo,
+  selectCurrentSuggestionMoves,
+  setSuggestionMoves,
+  setSuggestionPieces,
+  selectCurrentAreSuggestionsShown,
+  selectCurrentSuggestionShown,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
@@ -37,6 +43,11 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const engine = useSelector(selectCurrentEngine).toLowerCase();
   const elo = useSelector(selectCurrentElo);
   const gameStart = useSelector(selectCurrentGameStart);
+  const areSuggestionsShown = useSelector(selectCurrentAreSuggestionsShown);
+  const suggestionShown = useSelector(selectCurrentSuggestionShown);
+  const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
+  const [suggestionArrows, setSuggestionArrows] = useState<string[][]>();
+  const [suggestions] = useSuggestionsMutation();
   const [computerColor, setComputerColor] = useState<string>(() => {
     if (playerColor === "w") {
       return "b";
@@ -73,6 +84,15 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     setRightClickedSquares({});
     dispatch(setGameStart(false));
   }
+  axiosRetry(axios, {
+    retries: 3,
+    retryDelay: (retryCount: number) => {
+      return retryCount * 2000;
+    },
+    retryCondition: (error) => {
+      return error.response?.status === 502;
+    },
+  });
   useEffect(() => {
     if (playerColor === "w") {
       setBoardOrientation("white");
@@ -84,8 +104,9 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   }, [playerColor]);
   useEffect(() => {
     if (gameStart && !game.isGameOver()) {
+      setArePiecesDragable(true);
       if (turn === playerColor) {
-        setArePiecesDragable(true);
+        setSuggestions();
       } else if (turn === computerColor) {
         setArePiecesDragable(true);
         computerMove();
@@ -95,6 +116,11 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       setArePiecesDragable(false);
     }
   }, [turn, gameStart]);
+  useEffect(() => {
+    if (suggestionShown) {
+      showSuggestionArrows();
+    }
+  }, [suggestionShown, areSuggestionsShown, suggestionMoves]);
   interface pieces {
     r: number;
     n: number;
@@ -126,15 +152,32 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   interface BestMove {
     best_move: string;
   }
-  axiosRetry(axios, {
-    retries: 3,
-    retryDelay: (retryCount: number) => {
-      return retryCount * 2000;
-    },
-    retryCondition: (error) => {
-      return error.response?.status === 502;
-    },
-  });
+  function showSuggestionArrows() {
+    if (suggestionShown[1] && areSuggestionsShown) {
+      setSuggestionArrows([
+        [
+          suggestionMoves[1].substring(0, 2),
+          suggestionMoves[1].substring(2, 4),
+        ],
+      ]);
+    } else if (suggestionShown[2] && areSuggestionsShown) {
+      setSuggestionArrows([
+        [
+          suggestionMoves[2].substring(0, 2),
+          suggestionMoves[2].substring(2, 4),
+        ],
+      ]);
+    } else if (suggestionShown[3] && areSuggestionsShown) {
+      setSuggestionArrows([
+        [
+          suggestionMoves[3].substring(0, 2),
+          suggestionMoves[3].substring(2, 4),
+        ],
+      ]);
+    } else {
+      setSuggestionArrows(undefined);
+    }
+  }
   function showLostPieces() {
     axios
       .get<pieces>(
@@ -160,6 +203,41 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         const column = Math.ceil((64 - piece_index) / 8);
         return row + column;
       });
+  };
+  const customPieces = (pieceType: string) => {
+    const pieces = [
+      "wP",
+      "wN",
+      "wB",
+      "wR",
+      "wQ",
+      "wK",
+      "bP",
+      "bN",
+      "bB",
+      "bR",
+      "bQ",
+      "bK",
+    ];
+    const returnPieces = {} as any;
+    pieces.map((p) => {
+      returnPieces[p] = ({ squareWidth }: any) => (
+        <div
+          className="bg-center bg-no-repeat"
+          style={{
+            width: squareWidth,
+            height: squareWidth,
+            backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/chess_pieces/${pieceType}/${p}.png)`,
+            backgroundSize: `${pieceType === "pixel" ? 80 : 100}%`,
+          }}
+        />
+      );
+      return null;
+    });
+    if (returnPieces) {
+      return returnPieces;
+    }
+    return undefined;
   };
   function gameOverState() {
     if (game.isGameOver()) {
@@ -220,14 +298,14 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     });
   }
   function onMouseOverSquare(square: Square) {
-    if (gameStart && !moveFrom && turn === playerColor) {
+    if (gameStart && !game.get(moveFrom as Square) && turn === playerColor) {
       getMoveOptions(square);
     }
   }
   function onMouseOutSquare() {
     if (
       Object.keys(optionSquares).length !== 0 &&
-      !moveFrom &&
+      !game.get(moveFrom as Square) &&
       turn === playerColor
     )
       setOptionSquares([]);
@@ -278,6 +356,21 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       }
     }
   }
+  async function setSuggestions() {
+    try {
+      const response = await suggestions(
+        game.fen().replaceAll("/", "-")
+      ).unwrap();
+      dispatch(setSuggestionMoves(response));
+      dispatch(
+        setSuggestionPieces({
+          1: game.get(response[1].substring(0, 2)).type,
+          2: game.get(response[2].substring(0, 2)).type,
+          3: game.get(response[3].substring(0, 2)).type,
+        })
+      );
+    } catch (error: any) {}
+  }
   function timeout(delay: number) {
     return new Promise((res) => setTimeout(res, delay));
   }
@@ -326,33 +419,37 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     moveSound.play();
   }
   function onDrop(source: Square, target: Square, piece: Pieces) {
-    let result = null;
-    if (piece === "wP" || piece === "bP") {
-      result = game.move({ from: source, to: target, promotion: "q" });
-      if (result === null) result = game.move({ from: source, to: target });
-    } else {
-      result = game.move({ from: source, to: target });
-    }
-    if (result != null) {
-      setMoveSquares({
-        [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-        [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-      });
-      setOptionSquares({});
-      showLostPieces();
-      dispatch(setFen(game.fen()));
-      if (game.isCheck()) {
-        const computerKingSquare: Square = getPiecePositions({
-          color: computerColor as Color,
-          type: "k",
-        })[0];
-        addCheckSquares(computerKingSquare);
+    if (turn === playerColor) {
+      let result = null;
+      if (piece === "wP" || piece === "bP") {
+        result = game.move({ from: source, to: target, promotion: "q" });
+        if (result === null) result = game.move({ from: source, to: target });
       } else {
-        setCheckSquares({});
+        result = game.move({ from: source, to: target });
       }
-      dispatch(setTurn(game.turn()));
-      moveSound.play();
-      return true;
+      if (result != null) {
+        setMoveSquares({
+          [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+          [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+        });
+        setOptionSquares({});
+        showLostPieces();
+        dispatch(setFen(game.fen()));
+        if (game.isCheck()) {
+          const computerKingSquare: Square = getPiecePositions({
+            color: computerColor as Color,
+            type: "k",
+          })[0];
+          addCheckSquares(computerKingSquare);
+        } else {
+          setCheckSquares({});
+        }
+        dispatch(setTurn(game.turn()));
+        moveSound.play();
+        return true;
+      }
+      showSuggestionArrows();
+      return false;
     }
     return false;
   }
@@ -379,6 +476,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
           customBoardStyle={{ userSelect: "none", borderRadius: "5px" }}
+          customPieces={customPieces("classic")}
           customDarkSquareStyle={{ backgroundColor: "#517879" }}
           customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
           arePiecesDraggable={arePiecesDragable}
@@ -390,6 +488,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           onMouseOutSquare={onMouseOutSquare}
           onSquareRightClick={onSquareRightClick}
           onSquareClick={onSquareClick}
+          customArrows={suggestionArrows}
           customSquareStyles={{
             ...moveSquares,
             ...optionSquares,
