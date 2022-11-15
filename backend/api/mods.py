@@ -134,6 +134,10 @@ def get_move(engine:str, difficulty:str, FEN:str):
 
         engine_settings = {"Skill": difficulty}
 
+    elif(engine == "leela"):
+
+        engine_settings = {}
+
     engine = load_engine(engine)
     engine.configure(engine_settings)
 
@@ -143,3 +147,7 @@ def get_move(engine:str, difficulty:str, FEN:str):
     engine.quit()
 
     return str(result.move)
+
+def piece_count(FEN:str)->dict:
+
+    return None

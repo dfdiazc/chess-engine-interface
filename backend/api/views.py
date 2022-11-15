@@ -75,6 +75,6 @@ class MatchInfo(generics.GenericAPIView):
         previous_move = match_moves[-2]
 
         latest_FEN = fix_fen(latest_move.fen_code)
-        previous_FEN = fix_fen(previous_move.fen)
+        previous_FEN = fix_fen(previous_move.fen_code)
 
         return Response({"hello": "world"})
