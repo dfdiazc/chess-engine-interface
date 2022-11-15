@@ -11,6 +11,12 @@ class Match(models.Model):
     start_time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(null = True)
 
+    """
+    En caso de que se quiera fijar la dificultad:
+
+    difficulty = models.PositiveSmallIntegerField(related_name = "difficulty")
+    """
+
     def __str__(self):
 
        return f"{self.whites_player} at {self.start_time}"

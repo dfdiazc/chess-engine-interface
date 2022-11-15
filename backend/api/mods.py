@@ -73,16 +73,18 @@ def get_stockfish_nbest_moves(FEN:str)->str:
     """
 
     n = 3 # number of moves to be displayed
-    elo = [1350, 1800, 2100]
-    moves = {}
+    elo = [2100, 1800, 1350]
+
+    engine = load_engine("stockfish")
+    board = chess.Board(FEN)
 
     for i in range(n):
 
-        stockfish = load_stockfish()
-        board = chess.Board(FEN)
         stockfish.configure({"UCI_Elo": elo[i], "UCI_LimitStrength": "true"})
         result = stockfish.play(board, chess.engine.Limit(time = 0.1))
         moves[str(i + 1)] = str(result.move)
+
+    engine.quit()
 
     return moves
 
