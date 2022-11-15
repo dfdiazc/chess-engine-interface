@@ -29,7 +29,6 @@ class CreateMatchView(generics.CreateAPIView):
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
 
-
 class CreateMoveView(generics.CreateAPIView):
 
     queryset = Moves.objects.all()
@@ -65,3 +64,17 @@ class GetMove(generics.GenericAPIView):
         best_move = mods.get_move(engine, difficulty, new_FEN)
 
         return Response({"best_move": best_move})
+
+class MatchInfo(generics.GenericAPIView):
+
+    def get(self, request, match_id):
+
+        match_moves = Moves.objects.filter(match=match_id).order_by("time")
+
+        latest_move = match_moves[-1]
+        previous_move = match_moves[-2]
+
+        latest_FEN = fix_fen(latest_move.fen_code)
+        previous_FEN = fix_fen(previous_move.fen)
+
+        return Response({"hello": "world"})
