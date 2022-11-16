@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "app/store";
-import { useSuggestionsMutation } from "features/chess/chessApiSlice";
+import { useSuggestionsQuery } from "features/chess/chessApiSlice";
 import { useSelector } from "react-redux";
 import {
   selectCurrentAreSuggestionsShown,
@@ -10,11 +10,15 @@ import {
   selectCurrentSuggestionPieces,
   selectCurrentSuggestionShown,
   setSuggestionShown,
+  selectCurrentFen,
+  selectCurrentTurn,
+  selectCurrentPlayerColor,
 } from "features/chess/chessSlice";
 import { IconContext } from "react-icons";
 import { BsLightbulbFill, BsLightbulbOffFill } from "react-icons/bs";
+import { AiFillQuestionCircle } from "react-icons/ai";
+import ReactTooltip from "react-tooltip";
 import ChessSuggestion from "./ChessSuggestion";
-import Spinner from "./Spinner";
 
 const ChessSuggestionsPanel = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,14 +26,17 @@ const ChessSuggestionsPanel = () => {
   const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
   const suggestionPieces = useSelector(selectCurrentSuggestionPieces);
   const suggestionShown = useSelector(selectCurrentSuggestionShown);
-  const [suggestions, { isLoading }] = useSuggestionsMutation();
+  const fen = useSelector(selectCurrentFen);
+  const turn = useSelector(selectCurrentTurn);
+  const playerColor = useSelector(selectCurrentPlayerColor);
+  const { isFetching } = useSuggestionsQuery(fen);
   const selectedClass = "bg-flamingo-200 rounded";
   return (
     <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
-      <div className="flex flex-row gap-5 px-5 py-3 bg-[#2B3133] drop-shadow-xl rounded grow shrink-0 w-full lg:max-w-sm">
+      <div className="flex flex-row gap-5 px-5 py-3 h-36 bg-[#2B3133] drop-shadow-xl rounded grow shrink-0 w-full lg:max-w-sm">
         {areSuggestionShown ? (
           <button
-            className="flex p-1 rounded"
+            className="flex p-1 rounded justify-self-start"
             onClick={() => {
               dispatch(setAreSuggestionsShown(false));
             }}
@@ -42,7 +49,7 @@ const ChessSuggestionsPanel = () => {
           </button>
         ) : (
           <button
-            className="flex p-1 rounded"
+            className="flex p-1 rounded justify-self-start"
             onClick={() => {
               dispatch(setAreSuggestionsShown(true));
             }}
@@ -56,78 +63,104 @@ const ChessSuggestionsPanel = () => {
         )}
         {areSuggestionShown ? (
           <>
-            {isLoading ? (
-              <Spinner />
-            ) : (
-              <div className="flex flex-col gap-1 self-center">
-                <button
-                  className={suggestionShown[1] ? selectedClass : ""}
-                  onClick={() => {
-                    dispatch(
-                      setSuggestionShown({
-                        1: !suggestionShown[1],
-                        2: false,
-                        3: false,
-                      })
-                    );
-                  }}
-                >
-                  <ChessSuggestion
-                    move={suggestionMoves[1]}
-                    piece={suggestionPieces[1]}
-                  />
-                </button>
-                <button
-                  className={suggestionShown[2] ? selectedClass : ""}
-                  onClick={() => {
-                    dispatch(
-                      setSuggestionShown({
-                        1: false,
-                        2: !suggestionShown[2],
-                        3: false,
-                      })
-                    );
-                  }}
-                >
-                  <ChessSuggestion
-                    move={suggestionMoves[2]}
-                    piece={suggestionPieces[2]}
-                  />
-                </button>
-                <button
-                  className={suggestionShown[3] ? selectedClass : ""}
-                  onClick={() => {
-                    dispatch(
-                      setSuggestionShown({
-                        1: false,
-                        2: false,
-                        3: !suggestionShown[3],
-                      })
-                    );
-                  }}
-                >
-                  <ChessSuggestion
-                    move={suggestionMoves[3]}
-                    piece={suggestionPieces[3]}
-                  />
-                </button>
+            {isFetching && turn === playerColor ? (
+              <div className="flex flex-col gap-2 w-full animate-pulse duration-75 justify-center">
+                <div className="flex gap-3 h-8">
+                  <div className="w-2/3 h-2 rounded-full bg-neutral-300 self-center"></div>
+                  <div className="w-1/3 h-2 rounded-full bg-neutral-300 self-center"></div>
+                </div>
+                <div className="flex gap-3 h-8">
+                  <div className="w-1/3 h-2 rounded-full bg-neutral-300 self-center"></div>
+                  <div className="w-2/3 h-2 rounded-full bg-neutral-300 self-center"></div>
+                </div>
+                <div className="flex gap-3 h-8">
+                  <div className="w-1/2 h-2 rounded-full bg-neutral-300 self-center"></div>
+                  <div className="w-1/2 h-2 rounded-full bg-neutral-300 self-center"></div>
+                </div>
               </div>
-            )}{" "}
+            ) : (
+              <div className="flex flex-row justify-between relative">
+                <div className="flex flex-col gap-2 self-center justify-center">
+                  <button
+                    className={suggestionShown[1] ? selectedClass : ""}
+                    onClick={() => {
+                      dispatch(
+                        setSuggestionShown({
+                          1: !suggestionShown[1],
+                          2: false,
+                          3: false,
+                        })
+                      );
+                    }}
+                  >
+                    <ChessSuggestion
+                      move={suggestionMoves[1]}
+                      piece={suggestionPieces[1]}
+                    />
+                  </button>
+                  {suggestionMoves[2] !== suggestionMoves[1] ? (
+                    <button
+                      className={suggestionShown[2] ? selectedClass : ""}
+                      onClick={() => {
+                        dispatch(
+                          setSuggestionShown({
+                            1: false,
+                            2: !suggestionShown[2],
+                            3: false,
+                          })
+                        );
+                      }}
+                    >
+                      <ChessSuggestion
+                        move={suggestionMoves[2]}
+                        piece={suggestionPieces[2]}
+                      />
+                    </button>
+                  ) : null}
+                  {suggestionMoves[3] !== suggestionMoves[2] ? (
+                    <button
+                      className={suggestionShown[3] ? selectedClass : ""}
+                      onClick={() => {
+                        dispatch(
+                          setSuggestionShown({
+                            1: false,
+                            2: false,
+                            3: !suggestionShown[3],
+                          })
+                        );
+                      }}
+                    >
+                      <ChessSuggestion
+                        move={suggestionMoves[3]}
+                        piece={suggestionPieces[3]}
+                      />
+                    </button>
+                  ) : null}
+                </div>
+              </div>
+            )}
+            <div className="absolute top-0 right-0 px-5 py-3">
+              <div className="relative">
+                <div data-tip data-for="suggestedTip">
+                  <IconContext.Provider
+                    value={{ className: "h-5 w-5 text-white cursor-pointer" }}
+                  >
+                    <AiFillQuestionCircle />
+                  </IconContext.Provider>
+                </div>
+                <ReactTooltip id="suggestedTip" place="top" effect="solid">
+                  <span className="font-roboto font-normal text-sm text-white/80 self-center select-none">
+                    Click on a move to show it on the board.
+                  </span>
+                </ReactTooltip>
+              </div>
+            </div>
           </>
         ) : (
-          <div className="flex flex-col gap-1 w-full">
-            <div className="flex gap-3 h-8">
-              <div className="w-2/3 h-2 rounded-full bg-neutral-300 self-center"></div>
-              <div className="w-1/3 h-2 rounded-full bg-neutral-300 self-center"></div>
-            </div>
-            <div className="flex gap-3 h-8">
-              <div className="w-1/3 h-2 rounded-full bg-neutral-300 self-center"></div>
-              <div className="w-2/3 h-2 rounded-full bg-neutral-300 self-center"></div>
-            </div>
-            <div className="flex gap-3 h-8">
-              <div className="w-1/2 h-2 rounded-full bg-neutral-300 self-center"></div>
-              <div className="w-1/2 h-2 rounded-full bg-neutral-300 self-center"></div>
-            </div>
+          <div className="flex">
+            <span className="self-center font-roboto font-normal text-base text-white select-none">
+              Click on the lightbulb to see suggested moves.
+            </span>
           </div>
         )}
       </div>
