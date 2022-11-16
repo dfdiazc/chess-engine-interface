@@ -64,7 +64,7 @@ const ChessSuggestionsPanel = () => {
         {areSuggestionShown ? (
           <>
             {isFetching && turn === playerColor ? (
-              <div className="flex flex-col gap-2 w-full animate-pulse duration-75 justify-center">
+              <div className="flex flex-col gap-2 w-full animate-pulse duration-75 justify-center mr-8">
                 <div className="flex gap-3 h-8">
                   <div className="w-2/3 h-2 rounded-full bg-neutral-300 self-center"></div>
                   <div className="w-1/3 h-2 rounded-full bg-neutral-300 self-center"></div>
@@ -79,7 +79,7 @@ const ChessSuggestionsPanel = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex flex-row justify-between relative">
+              <div className="flex flex-row justify-between relative mr-8">
                 <div className="flex flex-col gap-2 self-center justify-center">
                   <button
                     className={suggestionShown[1] ? selectedClass : ""}
