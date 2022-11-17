@@ -493,6 +493,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           onSquareRightClick={onSquareRightClick}
           onSquareClick={onSquareClick}
           customArrows={suggestionArrows}
+          customArrowColor="#DC5A41"
           customSquareStyles={{
             ...moveSquares,
             ...optionSquares,

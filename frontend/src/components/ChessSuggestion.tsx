@@ -4,6 +4,7 @@ import { selectCurrentPlayerColor } from "features/chess/chessSlice";
 import { IconContext } from "react-icons";
 import {
   FaChessBishop,
+  FaChessKing,
   FaChessKnight,
   FaChessPawn,
   FaChessQueen,
@@ -20,7 +21,7 @@ const Pieces = {
   n: <FaChessKnight />,
   b: <FaChessBishop />,
   r: <FaChessRook />,
-  k: <FaChessKnight />,
+  k: <FaChessKing />,
   q: <FaChessQueen />,
 };
 
