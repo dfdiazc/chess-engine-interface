@@ -117,7 +117,8 @@ const ChessSuggestionsPanel = () => {
                       />
                     </button>
                   ) : null}
-                  {suggestionMoves[3] !== suggestionMoves[2] ? (
+                  {suggestionMoves[3] !== suggestionMoves[2] &&
+                  suggestionMoves[3] !== suggestionMoves[1] ? (
                     <button
                       className={suggestionShown[3] ? selectedClass : ""}
                       onClick={() => {
