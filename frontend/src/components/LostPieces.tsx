@@ -34,7 +34,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.p > 0 && (
               <div className="flex gap-1">
                 <FaChessPawn />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.p}
                 </span>
               </div>
@@ -42,7 +42,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.n > 0 && (
               <div className="flex gap-1">
                 <FaChessKnight />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.n}
                 </span>
               </div>
@@ -50,7 +50,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.b > 0 && (
               <div className="flex gap-1">
                 <FaChessBishop />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.b}
                 </span>
               </div>
@@ -58,7 +58,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.q > 0 && (
               <div className="flex gap-1">
                 <FaChessQueen />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.q}
                 </span>
               </div>
@@ -66,7 +66,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.r > 0 && (
               <div className="flex gap-1">
                 <FaChessRook />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.r}
                 </span>
               </div>
@@ -83,7 +83,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.P > 0 && (
               <div className="flex gap-1">
                 <FaChessPawn />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.P}
                 </span>
               </div>
@@ -91,7 +91,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.N > 0 && (
               <div className="flex gap-1">
                 <FaChessKnight />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.N}
                 </span>
               </div>
@@ -99,7 +99,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.B > 0 && (
               <div className="flex gap-1">
                 <FaChessBishop />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.B}
                 </span>
               </div>
@@ -107,7 +107,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.Q > 0 && (
               <div className="flex gap-1">
                 <FaChessQueen />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.Q}
                 </span>
               </div>
@@ -115,7 +115,7 @@ const LostPieces = (props: LostPiecesProps) => {
             {props.R > 0 && (
               <div className="flex gap-1">
                 <FaChessRook />
-                <span className="font-roboto font-normal text-white/50">
+                <span className="font-roboto font-normal text-white/50 select-none">
                   {props.R}
                 </span>
               </div>
