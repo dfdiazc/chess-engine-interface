@@ -46,7 +46,7 @@ const Play = () => {
             <div className="flex flex-row pl-10 pr-3">
               <CustomChessboard boardWidth={boardWidth} />
             </div>
-            <div className="flex flex-col gap-1 w-full grow lg:max-w-sm">
+            <div className="flex flex-col gap-1 w-full lg:max-w-sm">
               <ChessSettings />
               {gameStart ? <ChessSuggestionsPanel /> : null}
             </div>
