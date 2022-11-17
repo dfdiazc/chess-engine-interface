@@ -9,7 +9,7 @@ import LostPieces from "./LostPieces";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "app/store";
-import { useSuggestionsMutation } from "features/chess/chessApiSlice";
+import { useSuggestionsQuery } from "features/chess/chessApiSlice";
 import {
   selectCurrentPlayerColor,
   selectCurrentEngine,
@@ -35,10 +35,16 @@ interface CustomChessboardProps {
 
 const CustomChessboard = (props: CustomChessboardProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const [game] = useState(new Chess());
   const fen = useSelector(selectCurrentFen);
+  const [game] = useState(new Chess(fen));
   const [gameState, setGameState] = useState<string>();
   const playerColor = useSelector(selectCurrentPlayerColor);
+  const [computerColor, setComputerColor] = useState<string>(() => {
+    if (playerColor === "w") {
+      return "b";
+    }
+    return "w";
+  });
   const turn = useSelector(selectCurrentTurn);
   const engine = useSelector(selectCurrentEngine).toLowerCase();
   const elo = useSelector(selectCurrentElo);
@@ -47,12 +53,8 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const suggestionShown = useSelector(selectCurrentSuggestionShown);
   const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
   const [suggestionArrows, setSuggestionArrows] = useState<string[][]>();
-  const [suggestions] = useSuggestionsMutation();
-  const [computerColor, setComputerColor] = useState<string>(() => {
-    if (playerColor === "w") {
-      return "b";
-    }
-    return "w";
+  const { data: suggestions } = useSuggestionsQuery(fen, {
+    skip: turn === computerColor || !gameStart || game.isGameOver(),
   });
   const chessboardRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const moveSound = new Howl({
@@ -106,7 +108,6 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     if (gameStart && !game.isGameOver()) {
       setArePiecesDragable(true);
       if (turn === playerColor) {
-        setSuggestions();
       } else if (turn === computerColor) {
         setArePiecesDragable(true);
         computerMove();
@@ -117,10 +118,15 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     }
   }, [turn, gameStart]);
   useEffect(() => {
-    if (suggestionShown) {
+    if (suggestionShown && gameStart && !game.isGameOver()) {
       showSuggestionArrows();
     }
   }, [suggestionShown, areSuggestionsShown, suggestionMoves]);
+  useEffect(() => {
+    if (turn === playerColor) {
+      setSuggestions();
+    }
+  }, [suggestions]);
   interface pieces {
     r: number;
     n: number;
@@ -357,19 +363,17 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     }
   }
   async function setSuggestions() {
-    try {
-      const response = await suggestions(
-        game.fen().replaceAll("/", "-")
-      ).unwrap();
-      dispatch(setSuggestionMoves(response));
+    console.log(suggestions);
+    if (suggestions) {
+      dispatch(setSuggestionMoves(suggestions));
       dispatch(
         setSuggestionPieces({
-          1: game.get(response[1].substring(0, 2)).type,
-          2: game.get(response[2].substring(0, 2)).type,
-          3: game.get(response[3].substring(0, 2)).type,
+          1: game.get(suggestions[1].substring(0, 2)).type,
+          2: game.get(suggestions[2].substring(0, 2)).type,
+          3: game.get(suggestions[3].substring(0, 2)).type,
         })
       );
-    } catch (error: any) {}
+    }
   }
   function timeout(delay: number) {
     return new Promise((res) => setTimeout(res, delay));
