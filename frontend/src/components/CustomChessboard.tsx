@@ -233,8 +233,8 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/chess_pieces/${pieceType}/${p}.png)`,
-            backgroundSize: `${pieceType === "pixel" ? 80 : 100}%`,
+            backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundSize: "100%",
           }}
         />
       );
@@ -480,7 +480,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
           customBoardStyle={{ userSelect: "none", borderRadius: "5px" }}
-          customPieces={customPieces("classic")}
+          customPieces={customPieces("cburnett")}
           customDarkSquareStyle={{ backgroundColor: "#517879" }}
           customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
           arePiecesDraggable={arePiecesDragable}
