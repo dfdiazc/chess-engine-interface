@@ -4,7 +4,7 @@ import { setCredentials, logOut } from "features/auth/authSlice";
 import type { RootState } from "app/store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://146.190.33.159:8000",
+  baseUrl: "https://unrealchess.pythonanywhere.com/",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
