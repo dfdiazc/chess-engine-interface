@@ -233,7 +233,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(http://146.190.33.159:8000/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />
@@ -382,15 +382,15 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     await timeout(1000);
     const url = () => {
       if (engine === "stockfish") {
-        return `http://146.190.33.159:8000/api/play/stockfish/${elo}/${game
+        return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${elo}/${game
           .fen()
           .replaceAll("/", "-")}`;
       } else if (engine === "komodo") {
-        return `http://146.190.33.159:8000/api/play/komodo/15/${game
+        return `https://unrealchess.pythonanywhere.com/api/play/komodo/15/${game
           .fen()
           .replaceAll("/", "-")}`;
       }
-      return `http://146.190.33.159:8000/api/play/stockfish/${elo}/${game
+      return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${elo}/${game
         .fen()
         .replaceAll("/", "-")}`;
     };
