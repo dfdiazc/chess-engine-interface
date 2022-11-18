@@ -13,6 +13,8 @@ import {
   selectCurrentElo,
   setElo,
 } from "features/chess/chessSlice";
+import { IconContext } from "react-icons";
+import { FaChessPawn } from "react-icons/fa";
 
 const ChessSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -160,28 +162,42 @@ const ChessSettings = () => {
           </span>
           <span className="w-full mr-3 mt-3 h-px bg-white"></span>
           <div className="flex flex-row gap-5 self-center mt-2">
-            <span className="font-roboto font-normal text-md text-white select-none">
-              White
-            </span>
-            <input
-              type="radio"
-              value="White"
-              checked={playerColor === "w"}
-              onChange={() => {
+            <button
+              className={
+                playerColor === "w"
+                  ? "px-2 pt-1 pb-3 rounded-lg ring-2 ring-flamingo-100 bg-flamingo-100/50"
+                  : "px-2 pt-1 pb-3 rounded-lg"
+              }
+              onClick={() => {
                 dispatch(setPlayerColor("w"));
               }}
-            />
-            <span className="font-roboto font-normal text-md text-white select-none">
-              Black
-            </span>
-            <input
-              type="radio"
-              value="Black"
-              checked={playerColor === "b"}
-              onChange={() => {
+            >
+              <div
+                className="bg-center bg-no-repeat h-10 w-10"
+                style={{
+                  backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/pieces/staunty/wP.svg)`,
+                  backgroundSize: "100%",
+                }}
+              />
+            </button>
+            <button
+              className={
+                playerColor === "b"
+                  ? "px-2 pt-1 pb-3 rounded-lg ring-2 ring-flamingo-100 bg-flamingo-100/50"
+                  : "px-2 pt-1 pb-3 rounded-lg"
+              }
+              onClick={() => {
                 dispatch(setPlayerColor("b"));
               }}
-            />
+            >
+              <div
+                className="bg-center bg-no-repeat h-10 w-10"
+                style={{
+                  backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/pieces/staunty/bP.svg)`,
+                  backgroundSize: "100%",
+                }}
+              />
+            </button>
           </div>
           <button
             onClick={() => {
