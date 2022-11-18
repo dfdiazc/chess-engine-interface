@@ -25,6 +25,8 @@ import {
   setSuggestionPieces,
   selectCurrentAreSuggestionsShown,
   selectCurrentSuggestionShown,
+  selectCurrentGameOver,
+  setGameOver,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
@@ -49,6 +51,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const engine = useSelector(selectCurrentEngine).toLowerCase();
   const elo = useSelector(selectCurrentElo);
   const gameStart = useSelector(selectCurrentGameStart);
+  const gameOver = useSelector(selectCurrentGameOver);
   const areSuggestionsShown = useSelector(selectCurrentAreSuggestionsShown);
   const suggestionShown = useSelector(selectCurrentSuggestionShown);
   const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
@@ -114,7 +117,6 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       }
     } else if (game.isGameOver()) {
       gameOverState();
-      setArePiecesDragable(false);
     }
   }, [turn, gameStart]);
   useEffect(() => {
@@ -255,6 +257,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       } else if (draw) {
         setGameState("Draw");
       }
+      dispatch(setGameOver(true));
       setArePiecesDragable(false);
     }
   }
@@ -503,7 +506,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           ref={chessboardRef}
         />
         <TurnIndicator boardWidth={props.boardWidth} />
-        {game.isGameOver() && (
+        {gameOver ? (
           <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
             <span className="font-roboto font-medium text-white text-3xl self-center text-center select-none">
               {gameState}
@@ -524,7 +527,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
               Play Again!
             </button>
           </div>
-        )}
+        ): null}
       </div>
       <LostPieces
         r={lostPieces.r}
