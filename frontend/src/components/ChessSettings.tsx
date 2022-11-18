@@ -173,7 +173,7 @@ const ChessSettings = () => {
               <div
                 className="bg-center bg-no-repeat h-10 w-10"
                 style={{
-                  backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/pieces/staunty/wP.svg)`,
+                  backgroundImage: `url(http://146.190.33.159:8000/static/chess/pieces/staunty/wP.svg)`,
                   backgroundSize: "100%",
                 }}
               />
@@ -191,7 +191,7 @@ const ChessSettings = () => {
               <div
                 className="bg-center bg-no-repeat h-10 w-10"
                 style={{
-                  backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/pieces/staunty/bP.svg)`,
+                  backgroundImage: `url(http://146.190.33.159:8000/static/chess/pieces/staunty/bP.svg)`,
                   backgroundSize: "100%",
                 }}
               />
