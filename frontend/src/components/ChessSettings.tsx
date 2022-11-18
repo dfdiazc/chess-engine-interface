@@ -12,7 +12,7 @@ import {
   setGameStart,
   selectCurrentElo,
   setElo,
-} from "features/chess/chessSlice";
+} from "features/chess/chessSlice"
 import { IconContext } from "react-icons";
 import { FaChessPawn } from "react-icons/fa";
 
