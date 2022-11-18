@@ -17,7 +17,6 @@ import {
 import { IconContext } from "react-icons";
 import { BsLightbulbFill, BsLightbulbOffFill } from "react-icons/bs";
 import { AiFillQuestionCircle } from "react-icons/ai";
-import ReactTooltip from "react-tooltip";
 import ChessSuggestion from "./ChessSuggestion";
 
 const ChessSuggestionsPanel = () => {
@@ -30,13 +29,13 @@ const ChessSuggestionsPanel = () => {
   const turn = useSelector(selectCurrentTurn);
   const playerColor = useSelector(selectCurrentPlayerColor);
   const { isFetching } = useSuggestionsQuery(fen);
-  const selectedClass = "bg-flamingo-200 rounded";
+  const selectedClass = "rounded-lg ring-2 ring-flamingo-100 bg-flamingo-100/50";
   return (
     <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
       <div className="flex flex-row gap-5 px-5 py-3 h-36 bg-[#2B3133] drop-shadow-xl rounded grow shrink-0 w-full lg:max-w-sm">
         {areSuggestionShown ? (
           <button
-            className="flex p-1 rounded justify-self-start"
+            className="flex p-1 rounded-full justify-self-start h-fit self-center"
             onClick={() => {
               dispatch(setAreSuggestionsShown(false));
             }}
@@ -49,7 +48,7 @@ const ChessSuggestionsPanel = () => {
           </button>
         ) : (
           <button
-            className="flex p-1 rounded justify-self-start"
+            className="flex p-1 rounded-full justify-self-start h-fit self-center"
             onClick={() => {
               dispatch(setAreSuggestionsShown(true));
             }}
@@ -142,6 +141,7 @@ const ChessSuggestionsPanel = () => {
             )}
             <div className="absolute top-0 right-0 px-5 py-3">
               <div className="relative">
+                {/* Tooltip is in Play View */}
                 <div data-tip data-for="suggestedTip">
                   <IconContext.Provider
                     value={{ className: "h-5 w-5 text-white cursor-pointer" }}
@@ -149,11 +149,6 @@ const ChessSuggestionsPanel = () => {
                     <AiFillQuestionCircle />
                   </IconContext.Provider>
                 </div>
-                <ReactTooltip id="suggestedTip" place="top" effect="solid">
-                  <span className="font-roboto font-normal text-sm text-white/80 self-center select-none">
-                    Click on a move to show it on the board.
-                  </span>
-                </ReactTooltip>
               </div>
             </div>
           </>
@@ -163,6 +158,7 @@ const ChessSuggestionsPanel = () => {
               Click on the lightbulb to see suggested moves.
             </span>
           </div>
+          
         )}
       </div>
     </div>

@@ -233,7 +233,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(http://146.190.33.159:8000/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />
@@ -382,15 +382,15 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     await timeout(1000);
     const url = () => {
       if (engine === "stockfish") {
-        return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${elo}/${game
+        return `http://146.190.33.159:8000/api/play/stockfish/${elo}/${game
           .fen()
           .replaceAll("/", "-")}`;
       } else if (engine === "komodo") {
-        return `https://unrealchess.pythonanywhere.com/api/play/komodo/15/${game
+        return `http://146.190.33.159:8000/api/play/komodo/15/${game
           .fen()
           .replaceAll("/", "-")}`;
       }
-      return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${elo}/${game
+      return `http://146.190.33.159:8000/api/play/stockfish/${elo}/${game
         .fen()
         .replaceAll("/", "-")}`;
     };
@@ -480,7 +480,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           onPieceDrop={onDrop}
           boardWidth={props.boardWidth}
           customBoardStyle={{ userSelect: "none", borderRadius: "5px" }}
-          customPieces={customPieces("cburnett")}
+          customPieces={customPieces("staunty")}
           customDarkSquareStyle={{ backgroundColor: "#517879" }}
           customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
           arePiecesDraggable={arePiecesDragable}
