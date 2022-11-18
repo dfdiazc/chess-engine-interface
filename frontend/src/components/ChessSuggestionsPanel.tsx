@@ -17,7 +17,6 @@ import {
 import { IconContext } from "react-icons";
 import { BsLightbulbFill, BsLightbulbOffFill } from "react-icons/bs";
 import { AiFillQuestionCircle } from "react-icons/ai";
-import ReactTooltip from "react-tooltip";
 import ChessSuggestion from "./ChessSuggestion";
 
 const ChessSuggestionsPanel = () => {
@@ -159,6 +158,7 @@ const ChessSuggestionsPanel = () => {
               Click on the lightbulb to see suggested moves.
             </span>
           </div>
+          
         )}
       </div>
     </div>

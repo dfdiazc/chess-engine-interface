@@ -6,7 +6,7 @@ import {
   Header,
 } from "components";
 import { useSelector } from "react-redux";
-import { selectCurrentGameStart } from "features/chess/chessSlice";
+import { selectCurrentAreSuggestionsShown, selectCurrentGameStart } from "features/chess/chessSlice";
 import { Helmet } from "react-helmet";
 import { Adsense } from "@ctrl/react-adsense";
 import ReactTooltip from "react-tooltip";
@@ -14,6 +14,7 @@ import ReactTooltip from "react-tooltip";
 const Play = () => {
   const gameStart = useSelector(selectCurrentGameStart);
   const [boardWidth, setBoardWidth] = useState(initialBoardSize);
+  const areSuggestionShown = useSelector(selectCurrentAreSuggestionsShown);
   function initialBoardSize() {
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
@@ -50,11 +51,11 @@ const Play = () => {
             <div className="flex flex-col gap-1 w-full lg:max-w-sm">
               <ChessSettings />
               {gameStart ? <ChessSuggestionsPanel /> : null}
-              <ReactTooltip id="suggestedTip" place="top" effect="solid" type="info">
+              {areSuggestionShown ? (<ReactTooltip id="suggestedTip" place="top" effect="solid" type="info">
                 <span className="font-roboto font-normal text-sm text-white/80 self-center select-none">
                   Click on a move to show it on the board.
                 </span>
-              </ReactTooltip>
+              </ReactTooltip>) : null}
             </div>
             {/*<div className="hidden lg:flex w-[200px] h-[600px]">
               <Adsense
