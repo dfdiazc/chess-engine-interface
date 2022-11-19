@@ -8,6 +8,7 @@ import Play from "views/Play";
 import Register from "views/Register";
 import Profile from "views/Profile";
 import RequireAuth from "features/auth/RequireAuth";
+import { AuthUI } from "components";
 
 function App() {
   return (
@@ -16,9 +17,11 @@ function App() {
         <Routes>
           {/* public routes */}
           <Route path="/" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
           <Route path="/play" element={<Play />} />
+          <Route element={<AuthUI />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
           {/* protected routes */}
           <Route element={<RequireAuth />}>
             <Route path="/profile" element={<Profile />} />

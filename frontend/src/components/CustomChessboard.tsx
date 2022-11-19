@@ -366,7 +366,6 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     }
   }
   async function setSuggestions() {
-    console.log(suggestions);
     if (suggestions) {
       dispatch(setSuggestionMoves(suggestions));
       dispatch(
