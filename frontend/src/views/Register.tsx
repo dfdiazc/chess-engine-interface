@@ -3,12 +3,28 @@ import { Link } from "react-router-dom";
 import { RegisterForm } from "components";
 import { IconContext } from "react-icons";
 import { FaChess } from "react-icons/fa";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 
 const Register = () => {
+  const registerVariations = {
+    hidden: { scale: 0.95 },
+    visible: { scale: 1 },
+  };
+  const scale = useMotionValue(0.95);
+  const scaleRange = [0.95, 1];
+  const opacityRange = [0, 1];
+  const opacity = useTransform(scale, scaleRange, opacityRange);
   return (
-    <div className="flex flex-col h-screen w-full bg-gradient-to-r from-[#1C2021] to-blue-500 overflow-auto">
+    <div className="flex flex-col h-screen w-full overflow-auto bg-gradient-to-r from-[#1d7c8f] to-[#dc5a41]">
       <div className="flex justify-center grow py-10">
-        <div className="bg-white px-10 py-6 relative rounded-xl self-center w-full max-w-sm">
+        <motion.div
+          className="bg-white px-10 py-6 relative rounded-xl self-center w-full max-w-sm z-10"
+          variants={registerVariations}
+          animate="visible"
+          exit="hidden"
+          transition={{ duration: 0.35 }}
+          style={{ opacity, scale }}
+        >
           <div className="flex flex-col pb-6 items-center gap-5">
             <div className="flex gap-5">
               <IconContext.Provider
@@ -22,7 +38,7 @@ const Register = () => {
             </div>
           </div>
           <RegisterForm />
-          {/*<div className="block pt-5 font-roboto font-normal text-gray-800 text-xs text-center">
+          <div className="block pt-5 font-roboto font-normal text-gray-800 text-xs text-center">
             By signing up you agree to Un-Real Chess'&nbsp;
             <Link
               to="/register"
@@ -38,7 +54,7 @@ const Register = () => {
               Privacy Policy
             </Link>
             .
-  </div>*/}
+          </div>
           <div className="flex items-center py-5">
             <span className="grow h-px bg-black/20"></span>
           </div>
@@ -51,7 +67,7 @@ const Register = () => {
               Start playing chess!
             </Link>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
