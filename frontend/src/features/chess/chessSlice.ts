@@ -11,6 +11,7 @@ const chessSlice = createSlice({
     gameStart: false,
     gameOver: false,
     elo: 1350,
+    skillLevel: 10,
     areSuggestionsShown: false,
     suggestionShown: {1: false, 2: false, 3: false},
     suggestionMoves: { 1: "e1e1", 2: "e1e1", 3: "e1e1" },
@@ -45,6 +46,10 @@ const chessSlice = createSlice({
       const elo = action.payload;
       state.elo = elo;
     },
+    setSkillLevel: (state, action) => {
+      const skillLevel = action.payload;
+      state.skillLevel = skillLevel;
+    },
     setAreSuggestionsShown: (state, action) => {
       const areSuggestionsShown = action.payload;
       state.areSuggestionsShown = areSuggestionsShown;
@@ -72,6 +77,7 @@ export const {
   setGameStart,
   setGameOver,
   setElo,
+  setSkillLevel,
   setAreSuggestionsShown,
   setSuggestionMoves,
   setSuggestionPieces,
@@ -89,6 +95,7 @@ export const selectCurrentGameStart = (state: RootState) =>
   state.chess.gameStart;
 export const selectCurrentGameOver = (state: RootState) => state.chess.gameOver;
 export const selectCurrentElo = (state: RootState) => state.chess.elo;
+export const selectCurrentSkillLevel = (state: RootState) => state.chess.skillLevel;
 export const selectCurrentAreSuggestionsShown = (state: RootState) =>
   state.chess.areSuggestionsShown;
 export const selectCurrentSuggestionMoves = (state: RootState) =>

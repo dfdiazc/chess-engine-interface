@@ -4,7 +4,6 @@ import { AiOutlineUser } from "react-icons/ai";
 import { FiChevronDown } from "react-icons/fi";
 import { IconContext } from "react-icons";
 import { Link } from "react-router-dom";
-import { selectCurrentAccessToken } from "features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "app/store";
@@ -14,7 +13,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentRefreshToken } from "features/auth/authSlice";
 
 const Header = () => {
-  const [logout, { isLoading }] = useLogoutMutation();
+  const [logout] = useLogoutMutation();
   const dispatch = useDispatch<AppDispatch>();
   const token = useSelector(selectCurrentRefreshToken);
   const navigate = useNavigate();
@@ -40,8 +39,7 @@ const Header = () => {
       </Link>
       <div className="flex items-center text-center self-center">
         {token ? (
-          <Link
-            to="/login"
+          <div
             className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-flamingo-100 hover:bg-flamingo-200"
           >
             <button className="bg-gray-200 rounded-full" onClick={handleLogOut}>
@@ -57,7 +55,7 @@ const Header = () => {
             >
               <FiChevronDown />
         </IconContext.Provider>*/}
-          </Link>
+          </div>
         ) : (
           <>
             <div className="hidden md:flex gap-3">

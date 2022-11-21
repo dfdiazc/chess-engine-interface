@@ -12,14 +12,16 @@ import {
   setGameStart,
   selectCurrentElo,
   setElo,
-} from "features/chess/chessSlice"
+  selectCurrentSkillLevel,
+} from "features/chess/chessSlice";
 
 const ChessSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
   const playerColor = useSelector(selectCurrentPlayerColor);
   const engine = useSelector(selectCurrentEngine);
   const elo = useSelector(selectCurrentElo);
-  const [eloSlider, setEloSlider] = useState(elo);
+  const skillLevel = useSelector(selectCurrentSkillLevel);
+  const [sliderValue, setSliderValue] = useState(elo);
   const gameStart = useSelector(selectCurrentGameStart);
   const engineVariants = {
     hidden: { display: "none" },
@@ -39,10 +41,10 @@ const ChessSettings = () => {
   };
   return (
     <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
-      <div className="px-5 py-3 bg-[#2B3133] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
+      <div className="px-5 py-3 bg-[#252729] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
         <div className="flex flex-col self-center w-full">
           <AnimatePresence>
-            {!gameStart && (
+            {!gameStart ? (
               <motion.span
                 className="self-center font-roboto font-medium text-2xl text-white mb-3"
                 variants={titleVariants}
@@ -52,11 +54,11 @@ const ChessSettings = () => {
               >
                 Play Against...
               </motion.span>
-            )}
+            ) : null}
           </AnimatePresence>
           <div className="flex gap-2 mt-3 self-center relative">
             <AnimatePresence>
-              {((engine === "Stockfish" && gameStart) || !gameStart) && (
+              {(engine === "Stockfish" && gameStart) || !gameStart ? (
                 <motion.div
                   onClick={() => {
                     dispatch(setEngine("Stockfish"));
@@ -73,10 +75,10 @@ const ChessSettings = () => {
                   }
                   exit="hidden"
                 />
-              )}
+              ) : null}
             </AnimatePresence>
             <AnimatePresence>
-              {((engine === "Leela" && gameStart) || !gameStart) && (
+              {(engine === "Leela" && gameStart) || !gameStart ? (
                 <motion.div
                   className={
                     engine === "Leela"
@@ -99,10 +101,10 @@ const ChessSettings = () => {
                     <div className="self-center bg-[url('assets/images/leela.svg')] -m-1.5 w-14 h-14 bg-cover" />
                   </button>
                 </motion.div>
-              )}
+              ) : null}
             </AnimatePresence>
             <AnimatePresence>
-              {((engine === "Komodo" && gameStart) || !gameStart) && (
+              {(engine === "Komodo" && gameStart) || !gameStart ? (
                 <motion.div
                   onClick={() => {
                     dispatch(setEngine("Komodo"));
@@ -119,16 +121,12 @@ const ChessSettings = () => {
                   }
                   exit="hidden"
                 />
-              )}
+              ) : null}
             </AnimatePresence>
           </div>
           <span className="font-roboto font-medium text-xl text-white text-center select-none mt-5">
             {engine}
           </span>
-          <span className="font-roboto font-medium text-lg text-white text-center select-none mt-10">
-            Difficulty
-          </span>
-          <span className="w-full mr-3 mt-3 h-px bg-white"></span>
           <input
             type="range"
             className="w-full mt-5 hover:cursor-pointer"
@@ -137,7 +135,7 @@ const ChessSettings = () => {
             step="1"
             defaultValue={elo}
             onChange={(event) => {
-              setEloSlider(
+              setSliderValue(
                 (event.target as HTMLInputElement).value as unknown as number
               );
             }}
@@ -146,7 +144,7 @@ const ChessSettings = () => {
             }}
           />
           <span className="font-roboto font-normal text-white text-center mt-2 select-none">
-            {eloSlider} Elo
+            {sliderValue} Elo
           </span>
         </div>
         <div
