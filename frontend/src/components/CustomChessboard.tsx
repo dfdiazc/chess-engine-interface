@@ -35,7 +35,6 @@ import {
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
-import PromotionPieceSelector from "./PromotionPieceSelector";
 
 interface CustomChessboardProps {
   boardWidth: number;
@@ -508,7 +507,6 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           }}
           ref={chessboardRef}
         />
-        <PromotionPieceSelector />
         <TurnIndicator boardWidth={props.boardWidth} />
         {gameOver ? (
           <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
