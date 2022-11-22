@@ -11,7 +11,9 @@ const EloSlider = () => {
   const engineDifficultyValues = useSelector(
     selectCurrentEngineDifficultyValues
   );
-  const [sliderValue, setSliderValue] = useState<number>(engineDifficultyValues["min"] as unknown as number);
+  const [sliderValue, setSliderValue] = useState<string>(
+    engineDifficultyValues["min"]
+  );
   return (
     <>
       <input
@@ -22,9 +24,7 @@ const EloSlider = () => {
         defaultValue="1350"
         step="1"
         onChange={(event) => {
-          setSliderValue(
-            (event.target as HTMLInputElement).value as unknown as number
-          );
+          setSliderValue((event.target as HTMLInputElement).value);
         }}
         onMouseUp={(event) => {
           dispatch(setElo((event.target as HTMLInputElement).value));
