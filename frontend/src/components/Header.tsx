@@ -39,23 +39,24 @@ const Header = () => {
       </Link>
       <div className="flex items-center text-center self-center">
         {token ? (
-          <div
+          <button
             className="flex p-2 rounded-3xl transition duration-200 ease-in-out bg-flamingo-100 hover:bg-flamingo-200"
+            onClick={handleLogOut}
           >
-            <button className="bg-gray-200 rounded-full" onClick={handleLogOut}>
+            <div className="bg-gray-200 rounded-full">
               <IconContext.Provider
                 value={{ className: "h-5 w-5 text-gray-500 m-1" }}
               >
                 <AiOutlineUser />
               </IconContext.Provider>
-            </button>
-            <span className="font-roboto font-normal text-gray-100 text-md ml-3 mr-1 text-center self-center">Sign Out</span>
+            </div>
+            <span className="font-roboto font-normal text-gray-100 text-md ml-3 mr-1 text-center self-center select-none">Sign Out</span>
             {/*<IconContext.Provider
               value={{ className: "h-5 w-5 text-gray-300 m-1" }}
             >
               <FiChevronDown />
         </IconContext.Provider>*/}
-          </div>
+          </button>
         ) : (
           <>
             <div className="hidden md:flex gap-3">

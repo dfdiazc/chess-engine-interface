@@ -12,6 +12,8 @@ const chessSlice = createSlice({
     gameOver: false,
     elo: 1350,
     skillLevel: 10,
+    difficultyMeasure: "elo",
+    engineDifficultyValues: {min: "1350", max: "2850"},
     areSuggestionsShown: false,
     suggestionShown: {1: false, 2: false, 3: false},
     suggestionMoves: { 1: "e1e1", 2: "e1e1", 3: "e1e1" },
@@ -50,6 +52,14 @@ const chessSlice = createSlice({
       const skillLevel = action.payload;
       state.skillLevel = skillLevel;
     },
+    setDifficultyMeasure: (state, action) => {
+      const difficultyMeasure = action.payload;
+      state.difficultyMeasure = difficultyMeasure;
+    },
+    setEngineDifficultyValues: (state, action) => {
+      const engineDifficultyValues = action.payload;
+      state.engineDifficultyValues = engineDifficultyValues;
+    },
     setAreSuggestionsShown: (state, action) => {
       const areSuggestionsShown = action.payload;
       state.areSuggestionsShown = areSuggestionsShown;
@@ -78,6 +88,8 @@ export const {
   setGameOver,
   setElo,
   setSkillLevel,
+  setDifficultyMeasure,
+  setEngineDifficultyValues,
   setAreSuggestionsShown,
   setSuggestionMoves,
   setSuggestionPieces,
@@ -96,6 +108,8 @@ export const selectCurrentGameStart = (state: RootState) =>
 export const selectCurrentGameOver = (state: RootState) => state.chess.gameOver;
 export const selectCurrentElo = (state: RootState) => state.chess.elo;
 export const selectCurrentSkillLevel = (state: RootState) => state.chess.skillLevel;
+export const selectCurrentDifficultyMeasure = (state: RootState) => state.chess.difficultyMeasure;
+export const selectCurrentEngineDifficultyValues = (state: RootState) => state.chess.engineDifficultyValues;
 export const selectCurrentAreSuggestionsShown = (state: RootState) =>
   state.chess.areSuggestionsShown;
 export const selectCurrentSuggestionMoves = (state: RootState) =>

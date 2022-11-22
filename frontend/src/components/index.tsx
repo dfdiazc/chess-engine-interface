@@ -10,3 +10,8 @@ export { default as ChessSettings } from "./ChessSettings";
 export { default as TurnIndicator } from "./TurnIndicator";
 export { default as ChessSuggestionsPanel } from "./ChessSuggestionsPanel";
 export { default as ChessSuggestion } from "./ChessSuggestion";
+export { default as EngineSelector } from "./EngineSelector";
+export { default as DifficultySelector } from "./DifficultySelector";
+export { default as EloSlider } from "./EloSlider";
+export { default as SkillLevelSlider } from "./SkillLevelSlider";
+export { default as PromotionPieceSelector } from "./PromotionPieceSelector";

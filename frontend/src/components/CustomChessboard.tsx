@@ -9,7 +9,10 @@ import LostPieces from "./LostPieces";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "app/store";
-import { useSuggestionsQuery } from "features/chess/chessApiSlice";
+import {
+  useLazyEngineMoveQuery,
+  useSuggestionsQuery,
+} from "features/chess/chessApiSlice";
 import {
   selectCurrentPlayerColor,
   selectCurrentEngine,
@@ -27,9 +30,12 @@ import {
   selectCurrentSuggestionShown,
   selectCurrentGameOver,
   setGameOver,
+  selectCurrentDifficultyMeasure,
+  selectCurrentSkillLevel,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
+import PromotionPieceSelector from "./PromotionPieceSelector";
 
 interface CustomChessboardProps {
   boardWidth: number;
@@ -41,6 +47,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const [game] = useState(new Chess(fen));
   const [gameState, setGameState] = useState<string>();
   const playerColor = useSelector(selectCurrentPlayerColor);
+  const [hasPlayerMoved, setHasPlayerMoved] = useState(false);
   const [computerColor, setComputerColor] = useState<string>(() => {
     if (playerColor === "w") {
       return "b";
@@ -49,7 +56,9 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   });
   const turn = useSelector(selectCurrentTurn);
   const engine = useSelector(selectCurrentEngine).toLowerCase();
+  const difficultyMeasure = useSelector(selectCurrentDifficultyMeasure);
   const elo = useSelector(selectCurrentElo);
+  const skillLevel = useSelector(selectCurrentSkillLevel);
   const gameStart = useSelector(selectCurrentGameStart);
   const gameOver = useSelector(selectCurrentGameOver);
   const areSuggestionsShown = useSelector(selectCurrentAreSuggestionsShown);
@@ -57,8 +66,9 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
   const [suggestionArrows, setSuggestionArrows] = useState<string[][]>();
   const { data: suggestions } = useSuggestionsQuery(fen, {
-    skip: turn === computerColor || !gameStart || game.isGameOver(),
+    skip: turn === computerColor || !gameStart || gameOver || hasPlayerMoved,
   });
+  const [engineMoveTrigger] = useLazyEngineMoveQuery();
   const chessboardRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const moveSound = new Howl({
     src: [chessMoveSound],
@@ -88,6 +98,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     setOptionSquares({});
     setRightClickedSquares({});
     dispatch(setGameStart(false));
+    dispatch(setGameOver(false));
   }
   axiosRetry(axios, {
     retries: 3,
@@ -111,6 +122,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     if (gameStart && !game.isGameOver()) {
       setArePiecesDragable(true);
       if (turn === playerColor) {
+        setHasPlayerMoved(false);
       } else if (turn === computerColor) {
         setArePiecesDragable(true);
         computerMove();
@@ -189,9 +201,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   function showLostPieces() {
     axios
       .get<pieces>(
-        `https://unrealchess.pythonanywhere.com/api/mods/${game
-          .fen()
-          .replaceAll("/", "-")}$`
+        `http://146.190.33.159/api/mods/${game.fen().replaceAll("/", "-")}$`
       )
       .then((response) => {
         setLostPieces(response.data);
@@ -235,7 +245,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(https://unrealchess.pythonanywhere.com/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(http://146.190.33.159/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />
@@ -346,6 +356,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         });
         setOptionSquares({});
         showLostPieces();
+        setHasPlayerMoved(true);
         dispatch(setFen(game.fen()));
         if (game.isCheck()) {
           const computerKingSquare: Square = getPiecePositions({
@@ -382,33 +393,25 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   }
   async function computerMove() {
     await timeout(1000);
-    const url = () => {
-      if (engine === "stockfish") {
-        return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${elo}/${game
-          .fen()
-          .replaceAll("/", "-")}`;
-      } else if (engine === "komodo") {
-        return `https://unrealchess.pythonanywhere.com/api/play/komodo/15/${game
-          .fen()
-          .replaceAll("/", "-")}`;
-      }
-      return `https://unrealchess.pythonanywhere.com/api/play/stockfish/${elo}/${game
-        .fen()
-        .replaceAll("/", "-")}`;
-    };
-    await axios.get<BestMove>(url()).then((response) => {
-      const source = response.data.best_move.substring(0, 2);
-      const target = response.data.best_move.substring(2, 4);
-      if (response.data.best_move.length === 5) {
-        const promoPiece = response.data.best_move.substring(4);
-        game.move({ from: source, to: target, promotion: promoPiece });
-      } else {
-        game.move({ from: source, to: target });
-      }
-      setMoveSquares({
-        [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-        [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-      });
+    let difficulty;
+    function setDifficulty() {
+      if (difficultyMeasure === "elo") difficulty = elo;
+      else if (difficultyMeasure === "skillLevel") difficulty = skillLevel;
+    }
+    setDifficulty();
+    const { data } = await engineMoveTrigger({ engine, difficulty, fen });
+    const move = data.best_move;
+    const source = move.substring(0, 2);
+    const target = move.substring(2, 4);
+    if (move.length === 5) {
+      const promoPiece = move.substring(4);
+      game.move({ from: source, to: target, promotion: promoPiece });
+    } else {
+      game.move({ from: source, to: target });
+    }
+    setMoveSquares({
+      [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+      [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
     });
     showLostPieces();
     dispatch(setFen(game.fen()));
@@ -440,6 +443,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         });
         setOptionSquares({});
         showLostPieces();
+        setHasPlayerMoved(true);
         dispatch(setFen(game.fen()));
         if (game.isCheck()) {
           const computerKingSquare: Square = getPiecePositions({
@@ -504,6 +508,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           }}
           ref={chessboardRef}
         />
+        <PromotionPieceSelector />
         <TurnIndicator boardWidth={props.boardWidth} />
         {gameOver ? (
           <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
@@ -526,7 +531,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
               Play Again!
             </button>
           </div>
-        ): null}
+        ) : null}
       </div>
       <LostPieces
         r={lostPieces.r}

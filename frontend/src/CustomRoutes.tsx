@@ -11,7 +11,7 @@ import Register from "views/Register";
 const CustomRoutes = () => {
   const location = useLocation();
   return (
-    <AnimatePresence exitBeforeEnter>
+    <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         {/* public routes */}
         <Route path="/" element={<Landing />} />
