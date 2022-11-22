@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { ProfileSidebar } from "components";
+import { useProfileQuery } from "features/auth/authApiSlice";
 
 const Profile = () => {
+  const { data: profileData } = useProfileQuery();
   return (
     <div className="flex">
       <Helmet>
@@ -15,12 +17,12 @@ const Profile = () => {
         </span>
         <span className="my-5 w-56 h-px bg-white"></span>
         <div className="flex">
-        <span className="font-roboto font-normal text-lg text-white text-center self-center">
-          My email: 
-        </span>
-        <span className="font-roboto font-light text-md text-white text-center self-center ml-3">
-          {localStorage.getItem("username")}
-        </span>
+          <span className="font-roboto font-normal text-lg text-white text-center self-center">
+            My email:
+          </span>
+          <span className="font-roboto font-light text-md text-white text-center self-center ml-3">
+            {profileData?.username}
+          </span>
         </div>
       </div>
     </div>
