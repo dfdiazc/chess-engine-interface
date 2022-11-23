@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
-import { ProfileSidebar } from "components";
+import { ProfileHeader } from "components";
 import { useProfileQuery } from "features/auth/authApiSlice";
 
 const Profile = () => {
   const { data: profileData } = useProfileQuery();
   return (
-    <div className="flex">
+    <div className="flex flex-col">
       <Helmet>
-        <style>{"body {background-color: #1C2021; overflow-x: hidden}"}</style>
+        <style>{"body {background-color: #1d1d1f; overflow-x: hidden}"}</style>
       </Helmet>
-      <ProfileSidebar />
+      <ProfileHeader />
       <div className="flex flex-col px-52 py-32">
         <span className="font-roboto font-medium text-3xl text-white">
           My Data

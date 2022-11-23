@@ -5,7 +5,7 @@ export { default as Header } from "./Header";
 export { default as CustomChessboard } from "./CustomChessboard";
 export { default as LandingFooter } from "./LandingFooter";
 export { default as LostPieces } from "./LostPieces";
-export { default as ProfileSidebar } from "./ProfileSidebar";
+export { default as ProfileHeader } from "./ProfileHeader";
 export { default as ChessSettings } from "./ChessSettings";
 export { default as TurnIndicator } from "./TurnIndicator";
 export { default as ChessSuggestionsPanel } from "./ChessSuggestionsPanel";
