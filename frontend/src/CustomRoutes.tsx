@@ -7,6 +7,9 @@ import Login from "views/Login";
 import Play from "views/Play";
 import Profile from "views/Profile";
 import Register from "views/Register";
+import ProfileHome from "views/ProfileHome";
+import ProfileStats from "views/ProfileStats";
+import ProfileAccount from "views/ProfileAccount";
 
 const CustomRoutes = () => {
   const location = useLocation();
@@ -20,7 +23,11 @@ const CustomRoutes = () => {
         <Route path="/register" element={<Register />} />
         {/* protected routes */}
         <Route element={<RequireAuth />}>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />}>
+            <Route path="" element={<ProfileHome />} />
+            <Route path="stats" element={<ProfileStats />} />
+            <Route path="account" element={<ProfileAccount />} />
+          </Route>
         </Route>
         {/* not found */}
         <Route
