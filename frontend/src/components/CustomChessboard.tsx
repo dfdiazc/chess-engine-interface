@@ -200,7 +200,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   function showLostPieces() {
     axios
       .get<pieces>(
-        `http://146.190.33.159/api/mods/${game.fen().replaceAll("/", "-")}$`
+        `https://unrealchess.live/api/mods/${game.fen().replaceAll("/", "-")}$`
       )
       .then((response) => {
         setLostPieces(response.data);
