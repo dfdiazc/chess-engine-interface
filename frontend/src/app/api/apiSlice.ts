@@ -1,10 +1,14 @@
 import { BaseQueryApi } from "@reduxjs/toolkit/dist/query/baseQueryTypes";
-import { createApi, FetchArgs, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import { setCredentials, logOut } from "features/auth/authSlice";
 import type { RootState } from "app/store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://unrealchess.pythonanywhere.com/",
+  baseUrl: "http://146.190.33.159/",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
     if (token) {
@@ -14,16 +18,23 @@ const baseQuery = fetchBaseQuery({
   },
 });
 
-const baseQueryWithReauth = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}) => {
+const baseQueryWithReauth = async (
+  args: string | FetchArgs,
+  api: BaseQueryApi,
+  extraOptions: {}
+) => {
   let result = await baseQuery(args, api, extraOptions);
-
   if (result?.error?.status === 401) {
-    const accessToken = (api.getState() as RootState).auth.accessToken;
-    const refreshResult = await baseQuery({url: "/users/refresh", method: "POST", body: {accessToken}}, api, extraOptions);
+    const refreshToken = (api.getState() as RootState).auth.refreshToken;
+    const refreshResult = await baseQuery(
+      { url: "/users/refresh", method: "POST", body: { refresh: refreshToken } },
+      api,
+      extraOptions
+    );
     if (refreshResult?.data) {
-      const accessToken = (api.getState() as RootState).auth.accessToken;
-      api.dispatch(setCredentials({ accessToken }));
-      result = await baseQuery(args, api, extraOptions);
+      const newAccessToken = refreshResult.data;
+      api.dispatch(setCredentials( { ...newAccessToken }));
+      result = await baseQuery(args, api, extraOptions);  
     } else {
       api.dispatch(logOut());
     }
