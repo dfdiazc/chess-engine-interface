@@ -36,7 +36,6 @@ const ProfileAccount = () => {
     register,
     handleSubmit,
     setValue,
-    formState,
     setError,
     formState: { errors },
   } = useForm<AccountFormData>({
