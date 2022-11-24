@@ -46,7 +46,7 @@ const ChessSettings = () => {
               <div
                 className="bg-center bg-no-repeat h-10 w-10"
                 style={{
-                  backgroundImage: `url(http://146.190.33.159/static/chess/pieces/staunty/wP.svg)`,
+                  backgroundImage: `url(https://unrealchess.live/static/chess/pieces/staunty/wP.svg)`,
                   backgroundSize: "100%",
                 }}
               />
@@ -64,7 +64,7 @@ const ChessSettings = () => {
               <div
                 className="bg-center bg-no-repeat h-10 w-10"
                 style={{
-                  backgroundImage: `url(http://146.190.33.159/static/chess/pieces/staunty/bP.svg)`,
+                  backgroundImage: `url(https://unrealchess.live/static/chess/pieces/staunty/bP.svg)`,
                   backgroundSize: "100%",
                 }}
               />
