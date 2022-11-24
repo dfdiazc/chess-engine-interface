@@ -244,7 +244,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(http://146.190.33.159/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(https://unrealchess.live/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />
