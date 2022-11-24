@@ -21,7 +21,7 @@ const EloSlider = () => {
         className="w-full mt-5 hover:cursor-pointer"
         min={engineDifficultyValues["min"]}
         max={engineDifficultyValues["max"]}
-        defaultValue="1350"
+        defaultValue={engineDifficultyValues["min"]}
         step="1"
         onChange={(event) => {
           setSliderValue((event.target as HTMLInputElement).value);

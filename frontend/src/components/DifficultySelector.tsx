@@ -18,12 +18,17 @@ const DifficultySelector = () => {
     if (engine === "Stockfish") {
       dispatch(setEngineDifficultyValues({ min: "1350", max: "2850" }));
       dispatch(setDifficultyMeasure("elo"));
-    } else if (engine === "Leela") {
-      dispatch(setEngineDifficultyValues({ min: "", max: "" }));
-      dispatch(setDifficultyMeasure(""));
     } else if (engine === "Komodo") {
       dispatch(setEngineDifficultyValues({ min: "1", max: "20" }));
       dispatch(setDifficultyMeasure("skillLevel"));
+    }
+    else if (engine === "Arasan") {
+      dispatch(setEngineDifficultyValues({ min: "1000", max: "3000" }));
+      dispatch(setDifficultyMeasure("elo"));
+    }
+    else {
+      dispatch(setEngineDifficultyValues({ min: "", max: "" }));
+      dispatch(setDifficultyMeasure(""));
     }
   }, [engine]);
   return (
