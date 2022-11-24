@@ -1,8 +1,10 @@
+import { useGetProfileQuery } from "features/auth/authApiSlice";
 import React from "react";
 import { IconContext } from "react-icons";
 import { AiOutlineUser } from "react-icons/ai";
 
 const ProfileHome = () => {
+  const { data: profileData } = useGetProfileQuery();
   return (
     <div className="px-10 flex flex-col h-full">
       <div className="pt-10 flex flex-col">
@@ -15,7 +17,8 @@ const ProfileHome = () => {
             </IconContext.Provider>
           </div>
           <span className="text-2xl font-roboto text-white font-normal self-center mt-5">
-            Welcome Back!
+            Welcome Back
+            {profileData?.first_name ? ", " + profileData?.first_name : null}!
           </span>
         </div>
         <div className="p-3 mt-10">
