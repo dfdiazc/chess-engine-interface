@@ -72,7 +72,7 @@ const ProfileHeader = () => {
           }}
           end
         />
-        <NavLink
+        {/*<NavLink
           to="stats"
           children={({ isActive }) => {
             return (
@@ -86,7 +86,7 @@ const ProfileHeader = () => {
               </div>
             );
           }}
-        />
+        />*/}
         <NavLink
           to="account"
           children={({ isActive }) => {

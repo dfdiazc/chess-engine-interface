@@ -17,7 +17,7 @@ const ChessSettings = () => {
   const gameStart = useSelector(selectCurrentGameStart);
   return (
     <div className="px-3 py-3 w-full lg:max-w-sm gap-5">
-      <div className="px-5 py-3 bg-[#252729] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
+      <div className="px-3 py-3 bg-[#252729] drop-shadow-xl flex flex-col rounded grow shrink-0 w-full lg:max-w-sm">
         <div className="flex flex-col self-center w-full">
           <EngineSelector />
           <DifficultySelector />

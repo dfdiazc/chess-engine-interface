@@ -8,9 +8,12 @@ import { IconContext } from "react-icons";
 import { AiOutlineUser, AiFillEdit } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProfileAccount = () => {
   const { data: profileData } = useGetProfileQuery();
+  const { refetch: refetchUserData } = useGetProfileQuery();
   const [update, { isLoading }] = useUpdateProfileMutation();
   interface AccountFormData {
     email: string;
@@ -43,18 +46,38 @@ const ProfileAccount = () => {
   });
   const onSubmit = handleSubmit(async (data: AccountFormData) => {
     try {
-      const response = await update({
-        first_name: data.first_name,
-        last_name: data.last_name,
-      }).unwrap();
-      console.log(response);
+      const response = await toast.promise(
+        update({
+          first_name: data.first_name,
+          last_name: data.last_name,
+        }).unwrap(),
+        {
+          pending: "Sending data...",
+          success: "Data saved!",
+          error: "Request failed. Please try again later.",
+        }
+      );
+      refetchUserData();
     } catch (error: any) {
       const errors = error.data;
       console.log(errors);
     }
   });
   return (
-    <div className="px-3 flex flex-col h-full">
+    <div className="px-3 flex flex-col h-full relative">
+      <ToastContainer
+        position="top-right"
+        className="relative"
+        autoClose={2500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className="pt-10 flex flex-col">
         <div className="flex flex-col gap-5">
           <div className="bg-white/80 p-5 rounded-full w-fit self-center">
@@ -64,9 +87,9 @@ const ProfileAccount = () => {
               <AiOutlineUser />
             </IconContext.Provider>
           </div>
-          <span className="font-roboto font-normal text-sm text-flamingo-100 hover:underline text-center self-center cursor-pointer">
+          {/*<span className="font-roboto font-normal text-sm text-flamingo-100 hover:underline text-center self-center cursor-pointer">
             Change profile picture
-          </span>
+          </span>*/}
         </div>
         <form
           className="flex flex-col gap-3 p-3 mt-5"

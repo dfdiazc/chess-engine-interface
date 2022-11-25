@@ -16,7 +16,7 @@ const ProfileHome = () => {
               <AiOutlineUser />
             </IconContext.Provider>
           </div>
-          <span className="text-2xl font-roboto text-white font-normal self-center mt-5">
+          <span className="text-2xl font-roboto text-white font-normal text-center self-center mt-5 text-ellipsis overflow-hidden">
             Welcome Back
             {profileData?.first_name ? ", " + profileData?.first_name : null}!
           </span>
