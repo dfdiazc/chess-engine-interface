@@ -11,7 +11,6 @@ import {
   selectCurrentGameStart,
 } from "features/chess/chessSlice";
 import { Helmet } from "react-helmet";
-import { Adsense } from "@ctrl/react-adsense";
 import ReactTooltip from "react-tooltip";
 
 const Play = () => {
@@ -61,19 +60,12 @@ const Play = () => {
                   effect="solid"
                   type="info"
                 >
-                  <span className="font-roboto font-normal text-sm text-white/80 self-center select-none">
+                  <span className="font-roboto font-normal text-sm text-white/80 self-center select-none relative">
                     Click on a move to show it on the board.
                   </span>
                 </ReactTooltip>
               ) : null}
             </div>
-            {/*<div className="hidden lg:flex w-[200px] h-[600px]">
-              <Adsense
-                client="ca-pub-7640562161899788"
-                slot="7259870550"
-                format=""
-              />
-                  </div>*/}
           </div>
         </div>
       </div>

@@ -139,7 +139,7 @@ const ChessSuggestionsPanel = () => {
                 </div>
               </div>
             )}
-            <div className="absolute top-0 right-0 px-5 py-3">
+            <div className="relative top-0 right-0 px-5 py-3 ml-auto">
               <div className="relative">
                 {/* Tooltip is in Play View */}
                 <div data-tip data-for="suggestedTip">
