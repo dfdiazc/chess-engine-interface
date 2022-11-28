@@ -15,3 +15,4 @@ export { default as DifficultySelector } from "./DifficultySelector";
 export { default as EloSlider } from "./EloSlider";
 export { default as SkillLevelSlider } from "./SkillLevelSlider";
 export { default as PromotionPieceSelector } from "./PromotionPieceSelector";
+export { default as UserDropdown } from "./UserDropdown";

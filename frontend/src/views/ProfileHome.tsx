@@ -26,6 +26,12 @@ const ProfileHome = () => {
             <span className="font-roboto font-normal text-white/80 text-base">
               Recent Matches
             </span>
+            <span className="font-roboto font-normal text-white/80 text-2xl text-center self-center mt-5">
+              Coming Soon!
+            </span>
+            <span className="font-roboto font-normal text-white/80 text-base text-center self-center mt-5">
+              Record your chess matches and improve your skills!
+            </span>
           </div>
         </div>
       </div>

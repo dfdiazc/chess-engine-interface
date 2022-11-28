@@ -38,7 +38,7 @@ const Register = () => {
             </div>
           </div>
           <RegisterForm />
-          <div className="block pt-5 font-roboto font-normal text-gray-800 text-xs text-center">
+          {/*<div className="block pt-5 font-roboto font-normal text-gray-800 text-xs text-center">
             By signing up you agree to Un-Real Chess'&nbsp;
             <Link
               to="/register"
@@ -54,7 +54,7 @@ const Register = () => {
               Privacy Policy
             </Link>
             .
-          </div>
+          </div>*/}
           <div className="flex items-center py-5">
             <span className="grow h-px bg-black/20"></span>
           </div>
