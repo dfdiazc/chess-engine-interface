@@ -12,6 +12,7 @@ import { logOut } from "features/auth/authSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentRefreshToken } from "features/auth/authSlice";
 import UserDropdown from "./UserDropdown";
+import Logo from "assets/images/logo.png"
 
 const Header = () => {
   const [logout] = useLogoutMutation();
@@ -31,14 +32,12 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between h-16 pl-6 pr-5 sm:pl-10 w-full bg-transparent shadow max-w-[1920px]">
       <Link to="/" className="flex gap-5 shrink-0">
-        <IconContext.Provider value={{ className: "h-8 w-8 text-white" }}>
-          <FaChess />
-        </IconContext.Provider>
+        <img src={Logo} className="h-10" alt="Description pending"/>
         <span className="text-roboto font-medium text-xl text-white text-center select-none self-center">
           Un-Real Chess
         </span>
       </Link>
-      <div className="flex items-center text-center self-center">
+      <div className="relative flex items-center text-center self-center">
         {token ? (
           <UserDropdown />
         ) : (

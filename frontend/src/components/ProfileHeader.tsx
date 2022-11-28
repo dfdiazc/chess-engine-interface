@@ -14,15 +14,14 @@ import { selectCurrentRefreshToken } from "features/auth/authSlice";
 import { FiChevronDown } from "react-icons/fi";
 import { AnimatePresence, motion } from "framer-motion";
 import UserDropdown from "./UserDropdown";
+import Logo from "assets/images/logo.png"
 
 const ProfileHeader = () => {
   return (
     <header className="flex flex-col items-center justify-between pl-6 pr-5 sm:pl-10 w-full bg-transparent shadow max-w-[1920px]">
       <div className="flex items-center justify-between h-16 w-full">
         <Link to="/" className="flex gap-5 shrink-0">
-          <IconContext.Provider value={{ className: "h-8 w-8 text-white" }}>
-            <FaChess />
-          </IconContext.Provider>
+        <img src={Logo} className="h-10" alt="Description pending"/>
           <span className="text-roboto font-medium text-xl text-white text-center select-none self-center">
             Un-Real Chess
           </span>

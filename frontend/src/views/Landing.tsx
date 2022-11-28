@@ -24,29 +24,29 @@ const Landing = () => {
                 className="hidden select-none sm:flex absolute inset-y-0 -z-10 m-auto sm:-right-[32rem] 
                 md:-right-[28rem] lg:-right-60 h-5/6 aspect-square"
                 alt="Description pending"
-              ></img>
+              />
               <div className="flex h-full justify-left">
                 <div className="relative flex px-3 sm:w-2/3 md:w-3/4 lg:left-[15%] xl:left-[35%]">
                   <img
                     src={WhiteRook}
                     className="absolute select-none h-24 top-[5%] left-[0%] xl:-left-[25%] -rotate-12"
                     alt="Description pending"
-                  ></img>
+                  />
                   <img
                     src={WhiteRook}
                     className="absolute select-none h-24 bottom-[5%] left-[70%] xl:left-[100%] rotate-[25deg]"
                     alt="Description pending"
-                  ></img>
+                  />
                   <img
                     src={WhitePawn}
                     className="absolute select-none h-24 top-[10%] left-[70%] xl:left-[90%] rotate-12"
                     alt="Description pending"
-                  ></img>
+                  />
                   <img
                     src={WhitePawn}
                     className="absolute  select-none h-24 bottom-[10%] left-[5%] xl:left-[0%] -rotate-[20deg]"
                     alt="Description pending"
-                  ></img>
+                  />
                   <div className="flex flex-col gap-10 self-center text-center select-none">
                     <h2 className="text-6xl text-white text-left font-roboto font-medium">
                       Play chess online for free!

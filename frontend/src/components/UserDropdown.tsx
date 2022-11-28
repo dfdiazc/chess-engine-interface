@@ -50,7 +50,7 @@ const UserDropdown = () => {
       <AnimatePresence>
         {isOpen ? (
           <motion.div
-            className="flex flex-col gap-3 p-3 absolute z-10 bg-[#2D3033] ring-1 ring-flamingo-100 top-16 -left-24 rounded-lg"
+            className="flex flex-col gap-8 pt-5 pb-3 absolute z-10 bg-[#2D3033] ring-1 ring-flamingo-100 top-16 -left-24 rounded-lg"
             ref={menuRef}
             initial={{ opacity: 0, y: "-50%" }}
             animate={{ opacity: 1, y: "0%" }}
@@ -60,7 +60,7 @@ const UserDropdown = () => {
               transition: { duration: "0.35" },
             }}
           >
-            <Link className="flex justify-center" to="/profile">
+            <Link className="flex justify-center hover:bg-[#3e4145] px-5 py-1" to="/profile">
               <div className="bg-gray-200 rounded-full">
                 <IconContext.Provider
                   value={{ className: "h-5 w-5 text-gray-500 m-1" }}
@@ -72,9 +72,8 @@ const UserDropdown = () => {
                 My Profile
               </span>
             </Link>
-            <div className="h-0.5 bg-neutral-500 my-2" />
             <button
-              className="flex justify-start"
+              className="flex justify-start hover:bg-[#3e4145] px-5 py-1"
               onClick={() => {
                 handleLogOut();
               }}

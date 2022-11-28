@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import { IconContext } from "react-icons";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
+import ReactTooltip from "react-tooltip";
 
 const EngineSelector = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -158,21 +159,29 @@ const EngineSelector = () => {
               <AnimatePresence>
                 {(engine === "Arasan" && gameStart) || !gameStart ? (
                   <motion.div
-                    onClick={() => {
-                      dispatch(setEngine("Arasan"));
-                    }}
                     className={
                       engine === "Arasan"
-                        ? "w-16 h-16 bg-[url('assets/images/stockfish.png')] bg-cover rounded-lg cursor-pointer ring-2 ring-flamingo-100"
-                        : "w-16 h-16 bg-[url('assets/images/stockfish.png')] bg-cover rounded-lg cursor-pointer"
+                        ? "flex w-16 h-16 self-center rounded-lg justify-center ring-2 ring-flamingo-100"
+                        : "flex w-16 h-16 self-center rounded-lg justify-center"
                     }
                     variants={engineVariants}
                     initial="visible"
                     animate={
-                      engine === "Arasan" && gameStart ? "selected" : "visible"
+                      engine === "Arasan" && gameStart
+                        ? "selected"
+                        : "visible"
                     }
                     exit="hidden"
-                  />
+                  >
+                    <button
+                      onClick={() => {
+                        dispatch(setEngine("Arasan"));
+                      }}
+                      className="flex bg-white rounded-lg w-14 h-14 self-center justify-center"
+                    >
+                      <div className="self-center bg-[url('assets/images/arasan.svg')] bg-center bg-contain bg-no-repeat w-12 h-12" />
+                    </button>
+                  </motion.div>
                 ) : null}
               </AnimatePresence>
               <AnimatePresence>

@@ -6,7 +6,7 @@ import {
   selectCurrentPlayerColor,
   setPlayerColor,
   selectCurrentGameStart,
-  setGameStart
+  setGameStart,
 } from "features/chess/chessSlice";
 import EngineSelector from "./EngineSelector";
 import DifficultySelector from "./DifficultySelector";
@@ -22,12 +22,8 @@ const ChessSettings = () => {
           <EngineSelector />
           <DifficultySelector />
         </div>
-        <div
-          className="flex flex-col self-center w-full"
-          style={
-            gameStart ? { pointerEvents: "none" } : { pointerEvents: "all" }
-          }
-        >
+        <div className="flex flex-col self-center w-full">
+          {!gameStart? (<>
           <span className="font-roboto font-medium text-lg text-white text-center mt-10 select-none">
             Piece Color
           </span>
@@ -70,6 +66,7 @@ const ChessSettings = () => {
               />
             </button>
           </div>
+          </>): null}
           <button
             onClick={() => {
               dispatch(setGameStart(true));
