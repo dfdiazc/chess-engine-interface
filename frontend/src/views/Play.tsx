@@ -47,7 +47,7 @@ const Play = () => {
               <Header />
             </div>
           </div>
-          <div className="flex flex-col gap-5 lg:flex-row justify-center items-center h-full shrink-0 relative ">
+          <div className="flex flex-col gap-5 lg:flex-row justify-center items-center h-full shrink-0 relative">
             <div className="relative flex flex-row pl-10 pr-3">
               <CustomChessboard boardWidth={boardWidth} />
             </div>
