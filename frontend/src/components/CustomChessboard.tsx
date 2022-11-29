@@ -34,6 +34,9 @@ import {
   selectCurrentSkillLevel,
   setPromoPiece,
   selectCurrentPromoPiece,
+  selectCurrentGameRestart,
+  setGameRestart,
+  selectCurrentPieceStyle,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
@@ -63,10 +66,12 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const skillLevel = useSelector(selectCurrentSkillLevel);
   const gameStart = useSelector(selectCurrentGameStart);
   const gameOver = useSelector(selectCurrentGameOver);
+  const gameRestart = useSelector(selectCurrentGameRestart);
   const areSuggestionsShown = useSelector(selectCurrentAreSuggestionsShown);
   const suggestionShown = useSelector(selectCurrentSuggestionShown);
   const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
   const [suggestionArrows, setSuggestionArrows] = useState<string[][]>();
+  const pieceStyle = useSelector(selectCurrentPieceStyle);
   const { data: suggestions } = useSuggestionsQuery(fen, {
     skip: turn === computerColor || !gameStart || gameOver || hasPlayerMoved,
   });
@@ -527,7 +532,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
             onPieceDrop={onDrop}
             boardWidth={props.boardWidth}
             customBoardStyle={{ userSelect: "none", borderRadius: "5px" }}
-            customPieces={customPieces("staunty")}
+            customPieces={customPieces(pieceStyle)}
             customDarkSquareStyle={{ backgroundColor: "#517879" }}
             customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
             arePiecesDraggable={arePiecesDragable}
@@ -554,6 +559,36 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           {!hasSelectedPromoPiece ? <PromotionPieceSelector /> : null}
         </div>
         <TurnIndicator boardWidth={props.boardWidth} />
+        {gameRestart && !gameOver ? (
+          <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
+            <span className="font-roboto font-medium text-white text-2xl self-center text-center select-none">
+              Do you want to restart the current game?
+            </span>
+            <div className="flex gap-2 mt-10">
+              <button
+                onClick={() => {
+                  dispatch(setGameRestart(false));
+                }}
+                className={
+                  "flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-flamingo-100 transition duration-300 hover:bg-flamingo-100 text-center"
+                }
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  dispatch(setGameRestart(false));
+                  resetGame();
+                }}
+                className={
+                  "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-10 py-3 bg-flamingo-100 rounded-xl border-2 border-flamingo-100 transition duration-300 hover:bg-flamingo-200/80 hover:border-flamingo-300 hover:shadow text-center"
+                }
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        ) : null}
         {gameOver ? (
           <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
             <span className="font-roboto font-medium text-white text-3xl self-center text-center select-none">
