@@ -7,6 +7,7 @@ export { default as LandingFooter } from "./LandingFooter";
 export { default as LostPieces } from "./LostPieces";
 export { default as ProfileHeader } from "./ProfileHeader";
 export { default as ChessSettings } from "./ChessSettings";
+export { default as ChessUserSettings } from "./ChessUserSettings";
 export { default as TurnIndicator } from "./TurnIndicator";
 export { default as ChessSuggestionsPanel } from "./ChessSuggestionsPanel";
 export { default as ChessSuggestion } from "./ChessSuggestion";

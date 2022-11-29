@@ -2,11 +2,13 @@ import React, { useEffect, useState } from "react";
 import {
   ChessSettings,
   ChessSuggestionsPanel,
+  ChessUserSettings,
   CustomChessboard,
   Header,
 } from "components";
 import { useSelector } from "react-redux";
 import {
+  selectCurrentAreSettingsOpen,
   selectCurrentAreSuggestionsShown,
   selectCurrentGameStart,
 } from "features/chess/chessSlice";
@@ -17,6 +19,7 @@ const Play = () => {
   const gameStart = useSelector(selectCurrentGameStart);
   const [boardWidth, setBoardWidth] = useState(initialBoardSize);
   const areSuggestionShown = useSelector(selectCurrentAreSuggestionsShown);
+  const areSettingsOpen = useSelector(selectCurrentAreSettingsOpen);
   function initialBoardSize() {
     let windowWidth = window.innerWidth;
     let windowHeight = window.innerHeight;
@@ -66,6 +69,7 @@ const Play = () => {
                 </ReactTooltip>
               ) : null}
             </div>
+            { areSettingsOpen ? <ChessUserSettings /> : null}
           </div>
         </div>
       </div>

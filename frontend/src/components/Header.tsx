@@ -12,7 +12,7 @@ import { logOut } from "features/auth/authSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentRefreshToken } from "features/auth/authSlice";
 import UserDropdown from "./UserDropdown";
-import Logo from "assets/images/logo.png"
+import Logo from "assets/images/logo.png";
 
 const Header = () => {
   const [logout] = useLogoutMutation();
@@ -32,7 +32,7 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between h-16 pl-6 pr-5 sm:pl-10 w-full bg-transparent shadow max-w-[1920px]">
       <Link to="/" className="flex gap-5 shrink-0">
-        <img src={Logo} className="h-10" alt="Description pending"/>
+        <img src={Logo} className="h-10" alt="Description pending" />
         <span className="text-roboto font-medium text-xl text-white text-center select-none self-center">
           Un-Real Chess
         </span>
@@ -45,13 +45,13 @@ const Header = () => {
             <div className="hidden md:flex gap-3">
               <Link
                 to="/register"
-                className="px-8 py-2 bg-flamingo-100 rounded-full text-roboto text-md text-white"
+                className="px-8 py-2 bg-flamingo-100 border-flamingo-100 hover:bg-flamingo-200/80 transition duration-300 rounded-full text-roboto text-md text-white"
               >
                 Sign Up
               </Link>
               <Link
                 to="/login"
-                className="px-8 py-2 bg-transparent rounded-full border-2 border-flamingo-100 text-roboto text-md text-white"
+                className="px-8 py-2 bg-transparent rounded-full border-2 border-flamingo-100 hover:bg-flamingo-200/80 transition duration-300 text-roboto text-md text-white"
               >
                 Log In
               </Link>
