@@ -32,9 +32,12 @@ import {
   setGameOver,
   selectCurrentDifficultyMeasure,
   selectCurrentSkillLevel,
+  setPromoPiece,
+  selectCurrentPromoPiece,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
+import { PromotionPieceSelector } from "components";
 
 interface CustomChessboardProps {
   boardWidth: number;
@@ -86,6 +89,9 @@ const CustomChessboard = (props: CustomChessboardProps) => {
   const [optionSquares, setOptionSquares] = useState<any>({});
   const [checkSquares, setCheckSquares] = useState<any>({});
   const [moveFrom, setMoveFrom] = useState("");
+  const promoPiece = useSelector(selectCurrentPromoPiece);
+  const [hasSelectedPromoPiece, setHasSelectedPromoPiece] = useState(true);
+  const [promoMoves, setPromoMoves] = useState<any>({});
   function resetGame() {
     game.reset();
     (chessboardRef.current as any).clearPremoves();
@@ -140,6 +146,38 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       setSuggestions();
     }
   }, [suggestions]);
+  useEffect(() => {
+    if (promoMoves) {
+      const result = game.move({
+        from: promoMoves.source,
+        to: promoMoves.target,
+        promotion: promoPiece,
+      });
+      if (result != null) {
+        setMoveSquares({
+          [promoMoves.source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+          [promoMoves.target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+        });
+        setOptionSquares({});
+        showLostPieces();
+        setHasPlayerMoved(true);
+        dispatch(setFen(game.fen()));
+        if (game.isCheck()) {
+          const computerKingSquare: Square = getPiecePositions({
+            color: computerColor as Color,
+            type: "k",
+          })[0];
+          addCheckSquares(computerKingSquare);
+        } else {
+          setCheckSquares({});
+        }
+        dispatch(setPromoPiece(""));
+        setHasSelectedPromoPiece(true);
+        dispatch(setTurn(game.turn()));
+        moveSound.play();
+      }
+    }
+  }, [promoPiece]);
   interface pieces {
     r: number;
     n: number;
@@ -430,11 +468,14 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     if (turn === playerColor) {
       let result = null;
       if (piece === "wP" || piece === "bP") {
-        result = game.move({ from: source, to: target, promotion: "q" });
-        if (result === null) result = game.move({ from: source, to: target });
-      } else {
-        result = game.move({ from: source, to: target });
-      }
+        const gameCopy = new Chess(fen);
+        if (gameCopy.move({ from: source, to: target, promotion: "q" })) {
+          dispatch(setPromoPiece(""));
+          setHasSelectedPromoPiece(false);
+          setPromoMoves({ source: source, target: target });
+          return false;
+        } else result = game.move({ from: source, to: target });
+      } else result = game.move({ from: source, to: target });
       if (result != null) {
         setMoveSquares({
           [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
@@ -480,33 +521,38 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         color={computerColor}
       />
       <div className="flex">
-        <Chessboard
-          position={fen}
-          onPieceDrop={onDrop}
-          boardWidth={props.boardWidth}
-          customBoardStyle={{ userSelect: "none", borderRadius: "5px" }}
-          customPieces={customPieces("staunty")}
-          customDarkSquareStyle={{ backgroundColor: "#517879" }}
-          customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
-          arePiecesDraggable={arePiecesDragable}
-          arePremovesAllowed={true}
-          boardOrientation={boardOrientation}
-          animationDuration={350}
-          customDropSquareStyle={{ boxShadow: "0px 0px 0px 5px #F5FAF8 inset" }}
-          onMouseOverSquare={onMouseOverSquare}
-          onMouseOutSquare={onMouseOutSquare}
-          onSquareRightClick={onSquareRightClick}
-          onSquareClick={onSquareClick}
-          customArrows={suggestionArrows}
-          customArrowColor="#DC5A41"
-          customSquareStyles={{
-            ...moveSquares,
-            ...optionSquares,
-            ...rightClickedSquares,
-            ...checkSquares,
-          }}
-          ref={chessboardRef}
-        />
+        <div className="relative">
+          <Chessboard
+            position={fen}
+            onPieceDrop={onDrop}
+            boardWidth={props.boardWidth}
+            customBoardStyle={{ userSelect: "none", borderRadius: "5px" }}
+            customPieces={customPieces("staunty")}
+            customDarkSquareStyle={{ backgroundColor: "#517879" }}
+            customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
+            arePiecesDraggable={arePiecesDragable}
+            arePremovesAllowed={true}
+            boardOrientation={boardOrientation}
+            animationDuration={350}
+            customDropSquareStyle={{
+              boxShadow: "0px 0px 0px 5px #F5FAF8 inset",
+            }}
+            onMouseOverSquare={onMouseOverSquare}
+            onMouseOutSquare={onMouseOutSquare}
+            onSquareRightClick={onSquareRightClick}
+            onSquareClick={onSquareClick}
+            customArrows={suggestionArrows}
+            customArrowColor="#DC5A41"
+            customSquareStyles={{
+              ...moveSquares,
+              ...optionSquares,
+              ...rightClickedSquares,
+              ...checkSquares,
+            }}
+            ref={chessboardRef}
+          />
+          {!hasSelectedPromoPiece ? <PromotionPieceSelector /> : null}
+        </div>
         <TurnIndicator boardWidth={props.boardWidth} />
         {gameOver ? (
           <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
