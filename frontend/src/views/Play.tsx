@@ -42,6 +42,7 @@ const Play = () => {
                 <style>
                   {"body {background-color: #1d1d1f; overflow-x: hidden}"}
                 </style>
+                <script async={true} data-cfasync="false" src="//arsnivyr.com/1?z=5565651"></script>
               </Helmet>
               <Header />
             </div>

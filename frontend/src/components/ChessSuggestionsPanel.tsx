@@ -32,7 +32,7 @@ const ChessSuggestionsPanel = () => {
   const selectedClass = "rounded-lg ring-2 ring-flamingo-100 bg-flamingo-100/50";
   return (
     <div className="px-5 py-3 w-full lg:max-w-sm gap-5">
-      <div className="flex flex-row gap-5 px-5 py-3 h-36 bg-[#2B3133] drop-shadow-xl rounded grow shrink-0 w-full lg:max-w-sm">
+      <div className="flex flex-row gap-5 px-5 py-3 h-36 bg-[#2B3133] drop-shadow-xl rounded grow shrink-0 w-full lg:max-w-sm relative">
         {areSuggestionShown ? (
           <button
             className="flex p-1 rounded-full justify-self-start h-fit self-center"
@@ -63,7 +63,7 @@ const ChessSuggestionsPanel = () => {
         {areSuggestionShown ? (
           <>
             {isFetching && turn === playerColor ? (
-              <div className="flex flex-col gap-2 w-full animate-pulse duration-75 justify-center mr-8">
+              <div className="flex flex-col gap-2 w-full animate-pulse duration-75 justify-center mr-8 grow">
                 <div className="flex gap-3 h-8">
                   <div className="w-2/3 h-2 rounded-full bg-neutral-300 self-center"></div>
                   <div className="w-1/3 h-2 rounded-full bg-neutral-300 self-center"></div>
@@ -139,7 +139,7 @@ const ChessSuggestionsPanel = () => {
                 </div>
               </div>
             )}
-            <div className="relative top-0 right-0 px-5 py-3 ml-auto">
+            <div className="absolute top-0 right-0 px-5 py-3">
               <div className="relative">
                 {/* Tooltip is in Play View */}
                 <div data-tip data-for="suggestedTip">

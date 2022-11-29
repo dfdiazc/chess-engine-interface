@@ -10,6 +10,8 @@ import Register from "views/Register";
 import ProfileHome from "views/ProfileHome";
 import ProfileStats from "views/ProfileStats";
 import ProfileAccount from "views/ProfileAccount";
+import Terms from "views/Terms";
+import Privacy from "views/Privacy";
 
 const CustomRoutes = () => {
   const location = useLocation();
@@ -21,6 +23,8 @@ const CustomRoutes = () => {
         <Route path="/play" element={<Play />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
         {/* protected routes */}
         <Route element={<RequireAuth />}>
           <Route path="/profile" element={<Profile />}>
