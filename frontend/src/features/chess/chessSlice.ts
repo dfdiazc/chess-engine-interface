@@ -6,8 +6,7 @@ const chessSlice = createSlice({
   initialState: {
     playerColor: "w",
     turn: "w",
-    fen: "rnb1kb2/ppqpnp1P/8/2p1p3/8/6rN/PPPPP1B1/RNBQK1R1 w Qq - 1 14",
-    // "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     promoPiece: "w",
     engine: "Stockfish",
     gameStart: false,
