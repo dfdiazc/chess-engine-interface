@@ -7,6 +7,7 @@ const chessSlice = createSlice({
     playerColor: "w",
     turn: "w",
     fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+    promoPiece: "w",
     engine: "Stockfish",
     gameStart: false,
     gameOver: false,
@@ -31,6 +32,10 @@ const chessSlice = createSlice({
     setFen: (state, action) => {
       const fen = action.payload;
       state.fen = fen;
+    },
+    setPromoPiece: (state, action) => {
+      const promoPiece = action.payload;
+      state.promoPiece = promoPiece;
     },
     setEngine: (state, action) => {
       const engine = action.payload;
@@ -83,6 +88,7 @@ export const {
   setPlayerColor,
   setTurn,
   setFen,
+  setPromoPiece,
   setEngine,
   setGameStart,
   setGameOver,
@@ -102,6 +108,7 @@ export const selectCurrentPlayerColor = (state: RootState) =>
   state.chess.playerColor;
 export const selectCurrentTurn = (state: RootState) => state.chess.turn;
 export const selectCurrentFen = (state: RootState) => state.chess.fen;
+export const selectCurrentPromoPiece = (state: RootState) => state.chess.promoPiece;
 export const selectCurrentEngine = (state: RootState) => state.chess.engine;
 export const selectCurrentGameStart = (state: RootState) =>
   state.chess.gameStart;
