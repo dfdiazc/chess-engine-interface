@@ -38,23 +38,23 @@ const Register = () => {
             </div>
           </div>
           <RegisterForm />
-          {/*<div className="block pt-5 font-roboto font-normal text-gray-800 text-xs text-center">
+          <div className="block pt-5 font-roboto font-normal text-gray-800 text-xs text-center">
             By signing up you agree to Un-Real Chess'&nbsp;
             <Link
-              to="/register"
-              className="select-none text-blue-500 hover:underline"
+              to="/terms"
+              className="text-blue-500 hover:underline"
             >
               Terms of Service
             </Link>
             &nbsp;and&nbsp;
             <Link
-              to="/register"
-              className="select-none text-blue-500 hover:underline"
+              to="/privacy"
+              className="text-blue-500 hover:underline"
             >
               Privacy Policy
             </Link>
             .
-          </div>*/}
+          </div>
           <div className="flex items-center py-5">
             <span className="grow h-px bg-black/20"></span>
           </div>
@@ -62,7 +62,7 @@ const Register = () => {
             Already have an account?&nbsp;
             <Link
               to="/login"
-              className="select-none text-blue-500 hover:underline"
+              className="text-blue-500 hover:underline"
             >
               Start playing chess!
             </Link>
