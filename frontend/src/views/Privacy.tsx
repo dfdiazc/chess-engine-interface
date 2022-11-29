@@ -10,7 +10,7 @@ const Privacy = () => {
           <div className="flex flex-col">
             <div className="flex justify-center">
               <Helmet>
-                <style>{"body {background-color: #1C2021}"}</style>
+                <style>{"body {background-color: #1d1d1f}"}</style>
               </Helmet>
               <Header />
             </div>
