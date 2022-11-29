@@ -20,11 +20,10 @@ const Privacy = () => {
                   Un-Real Chess Privacy Policy
                 </h1>
                 <p className="mt-10 font-roboto font-light text-start text-white text-base">
-                  At Un-Real Chess, accessible from unrealchess.web.app,
-                  one of our main priorities is the privacy of our visitors.
-                  This Privacy Policy document contains types of information
-                  that is collected and recorded by Un-Real Chess and how
-                  we use it.
+                  At Un-Real Chess, accessible from unrealchess.web.app, one of
+                  our main priorities is the privacy of our visitors. This
+                  Privacy Policy document contains types of information that is
+                  collected and recorded by Un-Real Chess and how we use it.
                 </p>
                 <p className="font-roboto font-light text-start text-white text-base">
                   If you have additional questions or require more information
@@ -92,17 +91,17 @@ const Privacy = () => {
                   Log Files
                 </h2>
                 <p className="font-roboto font-light text-start text-white text-base">
-                  unrealchess.web.app follows a standard procedure of using log
-                  files. These files log visitors when they visit websites. All
-                  hosting companies do this and a part of hosting services'
-                  analytics. The information collected by log files include
-                  internet protocol (IP) addresses, browser type, Internet
-                  Service Provider (ISP), date and time stamp, referring/exit
-                  pages, and possibly the number of clicks. These are not linked
-                  to any information that is personally identifiable. The
-                  purpose of the information is for analyzing trends,
-                  administering the site, tracking users' movement on the
-                  website, and gathering demographic information.
+                  Un-Real Chess follows a standard procedure of using log files.
+                  These files log visitors when they visit websites. All hosting
+                  companies do this and a part of hosting services' analytics.
+                  The information collected by log files include internet
+                  protocol (IP) addresses, browser type, Internet Service
+                  Provider (ISP), date and time stamp, referring/exit pages, and
+                  possibly the number of clicks. These are not linked to any
+                  information that is personally identifiable. The purpose of
+                  the information is for analyzing trends, administering the
+                  site, tracking users' movement on the website, and gathering
+                  demographic information.
                 </p>
                 <h2 className="mt-10 font-roboto font-bold text-start text-flamingo-100 text-lg">
                   Google DoubleClick DART Cookie
@@ -164,7 +163,7 @@ const Privacy = () => {
                 </h2>
                 <p className="font-roboto font-light text-start text-white text-base">
                   You may consult this list to find the Privacy Policy for each
-                  of the advertising partners of unrealchess.web.app.
+                  of the advertising partners of Un-Real Chess.
                 </p>
                 <p className="font-roboto font-light text-start text-white text-base">
                   Third-party ad servers or ad networks uses technologies like
@@ -178,14 +177,14 @@ const Privacy = () => {
                   that you visit.
                 </p>
                 <p className="font-roboto font-light text-start text-white text-base">
-                  Note that unrealchess.web.app has no access to or control over
-                  these cookies that are used by third-party advertisers.
+                  Note that Un-Real Chess has no access to or control over these
+                  cookies that are used by third-party advertisers.
                 </p>
                 <h2 className="mt-10 font-roboto font-bold text-start text-flamingo-100 text-lg">
                   Third Party Privacy Policies
                 </h2>
                 <p className="font-roboto font-light text-start text-white text-base">
-                  unrealchess.web.app's Privacy Policy does not apply to other
+                  Un-Real Chess's Privacy Policy does not apply to other
                   advertisers or websites. Thus, we are advising you to consult
                   the respective Privacy Policies of these third-party ad
                   servers for more detailed information. It may include their
@@ -276,7 +275,7 @@ const Privacy = () => {
                   online activity.
                 </p>
                 <p className="font-roboto font-light text-start text-white text-base">
-                  unrealchess.web.app does not knowingly collect any Personal
+                  Un-Real Chess does not knowingly collect any Personal
                   Identifiable Information from children under the age of 13. If
                   you think that your child provided this kind of information on
                   our website, we strongly encourage you to contact us
