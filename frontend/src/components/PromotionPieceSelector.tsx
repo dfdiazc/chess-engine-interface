@@ -1,11 +1,12 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentPlayerColor } from "features/chess/chessSlice";
+import { selectCurrentPieceStyle, selectCurrentPlayerColor } from "features/chess/chessSlice";
 import { setPromoPiece } from "features/chess/chessSlice";
 
 const PromotionPieceSelector = () => {
   const dispatch = useDispatch();
   const playerColor = useSelector(selectCurrentPlayerColor);
+  const pieceStyle = useSelector(selectCurrentPieceStyle);
   const pieces = ["N", "B", "R", "Q"];
   return (
     <div className="w-full absolute flex justify-center top-0 left-0 right-0 mx-auto p-5 z-10">
@@ -18,7 +19,7 @@ const PromotionPieceSelector = () => {
               dispatch(setPromoPiece(piece.toLowerCase()));
             }}
             style={{
-              backgroundImage: `url(https://unrealchess.live/static/chess/pieces/staunty/${
+              backgroundImage: `url(https://unrealchess.live/static/chess/pieces/${pieceStyle}/${
                 playerColor + piece
               }.svg)`,
               backgroundSize: "100%",

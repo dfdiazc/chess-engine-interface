@@ -37,6 +37,8 @@ import {
   selectCurrentGameRestart,
   setGameRestart,
   selectCurrentPieceStyle,
+  selectCurrentIsTurnIndicatorShown,
+  selectCurrentIsMoveSoundActive,
 } from "features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import TurnIndicator from "./TurnIndicator";
@@ -60,6 +62,8 @@ const CustomChessboard = (props: CustomChessboardProps) => {
     return "w";
   });
   const turn = useSelector(selectCurrentTurn);
+  const isTurnIndicatorShown = useSelector(selectCurrentIsTurnIndicatorShown);
+  const isMoveSoundActive = useSelector(selectCurrentIsMoveSoundActive);
   const engine = useSelector(selectCurrentEngine).toLowerCase();
   const difficultyMeasure = useSelector(selectCurrentDifficultyMeasure);
   const elo = useSelector(selectCurrentElo);
@@ -179,7 +183,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         dispatch(setPromoPiece(""));
         setHasSelectedPromoPiece(true);
         dispatch(setTurn(game.turn()));
-        moveSound.play();
+        if (isMoveSoundActive) moveSound.play();
       }
     }
   }, [promoPiece]);
@@ -411,7 +415,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
         }
         dispatch(setTurn(game.turn()));
         setMoveFrom("");
-        moveSound.play();
+        if (isMoveSoundActive) moveSound.play();
       } else {
         resetFirstMove(square);
         return;
@@ -467,7 +471,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
       setCheckSquares({});
     }
     dispatch(setTurn(game.turn()));
-    moveSound.play();
+    if (isMoveSoundActive) moveSound.play();
   }
   function onDrop(source: Square, target: Square, piece: Pieces) {
     if (turn === playerColor) {
@@ -500,7 +504,7 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           setCheckSquares({});
         }
         dispatch(setTurn(game.turn()));
-        moveSound.play();
+        if (isMoveSoundActive) moveSound.play();
         return true;
       }
       showSuggestionArrows();
@@ -558,7 +562,9 @@ const CustomChessboard = (props: CustomChessboardProps) => {
           />
           {!hasSelectedPromoPiece ? <PromotionPieceSelector /> : null}
         </div>
-        <TurnIndicator boardWidth={props.boardWidth} />
+        {isTurnIndicatorShown ? (
+          <TurnIndicator boardWidth={props.boardWidth} />
+        ) : null}
         {gameRestart && !gameOver ? (
           <div className="flex flex-col gap-3 p-10 z-10 absolute self-center top-24 inset-x-0 mx-auto max-w-sm bg-[#3D4547]/95 rounded-xl justify-center">
             <span className="font-roboto font-medium text-white text-2xl self-center text-center select-none">
