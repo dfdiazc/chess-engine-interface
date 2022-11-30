@@ -22,6 +22,8 @@ const chessSlice = createSlice({
     suggestionPieces: { 1: "p", 2: "p", 3: "p" },
     pieceStyle: "staunty",
     areSettingsOpen: false,
+    isMoveSoundActive: true,
+    isTurnIndicatorShown: true,
   },
   reducers: {
     setPlayerColor: (state, action) => {
@@ -96,6 +98,14 @@ const chessSlice = createSlice({
       const areSettingsOpen = action.payload;
       state.areSettingsOpen = areSettingsOpen;
     },
+    setIsMoveSoundActive: (state, action) => {
+      const isMoveSoundActive = action.payload;
+      state.isMoveSoundActive = isMoveSoundActive;
+    },
+    setIsTurnIndicatorShown: (state, action) => {
+      const isTurnIndicatorShown = action.payload;
+      state.isTurnIndicatorShown = isTurnIndicatorShown;
+    },
   },
 });
 
@@ -118,6 +128,8 @@ export const {
   setSuggestionShown,
   setPieceStyle,
   setAreSettingOpen,
+  setIsMoveSoundActive,
+  setIsTurnIndicatorShown,
 } = chessSlice.actions;
 
 export default chessSlice.reducer;
@@ -153,3 +165,7 @@ export const selectCurrentPieceStyle = (state: RootState) =>
   state.chess.pieceStyle;
 export const selectCurrentAreSettingsOpen = (state: RootState) =>
   state.chess.areSettingsOpen;
+export const selectCurrentIsMoveSoundActive = (state: RootState) =>
+  state.chess.isMoveSoundActive;
+export const selectCurrentIsTurnIndicatorShown = (state: RootState) =>
+  state.chess.isTurnIndicatorShown;
