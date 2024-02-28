@@ -75,7 +75,7 @@ const ChessUserSettings = () => {
         <div
           className="ml-auto bg-center bg-cover bg-no-repeat self-center w-12 h-12 md:w-16 md:h-16"
           style={{
-            backgroundImage: `url(http://localhost:8000/static/chess/pieces/${selectedPieceStyle.value}/${playerColor}P.svg)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${selectedPieceStyle.value}/${playerColor}P.svg)`,
             backgroundSize: "100%",
           }}
         />

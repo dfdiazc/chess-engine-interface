@@ -20,7 +20,7 @@ const PromotionPieceSelector = () => {
               dispatch(setPromoPiece(piece.toLowerCase()));
             }}
             style={{
-              backgroundImage: `url(http://localhost:8000/static/chess/pieces/${pieceStyle}/${
+              backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/${
                 playerColor + piece
               }.svg)`,
               backgroundSize: "100%",
