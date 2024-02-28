@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 import { LoginForm } from "@/app/components/ui";
 import { IconContext } from "react-icons";
 import {
@@ -106,7 +106,7 @@ const Login = () => {
               </IconContext.Provider>
               <span className="">Log In with GitHub</span>
             </Link>
-          </div>*/}
+          </div>*
           <div className="font-roboto fonto-normal text-gray-800 text-sm">
             New here?&nbsp;
             <Link href="/register" className="text-blue-500 hover:underline">
@@ -120,3 +120,4 @@ const Login = () => {
 };
 
 export default Login;
+ */
