@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -103,7 +103,7 @@ const LoginForm = () => {
         >
           Forgot password?
         </Link>
-        </div>*/}
+        </div>*
       <div className="flex mt-10">
         <button
           type="submit"
@@ -117,3 +117,4 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
+ */
