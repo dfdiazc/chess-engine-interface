@@ -166,7 +166,7 @@ const CustomChessboard = () => {
       setSuggestions();
     }
   }, [suggestions]);
-  /*   useEffect(() => {
+    useEffect(() => {
     if (promoMoves) {
       const result = game.move({
         from: promoMoves.source,
@@ -197,7 +197,7 @@ const CustomChessboard = () => {
         if (isMoveSoundActive) moveSound.play();
       }
     }
-  }, [promoPiece]); */
+  }, [promoPiece]);
   interface pieces {
     r: number;
     n: number;
