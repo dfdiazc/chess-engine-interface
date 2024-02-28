@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+/* import React, { useEffect, useMemo } from "react";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
@@ -89,7 +89,7 @@ const ProfileAccount = () => {
           </div>
           {/*<span className="font-roboto font-normal text-sm text-flamingo-100 hover:underline text-center self-center cursor-pointer">
             Change profile picture
-          </span>*/}
+          </span>*
         </div>
         <form
           className="flex flex-col gap-3 p-3 mt-5"
@@ -108,11 +108,11 @@ const ProfileAccount = () => {
                 {...register("email")}
               />
             </div>
-            {/*<IconContext.Provider
+            *<IconContext.Provider
               value={{ className: "h-4 w-4 text-gray-500 m-1 self-end" }}
             >
               <AiFillEdit />
-            </IconContext.Provider>*/}
+            </IconContext.Provider>*
           </div>
           <div className="flex flex-row gap-1 bg-[#2D3033] rounded-lg px-5 py-2 justify-between h-14">
             <div className="flex flex-col grow justify-between">
@@ -161,3 +161,4 @@ const ProfileAccount = () => {
 };
 
 export default ProfileAccount;
+ */

@@ -1,4 +1,4 @@
-import { useGetProfileQuery } from "lib/features/auth/authApiSlice";
+/* import { useGetProfileQuery } from "lib/features/auth/authApiSlice";
 import React from "react";
 import { IconContext } from "react-icons";
 import { AiOutlineUser } from "react-icons/ai";
@@ -40,3 +40,4 @@ const ProfileHome = () => {
 };
 
 export default ProfileHome;
+ */
