@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+/* import React, { useEffect, useRef, useState } from "react";
 import { IconContext } from "react-icons";
 import { FaChess } from "react-icons/fa";
 import { BiLogOut } from "react-icons/bi";
 import { AiOutlineUser } from "react-icons/ai";
-import { Link, NavLink } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "lib/store";
@@ -61,7 +60,7 @@ const ProfileHeader = () => {
               </div>
             );
           }}
-        />*/}
+        />*
         <NavLink
           to="account"
           children={({ isActive }) => {
@@ -83,3 +82,4 @@ const ProfileHeader = () => {
 };
 
 export default ProfileHeader;
+ */

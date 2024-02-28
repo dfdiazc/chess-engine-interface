@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+/* import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import { ProfileHeader } from "components";
 import { Outlet } from "react-router-dom";
@@ -16,3 +16,4 @@ const Profile = () => {
 };
 
 export default Profile;
+ */

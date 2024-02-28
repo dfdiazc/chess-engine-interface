@@ -1,4 +1,4 @@
-import React from "react";
+/* import React from "react";
 import { Link } from "react-router-dom";
 import { RegisterForm } from "components";
 import { IconContext } from "react-icons";
@@ -74,3 +74,4 @@ const Register = () => {
 };
 
 export default Register;
+ */

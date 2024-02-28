@@ -1,4 +1,4 @@
-"use client";
+/* "use client";
 import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -129,3 +129,4 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+ */
