@@ -256,7 +256,7 @@ const CustomChessboard = () => {
     }
   }
   function showLostPieces() {
-    fetch(`http://localhost:8000/api/mods/${game.fen().replaceAll("/", "-")}$`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/mods/${game.fen().replaceAll("/", "-")}$`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -310,7 +310,7 @@ const CustomChessboard = () => {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(http://localhost:8000/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />

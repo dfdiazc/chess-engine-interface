@@ -53,7 +53,7 @@ const ChessSettings = () => {
                   <div
                     className="bg-center bg-no-repeat h-10 w-10"
                     style={{
-                      backgroundImage: `url(http://localhost:8000/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                      backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
                       backgroundSize: "100%",
                     }}
                   />
@@ -71,7 +71,7 @@ const ChessSettings = () => {
                   <div
                     className="bg-center bg-no-repeat h-10 w-10"
                     style={{
-                      backgroundImage: `url(http://localhost:8000/static/chess/pieces/${pieceStyle}/bP.svg)`,
+                      backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/bP.svg)`,
                       backgroundSize: "100%",
                     }}
                   />
