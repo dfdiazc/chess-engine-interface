@@ -168,12 +168,13 @@ const CustomChessboard = () => {
   }, [suggestions]);
     useEffect(() => {
     if (promoMoves) {
+      try {
       const result = game.move({
         from: promoMoves.source,
         to: promoMoves.target,
         promotion: promoPiece,
       });
-      if (result != null) {
+      if (result) {
         setMoveSquares({
           [promoMoves.source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
           [promoMoves.target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
@@ -196,6 +197,10 @@ const CustomChessboard = () => {
         dispatch(setTurn(game.turn()));
         if (isMoveSoundActive) moveSound.play();
       }
+    }
+    catch {
+      return;
+    }
     }
   }, [promoPiece]);
   interface pieces {
