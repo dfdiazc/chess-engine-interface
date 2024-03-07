@@ -6,7 +6,7 @@ global engines
 
 engines = {
 
-    "stockfish": "../engines/stockfish/stockfish_13_linux_x64/stockfish_13_linux_x64/stockfish_13_linux_x64",
+    "stockfish": "../engines/stockfish/stockfish_popcnt/stockfish-ubuntu-x86-64-sse41-popcnt",
     "komodo": "../engines/komodo-13_201fd6/Linux/komodo-13.02-linux",
     "leela": "../engines/lc0/build/release/lc0"
 }
