@@ -8,7 +8,10 @@ engines = {
 
     "stockfish": "../engines/stockfish/stockfish_13_linux_x64_ssse/stockfish_13_linux_x64_ssse",
     "komodo": "../engines/komodo-13_201fd6/Linux/komodo-13.02-linux",
-    "leela": "../engines/lc0/build/release/lc0"
+    # "leela": "../engines/lc0/build/release/lc0"
+    "slowchess": "../engines/slowchess/SlowChess-Linux-2.9/slow64_linux_sse",
+    "koivisto": "../engines/koivisto/Koivisto_8.0-x64-linux-sse2",
+    "berserk": "../engines/Berserk-12_Linux_x64/Berserk-12_Linux_x86-64-popcnt",
 }
 
 def load_engine(engine_name):
