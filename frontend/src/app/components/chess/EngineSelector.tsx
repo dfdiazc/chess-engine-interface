@@ -105,7 +105,8 @@ const EngineSelector = () => {
                       onClick={() => {
                         dispatch(setEngine("Leela"));
                       }}
-                      className="flex bg-white rounded-lg w-14 h-14 self-center"
+                      className="flex bg-white rounded-lg w-14 h-14 self-center opacity-50 cursor-not-allowed"
+                      disabled
                     >
                       <div className="self-center bg-[url('/images/leela.svg')] -m-1.5 w-14 h-14 bg-cover" />
                     </button>
@@ -151,7 +152,8 @@ const EngineSelector = () => {
                       onClick={() => {
                         dispatch(setEngine("Critter"));
                       }}
-                      className="flex bg-white rounded-lg w-14 h-14 self-center"
+                      className="flex bg-white rounded-lg w-14 h-14 self-center opacity-50 cursor-not-allowed"
+                      disabled
                     >
                       <div className="self-center bg-[url('/images/critter.png')] bg-center w-14 h-14 bg-cover" />
                     </button>
@@ -179,7 +181,8 @@ const EngineSelector = () => {
                       onClick={() => {
                         dispatch(setEngine("Arasan"));
                       }}
-                      className="flex bg-white rounded-lg w-14 h-14 self-center justify-center"
+                      className="flex bg-white rounded-lg w-14 h-14 self-center justify-center opacity-50 cursor-not-allowed"
+                      disabled
                     >
                       <div className="self-center bg-[url('/images/arasan.svg')] bg-center bg-contain bg-no-repeat w-12 h-12" />
                     </button>
@@ -267,7 +270,8 @@ const EngineSelector = () => {
                       onClick={() => {
                         dispatch(setEngine("Berserk"));
                       }}
-                      className="flex bg-red-900 rounded-lg w-14 h-14 self-center justify-center"
+                      className="flex bg-red-900 rounded-lg w-14 h-14 self-center justify-center opacity-50 cursor-not-allowed"
+                      disabled
                     >
                       <div className="self-center bg-[url('/images/berserk.svg')] w-10 h-10 bg-cover" />
                     </button>
@@ -293,7 +297,8 @@ const EngineSelector = () => {
                       onClick={() => {
                         dispatch(setEngine("Wasp"));
                       }}
-                      className="flex bg-[#85A843] rounded-lg w-14 h-14 self-center justify-center"
+                      className="flex bg-[#85A843] rounded-lg w-14 h-14 self-center justify-center opacity-50 cursor-not-allowed"
+                      disabled
                     >
                       <div className="self-center bg-[url('/images/wasp.svg')] w-12 h-12 bg-contain bg-no-repeat bg-center" />
                     </button>
@@ -321,7 +326,8 @@ const EngineSelector = () => {
                       onClick={() => {
                         dispatch(setEngine("Ethereal"));
                       }}
-                      className="flex bg-neutral-900 rounded-lg w-14 h-14 self-center justify-center"
+                      className="flex bg-neutral-900 rounded-lg w-14 h-14 self-center justify-center opacity-50 cursor-not-allowed"
+                      disabled
                     >
                       <div className="self-center bg-[url('/images/ethereal.svg')] w-12 h-12 bg-contain bg-no-repeat bg-center" />
                     </button>

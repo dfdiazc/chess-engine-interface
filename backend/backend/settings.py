@@ -1,4 +1,3 @@
-# If you are seeing this on PythonAnywhere, something went wrong
 """
 Django settings for backend project.
 
@@ -194,4 +193,4 @@ CORS_ALLOWED_ORIGINS = [
 
 # serve static files
 
-STATIC_ROOT = "/home/unrealchess/chess-engine-interface/backend/static"
+STATIC_ROOT = "/home/dfdiazc/chess-engine-interface/backend/static"
