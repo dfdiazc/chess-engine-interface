@@ -186,7 +186,7 @@ SIMPLE_JWT = {
 
 CORS_ALLOWED_ORIGINS = [
 
-    "https://unrealchess.web.app",
+    "https://dfdiazc.pythonanywhere.com",
     "http://localhost:3000",
 
 ]
