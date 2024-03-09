@@ -48,7 +48,7 @@ const CustomChessboard = () => {
     if (typeof window !== "undefined") {
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
-      return windowWidth < 768 ? windowWidth * 0.8 : windowHeight * 0.75;
+      return windowWidth < 768 ? windowWidth * 0.8 : windowHeight * 0.8;
     }
     return 0;
   }
@@ -56,9 +56,7 @@ const CustomChessboard = () => {
     if (typeof window !== "undefined") {
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
-      setBoardWidth(
-        windowWidth < 768 ? windowWidth * 0.8 : windowHeight * 0.75
-      );
+      setBoardWidth(windowWidth < 768 ? windowWidth * 0.8 : windowHeight * 0.8);
     }
   };
   useEffect(() => {
@@ -103,6 +101,7 @@ const CustomChessboard = () => {
   const chessboardRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const moveSound = new Howl({
     src: ["/sounds/chess-move.mp3"],
+    volume: 0.5,
   });
   const [arePiecesDragable, setArePiecesDragable] = useState(false);
   const [boardOrientation, setBoardOrientation] = useState<
@@ -166,41 +165,40 @@ const CustomChessboard = () => {
       setSuggestions();
     }
   }, [suggestions]);
-    useEffect(() => {
+  useEffect(() => {
     if (promoMoves) {
       try {
-      const result = game.move({
-        from: promoMoves.source,
-        to: promoMoves.target,
-        promotion: promoPiece,
-      });
-      if (result) {
-        setMoveSquares({
-          [promoMoves.source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-          [promoMoves.target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+        const result = game.move({
+          from: promoMoves.source,
+          to: promoMoves.target,
+          promotion: promoPiece,
         });
-        setOptionSquares({});
-        showLostPieces();
-        setHasPlayerMoved(true);
-        dispatch(setFen(game.fen()));
-        if (game.isCheck()) {
-          const computerKingSquare: Square = getPiecePositions({
-            color: computerColor as Color,
-            type: "k",
-          })[0];
-          addCheckSquares(computerKingSquare);
-        } else {
-          setCheckSquares({});
+        if (result) {
+          setMoveSquares({
+            [promoMoves.source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+            [promoMoves.target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+          });
+          setOptionSquares({});
+          showLostPieces();
+          setHasPlayerMoved(true);
+          dispatch(setFen(game.fen()));
+          if (game.isCheck()) {
+            const computerKingSquare: Square = getPiecePositions({
+              color: computerColor as Color,
+              type: "k",
+            })[0];
+            addCheckSquares(computerKingSquare);
+          } else {
+            setCheckSquares({});
+          }
+          dispatch(setPromoPiece(""));
+          setHasSelectedPromoPiece(true);
+          dispatch(setTurn(game.turn()));
+          if (isMoveSoundActive) moveSound.play();
         }
-        dispatch(setPromoPiece(""));
-        setHasSelectedPromoPiece(true);
-        dispatch(setTurn(game.turn()));
-        if (isMoveSoundActive) moveSound.play();
+      } catch {
+        return;
       }
-    }
-    catch {
-      return;
-    }
     }
   }, [promoPiece]);
   interface pieces {
@@ -261,7 +259,11 @@ const CustomChessboard = () => {
     }
   }
   function showLostPieces() {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/mods/${game.fen().replaceAll("/", "-")}$`)
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/mods/${game
+        .fen()
+        .replaceAll("/", "-")}$`
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -560,7 +562,7 @@ const CustomChessboard = () => {
     return false;
   }
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 h-fit">
       <LostPieces
         r={lostPieces.r}
         n={lostPieces.n}

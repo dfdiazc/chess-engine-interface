@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,15 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-%jg=@g904rz=)x^pqg1r1vp$ve65!^nl=(@lib8do8vo#uh*q6"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = [
     "unrealchess.pythonanywhere.com",
-    "127.0.0.1",
     "dfdiazc.pythonanywhere.com",
+    "localhost",
 ]
 
 
@@ -178,10 +181,10 @@ SIMPLE_JWT = {
 # corsheaders
 
 CORS_ALLOWED_ORIGINS = [
-    "https://unrealchess.vercel.app/play",
+    "https://unrealchess.vercel.app",
     "http://localhost:3000",
 ]
 
 # serve static files
 
-STATIC_ROOT = "/home/dfdiazc/chess-engine-interface/backend/static"
+STATIC_ROOT = os.getenv("STATIC_ROOT")

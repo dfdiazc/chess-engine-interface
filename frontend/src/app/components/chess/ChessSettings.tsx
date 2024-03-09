@@ -26,8 +26,8 @@ const ChessSettings = () => {
   const gameStart = useSelector(selectCurrentGameStart);
   const gameOver = useSelector(selectCurrentGameOver);
   return (
-    <div className="px-3 py-3 w-full lg:max-w-sm gap-5">
-      <div className="px-3 py-3 bg-neutral-800 drop-shadow-xl flex flex-col rounded-xl grow shrink-0 w-full lg:max-w-sm">
+    <div className="m-3 w-full h-full gap-5">
+      <div className="p-6 bg-neutral-800 drop-shadow-xl flex flex-col rounded-xl grow shrink-0 w-full">
         <div className="flex flex-col self-center w-full">
           <EngineSelector />
           <DifficultySelector />
@@ -43,7 +43,7 @@ const ChessSettings = () => {
                 <button
                   className={
                     playerColor === "w"
-                      ? "px-2 pt-1 pb-3 rounded-lg ring-2 ring-flamingo-100 bg-flamingo-100/50"
+                      ? "px-2 pt-1 pb-3 rounded-lg ring-2 ring-aquamarine-300 bg-aquamarine-400/50"
                       : "px-2 pt-1 pb-3 rounded-lg"
                   }
                   onClick={() => {
@@ -61,7 +61,7 @@ const ChessSettings = () => {
                 <button
                   className={
                     playerColor === "b"
-                      ? "px-2 pt-1 pb-3 rounded-lg ring-2 ring-flamingo-100 bg-flamingo-100/50"
+                      ? "px-2 pt-1 pb-3 rounded-lg ring-2 ring-aquamarine-300 bg-aquamarine-400/50"
                       : "px-2 pt-1 pb-3 rounded-lg"
                   }
                   onClick={() => {
@@ -87,8 +87,8 @@ const ChessSettings = () => {
                 }}
                 className={
                   !gameOver
-                    ? "w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-flamingo-100 transition duration-300 hover:bg-flamingo-100 text-center"
-                    : "w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-flamingo-100 transition duration-300 bg-flamingo-100/30 text-center"
+                    ? "w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-aquamarine-300 transition duration-300 hover:bg-aquamarine-400 text-center"
+                    : "w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-aquamarine-300 transition duration-300 bg-aquamarine-400/30 text-center"
                 }
                 disabled={!gameOver ? false : true}
               >
@@ -102,7 +102,7 @@ const ChessSettings = () => {
                 onClick={() => {
                   dispatch(setAreSettingOpen(true));
                 }}
-                className="w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-flamingo-100 transition duration-300 hover:bg-flamingo-100 text-center"
+                className="w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-aquamarine-300 transition duration-300 hover:bg-aquamarine-400 text-center"
               >
                 <IconContext.Provider
                   value={{ className: "h-6 w-6 fill-white" }}
@@ -118,8 +118,8 @@ const ChessSettings = () => {
               }}
               className={
                 gameStart
-                  ? "block grow whitespace-nowrap self-center text-xl text-white/50 font-roboto font-medium select-none px-10 py-3 bg-flamingo-100/50 rounded-full border-b-4 border-flamingo-300/30 transition duration-300 text-center mt-10"
-                  : "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-10 py-3 bg-flamingo-100 rounded-full border-b-4 border-flamingo-200 transition duration-300 hover:bg-flamingo-200/80 hover:border-flamingo-300/80 hover:shadow text-center mt-10"
+                  ? "block grow whitespace-nowrap self-center text-xl text-white/50 font-roboto font-medium select-none px-16 py-3 bg-flamingo-100/50 rounded-full border-b-4 border-flamingo-300/30 transition duration-300 text-center mt-10"
+                  : "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-16 py-3 bg-aquamarine-300 rounded-full border-b-4 border-aquamarine-400 transition duration-300 hover:bg-aquamarine-300/80 hover:border-aquamarine-400/80 hover:shadow text-center mt-10"
               }
             >
               Start Game
