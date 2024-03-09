@@ -37,8 +37,8 @@ const ChessSuggestionsPanel = () => {
     "rounded-lg ring-2 ring-flamingo-100 bg-flamingo-100/50";
   if (!gameStart) return null;
   return (
-    <div className="px-3 py-3 w-full lg:max-w-sm gap-5">
-      <div className="flex flex-row gap-5 px-5 py-3 h-36 bg-[#252729] drop-shadow-xl rounded-xl grow shrink-0 w-full lg:max-w-sm relative">
+    <div className="w-full gap-5">
+      <div className="flex flex-row gap-5 px-5 py-3 h-36 bg-neutral-800 drop-shadow-xl rounded-xl grow shrink-0 w-full relative">
         {areSuggestionShown ? (
           <button
             className="flex p-1 rounded-full justify-self-start h-fit self-center"

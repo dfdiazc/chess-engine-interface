@@ -9,16 +9,16 @@ import Image from "next/image";
 export default function Header() {
   const [sidebarOpen, setSideBarOpen] = useState<boolean>(false);
   return (
-    <header className="flex items-center justify-between h-16 pl-6 pr-5 sm:pl-10 w-full bg-transparent shadow max-w-[1920px] bg-neutral-900">
+    <header className="flex items-center justify-between h-12 pl-6 pr-5 sm:pl-10 w-full bg-transparent shadow max-w-[1920px] bg-neutral-900">
       <Link href="/" className="flex gap-5 shrink-0">
         <Image
           src={"/images/logo.png"}
           width={100}
           height={100}
-          className="w-10 h-10"
+          className="w-8 h-8"
           alt="Description pending"
         />
-        <span className="text-roboto font-medium text-xl text-white text-center select-none self-center">
+        <span className="text-roboto font-medium text-md text-neutral-200 text-center select-none self-center">
           Un-Real Chess
         </span>
       </Link>

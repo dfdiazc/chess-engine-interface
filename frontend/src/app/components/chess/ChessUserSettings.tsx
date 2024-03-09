@@ -54,7 +54,7 @@ const ChessUserSettings = () => {
   ];
   if (!areSettingsOpen) return null;
   return (
-    <div className="flex flex-col px-5 py-10 max-w-sm w-full bg-[#2d2f32] absolute top-10 z-10 rounded-xl drop-shadow-xl">
+    <div className="flex flex-col px-5 py-10 w-full bg-neutral-800 absolute top-10 z-10 rounded-xl drop-shadow-xl">
       <span className="font-roboto font-medium text-white text-2xl self-center text-center select-none">
         Game Settings
       </span>
