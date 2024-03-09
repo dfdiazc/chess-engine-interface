@@ -6,6 +6,7 @@ from .serializers import MatchSerializer, MoveSerializer
 
 # Auxiliary functions
 
+
 def fix_fen(url_fen):
 
     raw_FEN = url_fen.split(" ")
@@ -14,6 +15,7 @@ def fix_fen(url_fen):
     new_FEN = " ".join([correction] + raw_FEN[1:])
 
     return new_FEN
+
 
 # Views
 class LostView(generics.GenericAPIView):
@@ -24,15 +26,18 @@ class LostView(generics.GenericAPIView):
 
         return Response(current_count)
 
+
 class CreateMatchView(generics.CreateAPIView):
 
     queryset = Match.objects.all()
     serializer_class = MatchSerializer
 
+
 class CreateMoveView(generics.CreateAPIView):
 
     queryset = Moves.objects.all()
     serializer_class = MoveSerializer
+
 
 class GetStockfishBestMoves(generics.GenericAPIView):
 
@@ -44,6 +49,7 @@ class GetStockfishBestMoves(generics.GenericAPIView):
 
         return Response(moves)
 
+
 class PromotionView(generics.GenericAPIView):
 
     def get(self, request, move, FEN):
@@ -51,10 +57,8 @@ class PromotionView(generics.GenericAPIView):
         new_FEN = fix_fen(FEN)
         player, promotion_intended = mods.will_promote(move, new_FEN)
 
-        return Response({
-            "promotion": promotion_intended,
-            "player": player
-        })
+        return Response({"promotion": promotion_intended, "player": player})
+
 
 class GetMove(generics.GenericAPIView):
 
@@ -64,6 +68,16 @@ class GetMove(generics.GenericAPIView):
         best_move = mods.get_move(engine, difficulty, new_FEN)
 
         return Response({"best_move": best_move})
+
+
+class GetFullGame(generics.GenericAPIView):
+
+    def get(self, request, engine):
+
+        moves = mods.get_full_game(engine)
+
+        return Response({"moves": moves})
+
 
 class MatchInfo(generics.GenericAPIView):
 
@@ -93,7 +107,7 @@ class MatchInfo(generics.GenericAPIView):
 
         blacks_engine = blacks_player.username in engines
 
-        if(blacks_engine):
+        if blacks_engine:
 
             engine = blacks_player.username
 
@@ -112,11 +126,9 @@ class MatchInfo(generics.GenericAPIView):
         best_move = mods.get_move(engine, difficulty, latest_FEN)
 
         response = {
-
             "lost": lost,
             "suggestions": suggestions,
             "best_move": best_move,
-
         }
 
         return Response(response)
