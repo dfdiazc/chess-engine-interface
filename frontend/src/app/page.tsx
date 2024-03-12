@@ -12,7 +12,7 @@ import { IoIosArrowDown } from "react-icons/io";
 
 async function get_game() {
   const response = await fetch(
-    `http://localhost:8000/api/playfullgame/stockfish`,
+    `${process.env.NEXT_PUBLIC_API_URL}/api/playfullgame/stockfish`,
     {
       cache: "no-store",
     }

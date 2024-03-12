@@ -1,6 +1,5 @@
 import React from "react";
-import { FaChess, FaGithub } from "react-icons/fa";
-import { IconContext } from "react-icons";
+import { FaGithub } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 

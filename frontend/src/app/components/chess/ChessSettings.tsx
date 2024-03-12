@@ -1,133 +1,241 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useSelector } from "react-redux";
 import {
   selectCurrentPlayerColor,
-  setPlayerColor,
-  selectCurrentGameStart,
-  setGameStart,
-  setGameRestart,
-  selectCurrentGameOver,
   selectCurrentPieceStyle,
-  selectCurrentAreSettingsOpen,
-  setAreSettingOpen,
+  selectCurrentEngine,
+  selectCurrentDifficulty,
+  selectCurrentIsTurnIndicatorShown,
+  selectCurrentIsMoveSoundActive,
+  setPieceStyle,
+  setIsTurnIndicatorShown,
+  setIsMoveSoundActive,
+  selectCurrentCreatingGame,
+  selectCurrentGameState,
 } from "@/lib/features/chess/chessSlice";
-import EngineSelector from "./EngineSelector";
-import DifficultySelector from "./DifficultySelector";
-import { IconContext } from "react-icons";
-import { AiFillSetting, AiOutlineReload } from "react-icons/ai";
+import * as Dialog from "@radix-ui/react-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
+import { FiSettings } from "react-icons/fi";
+import { X } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const ChessSettings = () => {
   const dispatch = useDispatch<AppDispatch>();
   const playerColor = useSelector(selectCurrentPlayerColor);
   const pieceStyle = useSelector(selectCurrentPieceStyle);
-  const gameStart = useSelector(selectCurrentGameStart);
-  const gameOver = useSelector(selectCurrentGameOver);
+  const creatingGame = useSelector(selectCurrentCreatingGame);
+  const gameState = useSelector(selectCurrentGameState);
+  const engine = useSelector(selectCurrentEngine);
+  const difficulty = useSelector(selectCurrentDifficulty);
+  const turnIndicator = useSelector(selectCurrentIsTurnIndicatorShown);
+  const soundOnMove = useSelector(selectCurrentIsMoveSoundActive);
+  const pieceStyles = [
+    { value: "pirouetti", label: "Pirouetti" },
+    { value: "cburnett", label: "Cburnett" },
+    { value: "pixel", label: "Pixel" },
+    { value: "staunty", label: "Staunty" },
+  ];
+  const formSchema = z.object({
+    pieceStyle: z.string().optional(),
+    turnIndicator: z.boolean().optional(),
+    soundOnMove: z.boolean().optional(),
+  });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      pieceStyle: pieceStyle,
+      turnIndicator: turnIndicator,
+      soundOnMove: soundOnMove,
+    },
+  });
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const touchedFields = form.formState.touchedFields;
+    if (touchedFields?.pieceStyle) {
+      dispatch(setPieceStyle(data.pieceStyle));
+    }
+    if (touchedFields.turnIndicator) {
+      dispatch(setIsTurnIndicatorShown(data.turnIndicator));
+    }
+    if (touchedFields.soundOnMove) {
+      dispatch(setIsMoveSoundActive(data.soundOnMove));
+    }
+    setOpen(false);
+  };
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    let defaultValues: {
+      pieceStyle?: string;
+      turnIndicator?: boolean;
+      soundOnMove?: boolean;
+    } = {};
+    defaultValues.pieceStyle = pieceStyle;
+    defaultValues.turnIndicator = turnIndicator;
+    defaultValues.soundOnMove = soundOnMove;
+    form.reset({ ...defaultValues });
+  }, [open]);
   return (
-    <div className="m-3 w-full h-full gap-5">
-      <div className="p-6 bg-neutral-800 drop-shadow-xl flex flex-col rounded-xl grow shrink-0 w-full">
-        <div className="flex flex-col self-center w-full">
-          <EngineSelector />
-          <DifficultySelector />
-        </div>
-        <div className="flex flex-col self-center w-full">
-          {!gameStart ? (
-            <>
-              <span className="font-roboto font-medium text-lg text-white text-center mt-10 select-none">
-                Piece Color
-              </span>
-              <span className="w-full mr-3 mt-3 h-px bg-white"></span>
-              <div className="flex flex-row gap-5 self-center mt-2">
-                <button
-                  className={
-                    playerColor === "w"
-                      ? "px-2 pt-1 pb-3 rounded-lg ring-2 ring-aquamarine-300 bg-aquamarine-400/50"
-                      : "px-2 pt-1 pb-3 rounded-lg"
-                  }
-                  onClick={() => {
-                    dispatch(setPlayerColor("w"));
-                  }}
-                >
-                  <div
-                    className="bg-center bg-no-repeat h-10 w-10"
-                    style={{
-                      backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
-                      backgroundSize: "100%",
-                    }}
-                  />
-                </button>
-                <button
-                  className={
-                    playerColor === "b"
-                      ? "px-2 pt-1 pb-3 rounded-lg ring-2 ring-aquamarine-300 bg-aquamarine-400/50"
-                      : "px-2 pt-1 pb-3 rounded-lg"
-                  }
-                  onClick={() => {
-                    dispatch(setPlayerColor("b"));
-                  }}
-                >
-                  <div
-                    className="bg-center bg-no-repeat h-10 w-10"
-                    style={{
-                      backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/bP.svg)`,
-                      backgroundSize: "100%",
-                    }}
-                  />
-                </button>
-              </div>
-            </>
-          ) : null}
-          {gameStart ? (
-            <div className="flex gap-2 mt-10">
-              <button
-                onClick={() => {
-                  dispatch(setGameRestart(true));
-                }}
-                className={
-                  !gameOver
-                    ? "w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-aquamarine-300 transition duration-300 hover:bg-aquamarine-400 text-center"
-                    : "w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-aquamarine-300 transition duration-300 bg-aquamarine-400/30 text-center"
-                }
-                disabled={!gameOver ? false : true}
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Dialog.Trigger asChild>
+              <Button variant={"ghost"}>
+                <FiSettings className="w-4 h-4 stroke-neutral-200" />
+              </Button>
+            </Dialog.Trigger>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Settings</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+      <Dialog.Portal>
+        <Dialog.Overlay className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-[100]" />
+        <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-neutral-800 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[200] flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <Dialog.Title className="text-xl font-bold text-neutral-200">
+              Settings
+            </Dialog.Title>
+            <Dialog.Close asChild>
+              <Button
+                variant={"ghost"}
+                className="appearance-none items-center justify-center dark:hover:bg-neutral-700"
               >
-                <IconContext.Provider
-                  value={{ className: "h-6 w-6 fill-white" }}
-                >
-                  <AiOutlineReload />
-                </IconContext.Provider>
-              </button>
-              <button
-                onClick={() => {
-                  dispatch(setAreSettingOpen(true));
-                }}
-                className="w-1/2 flex whitespace-nowrap self-center justify-center text-xl text-white font-roboto font-medium select-none px-10 py-3 rounded-xl border-2 border-aquamarine-300 transition duration-300 hover:bg-aquamarine-400 text-center"
-              >
-                <IconContext.Provider
-                  value={{ className: "h-6 w-6 fill-white" }}
-                >
-                  <AiFillSetting />
-                </IconContext.Provider>
-              </button>
-            </div>
-          ) : (
-            <button
-              onClick={() => {
-                dispatch(setGameStart(true));
-              }}
-              className={
-                gameStart
-                  ? "block grow whitespace-nowrap self-center text-xl text-white/50 font-roboto font-medium select-none px-16 py-3 bg-flamingo-100/50 rounded-full border-b-4 border-flamingo-300/30 transition duration-300 text-center mt-10"
-                  : "block grow whitespace-nowrap self-center text-xl text-white font-roboto font-medium select-none px-16 py-3 bg-aquamarine-300 rounded-full border-b-4 border-aquamarine-400 transition duration-300 hover:bg-aquamarine-300/80 hover:border-aquamarine-400/80 hover:shadow text-center mt-10"
-              }
+                <X className="w-4 h-4 stroke-neutral-200" />
+              </Button>
+            </Dialog.Close>
+          </div>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex flex-col gap-4"
             >
-              Start Game
-            </button>
-          )}
-        </div>
-      </div>
-    </div>
+              <FormField
+                control={form.control}
+                name="pieceStyle"
+                render={({ field }) => (
+                  <FormItem className="flex justify-between items-center">
+                    <FormLabel className="text-neutral-200 text-base font-medium">
+                      Piece Style
+                    </FormLabel>
+                    <div className="flex items-center gap-1">
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          field.onBlur();
+                        }}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="z-[200]">
+                          {pieceStyles.map((item) => (
+                            <SelectItem key={item.value} value={item.value}>
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <div
+                        className="bg-center bg-cover bg-no-repeat self-center w-12 h-12"
+                        style={{
+                          backgroundImage: `url(${
+                            process.env.NEXT_PUBLIC_API_URL
+                          }/static/chess/pieces/${
+                            form.getValues().pieceStyle
+                          }/${playerColor}P.svg)`,
+                          backgroundSize: "100%",
+                        }}
+                      />
+                    </div>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="turnIndicator"
+                render={({ field }) => (
+                  <FormItem className="flex justify-between items-center gap-4">
+                    <FormLabel className="text-neutral-200 text-base font-medium">
+                      Turn Indicator
+                    </FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={(checked) => {
+                          field.onChange(checked);
+                          field.onBlur();
+                        }}
+                        className="w-[42px] h-[25px] bg-neutral-800 rounded-full relative data-[state=checked]:bg-aquamarine-200 outline-none cursor-pointer"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="soundOnMove"
+                render={({ field }) => (
+                  <FormItem className="flex justify-between items-center gap-4">
+                    <FormLabel className="text-neutral-200 text-base font-medium">
+                      Sound on move
+                    </FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={(checked) => {
+                          field.onChange(checked);
+                          field.onBlur();
+                        }}
+                        className="w-[42px] h-[25px] bg-neutral-800 rounded-full relative data-[state=checked]:bg-aquamarine-200 outline-none cursor-pointer"
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              <Button
+                variant="default"
+                type="submit"
+                disabled={
+                  Object.keys(form.formState.touchedFields).length === 0
+                }
+              >
+                Save Changes
+              </Button>
+            </form>
+          </Form>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 };
 
