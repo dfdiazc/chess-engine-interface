@@ -17,7 +17,8 @@ import {
   selectCurrentAreSuggestionsShown,
 } from "@/lib/features/chess/chessSlice";
 import { Button } from "@/components/ui/button";
-import { RotateCw, Plus } from "lucide-react";
+import { VscDebugRestart } from "react-icons/vsc";
+import { FaPlus } from "react-icons/fa6";
 import { FaRegLightbulb } from "react-icons/fa";
 import EngineSelector from "./EngineSelector";
 import { ChessSettings, ChessSuggestions, RestartGame } from ".";
@@ -222,7 +223,7 @@ export default function GamePanel() {
             className="w-full"
             onClick={restartGame}
           >
-            <Plus className="w-5 h-5 stroke-neutral-200 mr-2" />
+            <FaPlus className="w-5 h-5 stroke-neutral-200 mr-2" />
             {t("play.game.newGame")}
           </Button>
           <Button
@@ -231,7 +232,7 @@ export default function GamePanel() {
             className="w-full"
             onClick={rematch}
           >
-            <RotateCw className="w-4 h-4 stroke-neutral-200 mr-2" />
+            <VscDebugRestart className="w-5 h-5 scale-x-[-1] stroke-neutral-200 mr-2" />
             {t("play.game.rematch")}
           </Button>
         </div>

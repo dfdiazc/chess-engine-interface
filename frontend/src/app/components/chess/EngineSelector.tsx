@@ -35,7 +35,7 @@ export default function EngineSelector() {
   const [selectedEngine, setSelectedEngine] = useState(engine);
   const difficulty = useSelector(selectCurrentDifficulty);
   const [selectedDifficulty, setSelectedDifficulty] = useState(difficulty);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   useEffect(() => {
     setSelectedEngine(engine);
     setSelectedDifficulty(difficulty);

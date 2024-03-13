@@ -128,6 +128,7 @@ export default function CustomChessboard() {
     setCheckSquares({});
     setOptionSquares({});
     setRightClickedSquares({});
+    setArePiecesDragable(false);
     dispatch(setAreSuggestionsShown(false));
     dispatch(
       setSuggestionShown({
