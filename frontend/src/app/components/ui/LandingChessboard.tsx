@@ -157,7 +157,11 @@ export default function LandingChessboard({
     if (typeof window !== "undefined") {
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
-      return windowWidth < 768 ? windowWidth * 0.8 : windowHeight * 0.8;
+      return windowWidth < 768
+        ? windowWidth * 0.7
+        : windowWidth < 1024
+        ? windowWidth * 0.55
+        : windowHeight * 0.8;
     }
     return 0;
   }
@@ -165,9 +169,23 @@ export default function LandingChessboard({
     if (typeof window !== "undefined") {
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
-      setBoardWidth(windowWidth < 768 ? windowWidth * 0.8 : windowHeight * 0.8);
+      setBoardWidth(
+        windowWidth < 768
+          ? windowWidth * 0.7
+          : windowWidth < 1024
+          ? windowWidth * 0.55
+          : windowHeight * 0.8
+      );
     }
   };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
   const customPieces = (pieceType: string) => {
     const pieces = [
       "wP",
