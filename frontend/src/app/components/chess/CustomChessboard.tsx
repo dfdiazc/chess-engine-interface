@@ -430,33 +430,35 @@ export default function CustomChessboard() {
     return new Promise((res) => setTimeout(res, delay));
   }
   async function computerMove() {
-    await timeout(1000);
-    const { data } = await engineMoveTrigger({ engine, difficulty, fen });
-    const move = data.best_move;
-    const source = move.substring(0, 2);
-    const target = move.substring(2, 4);
-    if (move.length === 5) {
-      const promoPiece = move.substring(4);
-      game.move({ from: source, to: target, promotion: promoPiece });
-    } else {
-      game.move({ from: source, to: target });
-    }
-    setMoveSquares({
-      [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-      [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
-    });
-    dispatch(setFen(game.fen()));
-    if (game.isCheck()) {
-      const playerKingSquare: Square = getPiecePositions({
-        color: playerColor as Color,
-        type: "k",
-      })[0];
-      addCheckSquares(playerKingSquare);
-    } else {
-      setCheckSquares({});
-    }
-    dispatch(setTurn(game.turn()));
-    if (isMoveSoundActive) moveSound.play();
+    try {
+      await timeout(1000);
+      const { data } = await engineMoveTrigger({ engine, difficulty, fen });
+      const move = data.best_move;
+      const source = move.substring(0, 2);
+      const target = move.substring(2, 4);
+      if (move.length === 5) {
+        const promoPiece = move.substring(4);
+        game.move({ from: source, to: target, promotion: promoPiece });
+      } else {
+        game.move({ from: source, to: target });
+      }
+      setMoveSquares({
+        [source]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+        [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
+      });
+      dispatch(setFen(game.fen()));
+      if (game.isCheck()) {
+        const playerKingSquare: Square = getPiecePositions({
+          color: playerColor as Color,
+          type: "k",
+        })[0];
+        addCheckSquares(playerKingSquare);
+      } else {
+        setCheckSquares({});
+      }
+      dispatch(setTurn(game.turn()));
+      if (isMoveSoundActive) moveSound.play();
+    } catch (error) {}
   }
   function onDrop(source: Square, target: Square, piece: string) {
     if (turn === playerColor) {

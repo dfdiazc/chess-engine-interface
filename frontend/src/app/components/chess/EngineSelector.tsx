@@ -9,6 +9,8 @@ import {
   setDifficulty,
   selectCurrentCreatingGame,
   selectCurrentGameState,
+  selectCurrentInitialRender,
+  setInitialRender,
 } from "@/lib/features/chess/chessSlice";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Button } from "@/components/ui/button";
@@ -35,7 +37,14 @@ export default function EngineSelector() {
   const [selectedEngine, setSelectedEngine] = useState(engine);
   const difficulty = useSelector(selectCurrentDifficulty);
   const [selectedDifficulty, setSelectedDifficulty] = useState(difficulty);
-  const [open, setOpen] = useState(true);
+  const initialRender = useSelector(selectCurrentInitialRender);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (initialRender) {
+      setOpen(true);
+    }
+    dispatch(setInitialRender(false));
+  }, [initialRender]);
   useEffect(() => {
     setSelectedEngine(engine);
     setSelectedDifficulty(difficulty);
@@ -317,7 +326,7 @@ export default function EngineSelector() {
                 dispatch(setDifficulty(selectedDifficulty));
               }}
             >
-              <p>{t("play.settings.selectEngine")}</p>
+              <p>{t("play.settings.confirmEngine")}</p>
             </Button>
           </Dialog.Close>
         </Dialog.Content>

@@ -146,7 +146,7 @@ export default function ChessSettings() {
                     <FormLabel className="text-neutral-200 text-sm font-medium">
                       {t("play.settings.pieceStyle")}
                     </FormLabel>
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 !mt-0">
                       <Select
                         onValueChange={(value) => {
                           field.onChange(value);
