@@ -1,14 +1,15 @@
-# [unrealchess.web.app](https://unrealchess.web.app/)
-<p align="center">
-  <img src="https://github.com/dfdiazc/chess-engine-interface/blob/main/unrealchess_logo.png?raw=true">
-</p>
+# [unrealchess.vercel.app](https://unrealchess.vercel.app/)
+
+[![Un-Real Chess Logo](https://github.com/dfdiazc/chess-engine-interface/blob/main/unrealchess-logo.png?raw=true)](https://unrealchess.vercel.app/)
 
 Un-Real Chess is an online, free platform where you can play chess against the best chess engines in the world.
 
-It features an Elo and Skill Level selectors for engines that provide it and a simple yet clean web interface where you can focus on improving you chess skills.
+It features engines like Stockfish, Leela, and Komodo, among many others, giving freedom to the player to fine tune their skills against each one.
 
-## Tech Details
+The app, aside from providing standard chess functionalities, also includes many other features such as move recommendations and a customizable UI as to provide each player with the tools to make each game their own.
 
-The web frontend was made using React, while the backend uses Django to serve a REST API.
+## Stack Details
 
-The [react-chessboard](https://www.npmjs.com/package/react-chessboard) and [chess.js](https://www.npmjs.com/package/chess.js) were used to implement the web interaction and validation within the game. The backend uses the [python-chess](https://pypi.org/project/chess/) library to provide the corresponding move for each engine.
+The web frontend is built on top of Next.js, using TailwindCSS for styling. The [react-chessboard](https://www.npmjs.com/package/react-chessboard) and [chess.js](https://www.npmjs.com/package/chess.js) libraries are used to implement the interaction and validation within the game.
+
+The backend is built on top of Django to serve a REST API, which uses the [python-chess](https://pypi.org/project/chess/) library to provide the corresponding move for each engine.
