@@ -9,17 +9,14 @@ const chessSlice = createSlice({
     fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
     promoPiece: "w",
     engine: "Stockfish",
-    gameStart: false,
-    gameOver: false,
-    gameRestart: false,
-    elo: "1350",
-    skillLevel: "10",
-    difficultyMeasure: "elo",
-    engineDifficultyValues: { min: "1350", max: "2850" },
+    creatingGame: true,
+    gamestate: "waiting",
+    difficulty: 1500,
+    engineDifficultyValues: { min: 1350, max: 2850 },
     areSuggestionsShown: false,
     suggestionShown: { 1: false, 2: false, 3: false },
-    suggestionMoves: { 1: "e1e1", 2: "e1e1", 3: "e1e1" },
-    suggestionPieces: { 1: "p", 2: "p", 3: "p" },
+    suggestionMoves: { 1: "", 2: "", 3: "" },
+    suggestionPieces: { 1: "", 2: "", 3: "" },
     pieceStyle: "staunty",
     areSettingsOpen: false,
     isMoveSoundActive: true,
@@ -46,29 +43,17 @@ const chessSlice = createSlice({
       const engine = action.payload;
       state.engine = engine;
     },
-    setGameStart: (state, action) => {
-      const gameStart = action.payload;
-      state.gameStart = gameStart;
+    setCreatingGame: (state, action) => {
+      const creatingGame = action.payload;
+      state.creatingGame = creatingGame;
     },
-    setGameOver: (state, action) => {
-      const gameOver = action.payload;
-      state.gameOver = gameOver;
+    setGameState: (state, action) => {
+      const gamestate = action.payload;
+      state.gamestate = gamestate;
     },
-    setGameRestart: (state, action) => {
-      const gameRestart = action.payload;
-      state.gameRestart = gameRestart;
-    },
-    setElo: (state, action) => {
-      const elo = action.payload;
-      state.elo = elo;
-    },
-    setSkillLevel: (state, action) => {
-      const skillLevel = action.payload;
-      state.skillLevel = skillLevel;
-    },
-    setDifficultyMeasure: (state, action) => {
-      const difficultyMeasure = action.payload;
-      state.difficultyMeasure = difficultyMeasure;
+    setDifficulty: (state, action) => {
+      const difficulty = action.payload;
+      state.difficulty = difficulty;
     },
     setEngineDifficultyValues: (state, action) => {
       const engineDifficultyValues = action.payload;
@@ -115,13 +100,9 @@ export const {
   setFen,
   setPromoPiece,
   setEngine,
-  setGameStart,
-  setGameOver,
-  setGameRestart,
-  setElo,
-  setSkillLevel,
-  setDifficultyMeasure,
-  setEngineDifficultyValues,
+  setCreatingGame,
+  setGameState,
+  setDifficulty,
   setAreSuggestionsShown,
   setSuggestionMoves,
   setSuggestionPieces,
@@ -141,16 +122,12 @@ export const selectCurrentFen = (state: RootState) => state.chess.fen;
 export const selectCurrentPromoPiece = (state: RootState) =>
   state.chess.promoPiece;
 export const selectCurrentEngine = (state: RootState) => state.chess.engine;
-export const selectCurrentGameStart = (state: RootState) =>
-  state.chess.gameStart;
-export const selectCurrentGameOver = (state: RootState) => state.chess.gameOver;
-export const selectCurrentGameRestart = (state: RootState) =>
-  state.chess.gameRestart;
-export const selectCurrentElo = (state: RootState) => state.chess.elo;
-export const selectCurrentSkillLevel = (state: RootState) =>
-  state.chess.skillLevel;
-export const selectCurrentDifficultyMeasure = (state: RootState) =>
-  state.chess.difficultyMeasure;
+export const selectCurrentCreatingGame = (state: RootState) =>
+  state.chess.creatingGame;
+export const selectCurrentGameState = (state: RootState) =>
+  state.chess.gamestate;
+export const selectCurrentDifficulty = (state: RootState) =>
+  state.chess.difficulty;
 export const selectCurrentEngineDifficultyValues = (state: RootState) =>
   state.chess.engineDifficultyValues;
 export const selectCurrentAreSuggestionsShown = (state: RootState) =>

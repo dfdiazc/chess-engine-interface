@@ -15,20 +15,18 @@ const TurnIndicator = (props: TurnIndicatorProps) => {
   const turn = useSelector(selectCurrentTurn);
   let styleTop = {
     transform: `translateY(-${props.boardWidth - 16}px)`,
-    borderWidth: "1px",
   };
   let styleBottom = {
     transform: "translateY(0%)",
-    borderWidth: "1px",
   };
   function classTop() {
     let className =
       "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full absolute transition-all duration-300 bottom-0";
 
     if (playerColor === "w") {
-      className += " bg-black";
+      className += " bg-neutral-800 border border-neutral-400";
     } else {
-      className += " bg-white";
+      className += " bg-neutral-200 border border-neutral-800";
     }
     return className;
   }
@@ -37,9 +35,9 @@ const TurnIndicator = (props: TurnIndicatorProps) => {
       "w-2.5 h-2.5 md:w-3 md:h-3 rounded-full absolute transition-all duration-300 bottom-0";
 
     if (playerColor === "w") {
-      className += " bg-white";
+      className += " bg-neutral-200 border border-neutral-800";
     } else {
-      className += " bg-black";
+      className += " bg-neutral-800 border border-neutral-400";
     }
     return className;
   }

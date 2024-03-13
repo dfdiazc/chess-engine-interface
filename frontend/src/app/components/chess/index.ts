@@ -1,9 +1,10 @@
 export { default as CustomChessboard } from "./CustomChessboard";
-export { default as PromotionPieceSelector } from "./PromotionPieceSelector";
-export { default as LostPieces } from "./LostPieces";
+export { default as CapturedPieces } from "./CapturedPieces";
 export { default as TurnIndicator } from "./TurnIndicator";
 export { default as ChessSettings } from "./ChessSettings";
 export { default as DifficultySelector } from "./DifficultySelector";
-export { default as EloSlider } from "./EloSlider";
-export { default as ChessSuggestionsPanel } from "./ChessSuggestionsPanel";
-export { default as ChessUserSettings } from "./ChessUserSettings";
+export { default as ChessSuggestions } from "./ChessSuggestions";
+export { default as GamePanel } from "./GamePanel";
+export { default as RestartGame } from "./RestartGame";
+export { default as GameOver } from "./GameOver";
+export { default as MainGame } from "./MainGame";
