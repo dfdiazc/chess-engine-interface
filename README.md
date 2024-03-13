@@ -1,6 +1,6 @@
 # [unrealchess.vercel.app](https://unrealchess.vercel.app/)
 
-[![Un-Real Chess Logo](https://github.com/dfdiazc/chess-engine-interface/blob/dev/unrealchess-logo.png?raw=true)](https://unrealchess.vercel.app/)
+[![Un-Real Chess Logo](https://github.com/dfdiazc/chess-engine-interface/blob/main/unrealchess-logo.png?raw=true)](https://unrealchess.vercel.app/)
 
 Un-Real Chess is an online, free platform where you can play chess against the best chess engines in the world.
 
