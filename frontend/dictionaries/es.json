@@ -3,7 +3,7 @@
     "title1": "Juega ajedrez contra los",
     "title2": "Mejores Motores del Mundo",
     "ctaButton": "¡Juega ahora!",
-    "ctaDescription": "¿Qué esperas?",
+    "ctaDescription": "¿Qué estas esperando?",
     "features": {
       "engines": {
         "title": "Los mejores motores",
@@ -19,7 +19,7 @@
       },
       "style": {
         "title": "Personaliza tu estilo",
-        "description": "Te guste un estilo antiguo o moderno, aqui lo encontrarás"
+        "description": "Así te guste un estilo antiguo o uno moderno, aqui lo encontrarás"
       }
     }
   },
@@ -37,8 +37,9 @@
       "defeat": "Perdiste!"
     },
     "settings": {
-      "selectEngine": "Seleccionar Motor",
-      "changeEngine": "Cambiar Motor",
+      "selectEngine": "Selecciona un motor",
+      "confirmEngine": "Seleccionar Motor",
+      "changeEngine": "Cambiar motor",
       "difficulty": {
         "elo": "elo",
         "skillLevel": "Nivel de Habilidad"
@@ -49,7 +50,7 @@
       "soundOnMove": "Sonido al Mover",
       "saveChanges": "Guardar Cambios",
       "showSuggestions": "Mostrar Sugerencias",
-      "engineDifficulty": "Algunos motores no ofrecen ajustes de dificultad, sino están diseñados para ser lo más desafiantes posible",
+      "engineDifficulty": "Algunos motores no ofrecen ajustes de dificultad, sino que están diseñados para ser lo más desafiantes posible",
       "suggestionsPopover": "Haz clic en un movimiento para mostrarlo en el tablero"
     }
   }

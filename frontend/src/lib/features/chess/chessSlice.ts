@@ -4,6 +4,7 @@ import type { RootState } from "@/lib/store";
 const chessSlice = createSlice({
   name: "chess",
   initialState: {
+    initialRender: true,
     playerColor: "w",
     turn: "w",
     fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
@@ -23,6 +24,10 @@ const chessSlice = createSlice({
     isTurnIndicatorShown: true,
   },
   reducers: {
+    setInitialRender: (state, action) => {
+      const initialRender = action.payload;
+      state.initialRender = initialRender;
+    },
     setPlayerColor: (state, action) => {
       const playerColor = action.payload;
       state.playerColor = playerColor;
@@ -95,6 +100,7 @@ const chessSlice = createSlice({
 });
 
 export const {
+  setInitialRender,
   setPlayerColor,
   setTurn,
   setFen,
@@ -115,6 +121,8 @@ export const {
 
 export default chessSlice.reducer;
 
+export const selectCurrentInitialRender = (state: RootState) =>
+  state.chess.initialRender;
 export const selectCurrentPlayerColor = (state: RootState) =>
   state.chess.playerColor;
 export const selectCurrentTurn = (state: RootState) => state.chess.turn;

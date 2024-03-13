@@ -4,6 +4,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import * as Dialog from "@radix-ui/react-dialog";
+import { VscDebugRestart } from "react-icons/vsc";
+import { FaPlus } from "react-icons/fa6";
 import { X } from "lucide-react";
 import {
   selectCurrentCreatingGame,
@@ -83,7 +85,9 @@ export default function GameOver({
             </Dialog.Close>
           </div>
           <Dialog.Description className="text-base md:text-lg font-medium text-neutral-200 text-center">
-            {turn === playerColor ? t("play.game.defeat") : t("play.game.victory")}
+            {turn === playerColor
+              ? t("play.game.defeat")
+              : t("play.game.victory")}
           </Dialog.Description>
           <div className="flex gap-2 mt-auto">
             <Button
@@ -92,6 +96,7 @@ export default function GameOver({
               className="w-full"
               onClick={restartGame}
             >
+              <FaPlus className="w-5 h-5 stroke-neutral-200 mr-1" />
               {t("play.game.newGame")}
             </Button>
             <Button
@@ -100,6 +105,7 @@ export default function GameOver({
               className="w-full"
               onClick={rematch}
             >
+              <VscDebugRestart className="w-5 h-5 scale-x-[-1] stroke-neutral-200 mr-1" />
               {t("play.game.rematch")}
             </Button>
           </div>

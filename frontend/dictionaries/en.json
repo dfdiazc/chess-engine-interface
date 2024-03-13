@@ -38,6 +38,7 @@
     },
     "settings": {
       "selectEngine": "Select an engine",
+      "confirmEngine": "Select Engine",
       "changeEngine": "Change Engine",
       "difficulty": {
         "elo": "elo",
