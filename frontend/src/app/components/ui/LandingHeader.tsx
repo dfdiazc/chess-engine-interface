@@ -1,6 +1,6 @@
 import React from "react";
 import { FaGithub } from "react-icons/fa";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import Image from "next/image";
 
 const LandingHeader = () => {

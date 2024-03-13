@@ -1,0 +1,54 @@
+{
+  "landing": {
+    "title1": "Juega ajedrez contra los",
+    "title2": "Mejores Motores del Mundo",
+    "ctaButton": "Juega ahora!",
+    "ctaDescription": "¿Qué esperas?",
+    "features": {
+      "engines": {
+        "title": "Los mejores motores",
+        "description": "Juega contra algunos de los mejores motores disponibles completamente gratis"
+      },
+      "skills": {
+        "title": "Afina tus habilidades",
+        "description": "Selecciona el ELO o Nivel de Habilidad del motor contra el que quieres jugar"
+      },
+      "recommendations": {
+        "title": "Mejora tu juego",
+        "description": "Entrena con recomendaciones de Stockfish para mejorar tus habilidades"
+      },
+      "style": {
+        "title": "Personaliza tu estilo",
+        "description": "Te guste un estilo antiguo o moderno, aqui lo encontrarás"
+      }
+    }
+  },
+  "play": {
+    "game": {
+      "startGame": "Comenzar Juego",
+      "newGame": "Nuevo Juego",
+      "rematch": "Revancha",
+      "restartGame": "Reiniciar Juego",
+      "restartGameQuestion": "¿Reiniciar el juego?",
+      "cancel": "Cancelar",
+      "checkmate": "Jaque Mate",
+      "draw": "Empate",
+      "victory": "Ganaste!",
+      "defeat": "Perdiste!"
+    },
+    "settings": {
+      "selectEngine": "Seleccionar Motor",
+      "changeEngine": "Cambiar Motor",
+      "difficulty": {
+        "elo": "elo",
+        "skillLevel": "Nivel de Habilidad"
+      },
+      "settings": "Ajustes",
+      "pieceStyle": "Estilo de Piezas",
+      "turnIndicator": "Indicador de Turno",
+      "soundOnMove": "Sonido al Mover",
+      "saveChanges": "Guardar Cambios",
+      "showSuggestions": "Mostrar Sugerencias"
+    }
+  }
+}

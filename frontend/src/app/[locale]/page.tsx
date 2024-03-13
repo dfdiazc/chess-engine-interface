@@ -1,6 +1,6 @@
 import { LandingHeader, LandingFooter } from "@/app/components/ui";
 import React from "react";
-import Link from "next/link";
+import { Link } from "@/navigation";
 import dynamic from "next/dynamic";
 const LandingChessboard = dynamic(
   () => import("@/app/components/ui/LandingChessboard"),
@@ -9,6 +9,7 @@ const LandingChessboard = dynamic(
 import { Slider } from "@/components/ui/slider";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
+import { getTranslations } from "next-intl/server";
 
 async function get_game() {
   const response = await fetch(
@@ -22,6 +23,7 @@ async function get_game() {
 }
 
 export default async function Page() {
+  const t = await getTranslations("landing");
   const game = await get_game();
   return (
     <div className="h-full overflow-x-hidden bg-neutral-900">
@@ -35,9 +37,9 @@ export default async function Page() {
                 <div className="flex flex-col items-center gap-10 self-center text-center">
                   <div className="flex flex-col gap-4 md:gap-8 z-[150]">
                     <h2 className="text-3xl md:text-5xl text-white text-center font-lato font-semibold">
-                      Play Chess against the{" "}
+                      {t("title1")}{" "}
                       <span className="text-white font-extrabold underline">
-                        World's Top Engines
+                        {t("title2")}
                       </span>
                     </h2>
                     <div className="flex justify-center mx-3 sm:mx-16">
@@ -47,7 +49,7 @@ export default async function Page() {
                         select-none p-3 bg-aquamarine-200 rounded-full border-b-4 border-aquamarine-400 transition duration-300 
                         hover:bg-aquamarine-400 hover:border-aquamarine-500 hover:shadow text-center md:max-w-sm"
                       >
-                        Play now!
+                        {t("ctaButton")}
                       </Link>
                     </div>
                   </div>
@@ -75,11 +77,10 @@ export default async function Page() {
                   </div>
                   <div className="flex flex-col text-center gap-2">
                     <h2 className="text-lg md:text-xl text-neutral-200 font-medium">
-                      The best engines
+                      {t("features.engines.title")}
                     </h2>
                     <p className="text-sm md:text-base text-neutral-400 font-normal">
-                      Play against some of the best ranked chess engines
-                      available for free
+                      {t("features.engines.description")}
                     </p>
                   </div>
                 </div>
@@ -93,11 +94,10 @@ export default async function Page() {
                     className="w-/4 self-center h-16 md:h-20"
                   />
                   <h2 className="text-lg md:text-xl text-neutral-200 font-medium">
-                    Fine tune your skills
+                    {t("features.skills.title")}
                   </h2>
                   <p className="text-sm md:text-base text-neutral-400 font-normal">
-                    Select the ELO or Skill Level of the engine you want to play
-                    against
+                    {t("features.skills.description")}
                   </p>
                 </div>
               </div>
@@ -181,11 +181,10 @@ export default async function Page() {
                     </div>
                   </div>
                   <h2 className="text-lg md:text-xl text-neutral-200 font-medium">
-                    Get move recommendations
+                    {t("features.recommendations.title")}
                   </h2>
                   <p className="text-sm md:text-base text-neutral-400 font-normal">
-                    Train with recommendations from Stockfish to improve your
-                    game
+                    {t("features.recommendations.description")}
                   </p>
                 </div>
               </div>
@@ -327,11 +326,10 @@ export default async function Page() {
                     </svg>
                   </div>
                   <h2 className="text-lg md:text-xl text-neutral-200 font-medium">
-                    Customize your game
+                    {t("features.style.title")}
                   </h2>
                   <p className="text-sm md:text-base text-neutral-400 font-normal">
-                    Whether you like an old-school or modern look, we've got you
-                    covered
+                    {t("features.style.description")}
                   </p>
                 </div>
               </div>
@@ -340,16 +338,16 @@ export default async function Page() {
           <div className="flex justify-center">
             <div className="flex flex-col gap-8 p-12">
               <h2 className="text-2xl md:text-3xl text-neutral-200 text-center font-semibold font-lato">
-                What are you waiting for?
+                {t("ctaDescription")}
               </h2>
               <div className="flex justify-center mx-3 sm:mx-16">
                 <Link
                   href="/play"
                   className="grow whitespace-nowrap self-center text-xl text-white font-lato font-medium 
-                        select-none p-3 bg-aquamarine-200 rounded-full border-b-4 border-aquamarine-300 transition duration-300 
+                        select-none px-8 py-3 bg-aquamarine-200 rounded-full border-b-4 border-aquamarine-400 transition duration-300 
                         hover:bg-aquamarine-400 hover:border-aquamarine-500 hover:shadow text-center md:max-w-sm"
                 >
-                  Play now!
+                  {t("ctaButton")}
                 </Link>
               </div>
             </div>

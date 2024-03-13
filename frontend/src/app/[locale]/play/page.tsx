@@ -23,9 +23,6 @@ export default function Page() {
             <div className="w-full lg:min-w-[20rem]">
               <GamePanel />
             </div>
-            {/* <div className="w-full h-full sm:max-w-md max-h-[36rem] mt-4">
-              <ChessSettings />
-            </div> */}
           </div>
         </div>
       </div>

@@ -1,0 +1,54 @@
+{
+  "landing": {
+    "title1": "Play Chess against the",
+    "title2": "World's Top Engines",
+    "ctaButton": "Play now!",
+    "ctaDescription": "What are you waiting for?",
+    "features": {
+      "engines": {
+        "title": "The best engines",
+        "description": "Play against some of the best ranked chess engines available for free"
+      },
+      "skills": {
+        "title": "Fine tune your skills",
+        "description": "Select the ELO or Skill Level of the engine you want to play against"
+      },
+      "recommendations": {
+        "title": "Get move recommendations",
+        "description": "Train with recommendations from Stockfish to improve your game"
+      },
+      "style": {
+        "title": "Customize your game",
+        "description": "Whether you like an old-school or modern look, we've got you covered"
+      }
+    }
+  },
+  "play": {
+    "game": {
+      "startGame": "Start Game",
+      "newGame": "New Game",
+      "rematch": "Rematch",
+      "restartGame": "Restart Game",
+      "restartGameQuestion": "Restart the game?",
+      "cancel": "Cancel",
+      "checkmate": "Checkmate",
+      "draw": "Draw",
+      "victory": "You won!",
+      "defeat": "You lost!"
+    },
+    "settings": {
+      "selectEngine": "Select an engine",
+      "changeEngine": "Change Engine",
+      "difficulty": {
+        "elo": "elo",
+        "skillLevel": "Skill Level"
+      },
+      "settings": "Settings",
+      "pieceStyle": "Piece Style",
+      "turnIndicator": "Turn Indicator",
+      "soundOnMove": "Sound on Move",
+      "saveChanges": "Save Changes",
+      "showSuggestions": "Show Suggestions"
+    }
+  }
+}

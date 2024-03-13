@@ -22,8 +22,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslations } from "next-intl";
 
-const EngineSelector = () => {
+export default function EngineSelector() {
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
   const creatingGame = useSelector(selectCurrentCreatingGame);
   const gameState = useSelector(selectCurrentGameState);
@@ -53,7 +55,7 @@ const EngineSelector = () => {
             </Dialog.Trigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Change Engine</p>
+            <p>{t("play.settings.changeEngine")}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -62,7 +64,7 @@ const EngineSelector = () => {
         <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-neutral-800 p-4 md:p-8 shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[200] flex flex-col gap-2 md:gap-4">
           <div className="flex justify-between items-center">
             <Dialog.Title className="text-xl md:text-2xl font-bold text-neutral-200">
-              Select an engine
+              {t("play.settings.selectEngine")}
             </Dialog.Title>
             <Dialog.Close asChild>
               <Button
@@ -135,13 +137,17 @@ const EngineSelector = () => {
                 selectedEngine === "Arasan") && (
                 <>
                   &middot;<p>{selectedDifficulty}</p>
-                  <span className="text-xs uppercase">Elo</span>
+                  <span className="text-xs uppercase">
+                    {t("play.settings.difficulty.elo")}
+                  </span>
                 </>
               )}
               {selectedEngine === "Komodo" && (
                 <>
                   &middot;<p>{selectedDifficulty}</p>
-                  <span className="text-xs uppercase">Skill Level</span>
+                  <span className="text-xs uppercase">
+                    {t("play.settings.difficulty.skillLevel")}
+                  </span>
                 </>
               )}
             </div>
@@ -311,13 +317,11 @@ const EngineSelector = () => {
                 dispatch(setDifficulty(selectedDifficulty));
               }}
             >
-              <p>Select Engine</p>
+              <p>{t("play.settings.selectEngine")}</p>
             </Button>
           </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
   );
-};
-
-export default EngineSelector;
+}

@@ -36,8 +36,10 @@ import {
 import { Piece, Color } from "chess.js";
 import { TurnIndicator } from "@/app/components/chess";
 import { Arrow, Square } from "react-chessboard/dist/chessboard/types";
+import { useTranslations } from "next-intl";
 
-const CustomChessboard = () => {
+export default function CustomChessboard() {
+  const t = useTranslations();
   const [boardWidth, setBoardWidth] = useState(initialBoardSize);
   function initialBoardSize() {
     if (typeof window !== "undefined") {
@@ -275,9 +277,9 @@ const CustomChessboard = () => {
       const draw = game.isDraw();
 
       if (checkmate) {
-        setGameOverMessage("Checkmate");
+        setGameOverMessage(t("play.game.checkmate"));
       } else if (draw) {
-        setGameOverMessage("Draw");
+        setGameOverMessage(t("play.game.draw"));
       }
       dispatch(setGameState("over"));
       dispatch(setAreSuggestionsShown(false));
@@ -595,6 +597,4 @@ const CustomChessboard = () => {
       />
     </div>
   );
-};
-
-export default CustomChessboard;
+}

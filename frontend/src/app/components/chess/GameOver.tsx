@@ -14,12 +14,14 @@ import {
 } from "@/lib/features/chess/chessSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentGameState } from "@/lib/features/chess/chessSlice";
+import { useTranslations } from "next-intl";
 
 export default function GameOver({
   gameOverMessage,
 }: {
   gameOverMessage: string;
 }) {
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
   const creatingGame = useSelector(selectCurrentCreatingGame);
   const gameState = useSelector(selectCurrentGameState);
@@ -81,7 +83,7 @@ export default function GameOver({
             </Dialog.Close>
           </div>
           <Dialog.Description className="text-base md:text-lg font-medium text-neutral-200 text-center">
-            You {turn === playerColor ? "Lost" : "Won"}!
+            {turn === playerColor ? t("play.game.defeat") : t("play.game.victory")}
           </Dialog.Description>
           <div className="flex gap-2 mt-auto">
             <Button
@@ -90,7 +92,7 @@ export default function GameOver({
               className="w-full"
               onClick={restartGame}
             >
-              New game
+              {t("play.game.newGame")}
             </Button>
             <Button
               variant="default"
@@ -98,7 +100,7 @@ export default function GameOver({
               className="w-full"
               onClick={rematch}
             >
-              Rematch
+              {t("play.game.rematch")}
             </Button>
           </div>
         </Dialog.Content>

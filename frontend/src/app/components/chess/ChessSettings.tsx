@@ -44,8 +44,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslations } from "next-intl";
 
-const ChessSettings = () => {
+export default function ChessSettings() {
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
   const playerColor = useSelector(selectCurrentPlayerColor);
   const pieceStyle = useSelector(selectCurrentPieceStyle);
@@ -111,7 +113,7 @@ const ChessSettings = () => {
             </Dialog.Trigger>
           </TooltipTrigger>
           <TooltipContent>
-            <p>Settings</p>
+            <p>{t("play.settings.settings")}</p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
@@ -119,8 +121,8 @@ const ChessSettings = () => {
         <Dialog.Overlay className="bg-black/50 data-[state=open]:animate-overlayShow fixed inset-0 z-[100]" />
         <Dialog.Content className="data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[450px] translate-x-[-50%] translate-y-[-50%] rounded-[6px] bg-neutral-800 p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none z-[200] flex flex-col gap-4">
           <div className="flex justify-between items-center">
-            <Dialog.Title className="text-xl font-bold text-neutral-200">
-              Settings
+          <Dialog.Title className="text-xl md:text-2xl font-bold text-neutral-200">
+              {t("play.settings.settings")}
             </Dialog.Title>
             <Dialog.Close asChild>
               <Button
@@ -141,8 +143,8 @@ const ChessSettings = () => {
                 name="pieceStyle"
                 render={({ field }) => (
                   <FormItem className="flex justify-between items-center">
-                    <FormLabel className="text-neutral-200 text-base font-medium">
-                      Piece Style
+                    <FormLabel className="text-neutral-200 text-sm font-medium">
+                      {t("play.settings.pieceStyle")}
                     </FormLabel>
                     <div className="flex items-center gap-1">
                       <Select
@@ -153,7 +155,7 @@ const ChessSettings = () => {
                         defaultValue={field.value}
                       >
                         <FormControl>
-                          <SelectTrigger className="w-[180px]">
+                          <SelectTrigger className="w-24 md:w-[180px]">
                             <SelectValue />
                           </SelectTrigger>
                         </FormControl>
@@ -166,7 +168,7 @@ const ChessSettings = () => {
                         </SelectContent>
                       </Select>
                       <div
-                        className="bg-center bg-cover bg-no-repeat self-center w-12 h-12"
+                        className="bg-center bg-cover bg-no-repeat self-center w-8 md:w-12 h-8 md:h-12"
                         style={{
                           backgroundImage: `url(${
                             process.env.NEXT_PUBLIC_API_URL
@@ -185,8 +187,8 @@ const ChessSettings = () => {
                 name="turnIndicator"
                 render={({ field }) => (
                   <FormItem className="flex justify-between items-center gap-4">
-                    <FormLabel className="text-neutral-200 text-base font-medium">
-                      Turn Indicator
+                    <FormLabel className="text-neutral-200 text-sm font-medium">
+                      {t("play.settings.turnIndicator")}
                     </FormLabel>
                     <FormControl>
                       <Switch
@@ -206,8 +208,8 @@ const ChessSettings = () => {
                 name="soundOnMove"
                 render={({ field }) => (
                   <FormItem className="flex justify-between items-center gap-4">
-                    <FormLabel className="text-neutral-200 text-base font-medium">
-                      Sound on move
+                    <FormLabel className="text-neutral-200 text-sm font-medium">
+                      {t("play.settings.soundOnMove")}
                     </FormLabel>
                     <FormControl>
                       <Switch
@@ -229,7 +231,7 @@ const ChessSettings = () => {
                   Object.keys(form.formState.touchedFields).length === 0
                 }
               >
-                Save Changes
+                {t("play.settings.saveChanges")}
               </Button>
             </form>
           </Form>
@@ -237,6 +239,4 @@ const ChessSettings = () => {
       </Dialog.Portal>
     </Dialog.Root>
   );
-};
-
-export default ChessSettings;
+}

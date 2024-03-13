@@ -1,5 +1,5 @@
 "use client";
-import React, {  } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useSelector } from "react-redux";
@@ -20,11 +20,7 @@ import { Button } from "@/components/ui/button";
 import { RotateCw, Plus } from "lucide-react";
 import { FaRegLightbulb } from "react-icons/fa";
 import EngineSelector from "./EngineSelector";
-import {
-  ChessSettings,
-  ChessSuggestions,
-  RestartGame,
-} from ".";
+import { ChessSettings, ChessSuggestions, RestartGame } from ".";
 import { Toggle } from "@/components/ui/toggle";
 import {
   Tooltip,
@@ -32,8 +28,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useTranslations } from "next-intl";
 
-function GamePanel() {
+export default function GamePanel() {
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
   const creatingGame = useSelector(selectCurrentCreatingGame);
   const gameState = useSelector(selectCurrentGameState);
@@ -113,7 +111,9 @@ function GamePanel() {
               <div className="hidden md:block">&middot;</div>
               <div className="flex gap-2 items-center">
                 <p>{difficulty}</p>
-                <span className="text-xs uppercase">Elo</span>
+                <span className="text-xs uppercase">
+                  {t("play.settings.difficulty.elo")}
+                </span>
               </div>
             </>
           )}
@@ -122,7 +122,9 @@ function GamePanel() {
               <div className="hidden md:block">&middot;</div>
               <div className="flex gap-2 items-center">
                 <p>{difficulty}</p>
-                <span className="text-xs uppercase">Skill Level</span>
+                <span className="text-xs uppercase">
+                  {t("play.settings.difficulty.skillLevel")}
+                </span>
               </div>
             </>
           )}
@@ -153,7 +155,7 @@ function GamePanel() {
                 </div>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Show Suggestions</p>
+                <p>{t("play.settings.showSuggestions")}</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
@@ -209,7 +211,7 @@ function GamePanel() {
             dispatch(setGameState("playing"));
           }}
         >
-          <p>Start Game</p>
+          <p>{t("play.game.startGame")}</p>
         </Button>
       )}
       {gameState === "over" && (
@@ -221,7 +223,7 @@ function GamePanel() {
             onClick={restartGame}
           >
             <Plus className="w-5 h-5 stroke-neutral-200 mr-2" />
-            New game
+            {t("play.game.newGame")}
           </Button>
           <Button
             variant="default"
@@ -230,12 +232,10 @@ function GamePanel() {
             onClick={rematch}
           >
             <RotateCw className="w-4 h-4 stroke-neutral-200 mr-2" />
-            Rematch
+            {t("play.game.rematch")}
           </Button>
         </div>
       )}
     </div>
   );
 }
-
-export default GamePanel;
