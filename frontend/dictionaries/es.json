@@ -49,7 +49,8 @@
       "soundOnMove": "Sonido al Mover",
       "saveChanges": "Guardar Cambios",
       "showSuggestions": "Mostrar Sugerencias",
-      "engineDifficulty": "Algunos motores no ofrecen ajustes de dificultad, sino están diseñados para ser lo más desafiantes posible"
+      "engineDifficulty": "Algunos motores no ofrecen ajustes de dificultad, sino están diseñados para ser lo más desafiantes posible",
+      "suggestionsPopover": "Haz clic en un movimiento para mostrarlo en el tablero"
     }
   }
 }
