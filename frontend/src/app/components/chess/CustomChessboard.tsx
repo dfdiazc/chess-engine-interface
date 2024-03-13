@@ -32,6 +32,7 @@ import {
   selectCurrentGameState,
   setCreatingGame,
   setAreSuggestionsShown,
+  setSuggestionShown,
 } from "@/lib/features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import { TurnIndicator } from "@/app/components/chess";
@@ -128,6 +129,13 @@ export default function CustomChessboard() {
     setOptionSquares({});
     setRightClickedSquares({});
     dispatch(setAreSuggestionsShown(false));
+    dispatch(
+      setSuggestionShown({
+        1: false,
+        2: false,
+        3: false,
+      })
+    );
     setSuggestionArrows([]);
     if (newGameState === "waiting") {
       dispatch(setCreatingGame(true));

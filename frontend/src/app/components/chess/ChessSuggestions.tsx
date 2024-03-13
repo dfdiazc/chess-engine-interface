@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useSuggestionsQuery } from "@/lib/features/chess/chessApiSlice";
@@ -19,8 +19,17 @@ import {
 import { FaArrowRightLong } from "react-icons/fa6";
 import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 
 export default function ChessSuggestions() {
+  const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
   const areSuggestionShown = useSelector(selectCurrentAreSuggestionsShown);
   const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
@@ -39,10 +48,11 @@ export default function ChessSuggestions() {
         suggestionPieces[i as keyof typeof suggestionPieces]
     );
   }
+  const [open, setOpen] = useState(false);
   return (
     <div className="w-full">
       {areSuggestionShown && gameState === "playing" && (
-        <div className="flex w-full relative">
+        <div className="flex justify-between w-full relative">
           <>
             {isFetching && turn === playerColor ? (
               <div className="flex flex-col gap-4 p-2 w-full animate-pulse justify-center grow my-3 lg:my-1.5">
@@ -120,6 +130,23 @@ export default function ChessSuggestions() {
                 </div>
               )
             )}
+            <Popover open={open} onOpenChange={setOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="ghost"
+                  className={`dark:hover:bg-neutral-700 h-fit self-start mt-2 mr-1 ${
+                    open ? "dark:bg-neutral-700" : ""
+                  } p-1.5`}
+                >
+                  <HelpCircle className="w-4 h-4 stroke-neutral-200 hover:cursor-pointer" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="z-[200] text-sm">
+                <p className="flex whitespace-pre-wrap">
+                  {t("play.settings.suggestionsPopover")}
+                </p>
+              </PopoverContent>
+            </Popover>
           </>
         </div>
       )}
