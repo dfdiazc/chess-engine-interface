@@ -17,7 +17,7 @@ export default function LostPieces({
       {Object.entries(capturedPieces).map(([piece, count]) => {
         return (
           count > 0 && (
-            <div className="flex items-center" key={piece}>
+            <div className="flex items-center" key={piece + count}>
               {Array(count)
                 .fill(null)
                 .map((_, i) => (

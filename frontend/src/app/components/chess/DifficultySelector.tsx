@@ -1,6 +1,14 @@
 "use client";
 import React, { useEffect, useState, Dispatch, SetStateAction } from "react";
 import { Slider } from "@/components/ui/slider";
+import { HelpCircle } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
 
 export default function DifficultySelector({
   engine,
@@ -13,6 +21,8 @@ export default function DifficultySelector({
   setEngine: Dispatch<SetStateAction<string>>;
   setDifficulty: Dispatch<SetStateAction<number>>;
 }) {
+  const t = useTranslations();
+  const [open, setOpen] = useState(false);
   const [difficultyValues, setDifficultyValues] = useState({
     min: 1350,
     max: 2850,
@@ -46,19 +56,42 @@ export default function DifficultySelector({
   }, [engine]);
   const [sliderValue, setSliderValue] = useState<number>(difficulty);
   return (
-    <Slider
-      value={[sliderValue]}
-      min={Number(difficultyValues["min"])}
-      max={Number(difficultyValues["max"])}
-      step={Number(difficultyValues["step"])}
-      disabled={
-        !(engine === "Stockfish" || engine === "Arasan" || engine === "Komodo")
-      }
-      onValueChange={(value) => {
-        setSliderValue(value[0]);
-        setDifficulty(value[0]);
-      }}
-      className="self-center my-4"
-    />
+    <div className="flex items-center gap-2">
+      <Slider
+        value={[sliderValue]}
+        min={Number(difficultyValues["min"])}
+        max={Number(difficultyValues["max"])}
+        step={Number(difficultyValues["step"])}
+        disabled={
+          !(
+            engine === "Stockfish" ||
+            engine === "Arasan" ||
+            engine === "Komodo"
+          )
+        }
+        onValueChange={(value) => {
+          setSliderValue(value[0]);
+          setDifficulty(value[0]);
+        }}
+        className="self-center my-4"
+      />
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="ghost"
+            className={`dark:hover:bg-neutral-700 ${
+              open ? "dark:bg-neutral-700" : ""
+            } p-1.5`}
+          >
+            <HelpCircle className="w-4 h-4 stroke-neutral-200 hover:cursor-pointer" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="z-[200] text-sm">
+          <p className="flex whitespace-pre-wrap">
+            {t("play.settings.engineDifficulty")}
+          </p>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 }

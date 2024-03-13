@@ -128,6 +128,7 @@ export default function CustomChessboard() {
     setOptionSquares({});
     setRightClickedSquares({});
     dispatch(setAreSuggestionsShown(false));
+    setSuggestionArrows([]);
     if (newGameState === "waiting") {
       dispatch(setCreatingGame(true));
     }
@@ -547,6 +548,7 @@ export default function CustomChessboard() {
     showSuggestionArrows();
     return false;
   }
+  const [loaded, setLoaded] = useState(false);
   return (
     <div className="flex flex-col gap-2 h-fit">
       <CapturedPieces

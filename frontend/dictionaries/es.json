@@ -2,7 +2,7 @@
   "landing": {
     "title1": "Juega ajedrez contra los",
     "title2": "Mejores Motores del Mundo",
-    "ctaButton": "Juega ahora!",
+    "ctaButton": "¡Juega ahora!",
     "ctaDescription": "¿Qué esperas?",
     "features": {
       "engines": {
@@ -48,7 +48,8 @@
       "turnIndicator": "Indicador de Turno",
       "soundOnMove": "Sonido al Mover",
       "saveChanges": "Guardar Cambios",
-      "showSuggestions": "Mostrar Sugerencias"
+      "showSuggestions": "Mostrar Sugerencias",
+      "engineDifficulty": "Algunos motores no ofrecen ajustes de dificultad, sino están diseñados para ser lo más desafiantes posible"
     }
   }
 }

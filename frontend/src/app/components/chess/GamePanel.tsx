@@ -133,7 +133,7 @@ export default function GamePanel() {
       </div>
       <div className="h-px bg-neutral-400" />
       <div className="flex justify-between">
-        <div className="flex">
+        <div className="flex gap-0.5">
           <ChessSettings />
           <RestartGame />
           <TooltipProvider>

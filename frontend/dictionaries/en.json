@@ -48,7 +48,8 @@
       "turnIndicator": "Turn Indicator",
       "soundOnMove": "Sound on Move",
       "saveChanges": "Save Changes",
-      "showSuggestions": "Show Suggestions"
+      "showSuggestions": "Show Suggestions",
+      "engineDifficulty": "Some engines don't offer difficulty settings, but are designed to be as challenging as possible"
     }
   }
 }
