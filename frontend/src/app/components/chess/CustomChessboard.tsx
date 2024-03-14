@@ -33,6 +33,7 @@ import {
   setCreatingGame,
   setAreSuggestionsShown,
   setSuggestionShown,
+  setGameHistory,
 } from "@/lib/features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import { TurnIndicator } from "@/app/components/chess";
@@ -168,6 +169,7 @@ export default function CustomChessboard() {
         setArePiecesDragable(true);
         computerMove();
       }
+      dispatch(setGameHistory(game.history()));
     } else if (game.isGameOver()) {
       gameOverState();
     }

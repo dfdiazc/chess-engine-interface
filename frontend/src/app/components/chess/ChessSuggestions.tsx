@@ -60,14 +60,14 @@ export default function ChessSuggestions() {
                   <Skeleton className="w-2/3 h-4 rounded-md bg-neutral-300 self-center" />
                   <Skeleton className="w-1/3 h-4 rounded-md bg-neutral-300 self-center" />
                 </div>
-                <div className="flex xl:hidden gap-2">
+                {/* <div className="flex xl:hidden gap-2">
                   <Skeleton className="w-1/3 h-4 rounded-md bg-neutral-300 self-center" />
                   <Skeleton className="w-2/3 h-4 rounded-md bg-neutral-300 self-center" />
-                </div>
+                </div> */}
               </div>
             ) : (
               hasValidSuggestion() && (
-                <div className="flex items-center flex-wrap p-2 gap-4 -ml-2.5">
+                <div className="flex items-center flex-wrap p-2 gap-2 -ml-2.5">
                   {[1, 2, 3].map((i) => {
                     if (
                       (i === 1 ||
@@ -97,7 +97,7 @@ export default function ChessSuggestions() {
                             );
                           }}
                         >
-                          <div className="flex gap-1 px-2.5 py-1">
+                          <div className="flex px-2.5 py-1">
                             <Image
                               key={
                                 playerColor +
@@ -113,10 +113,10 @@ export default function ChessSuggestions() {
                               alt="chessPiece"
                             />
                             <div className="flex items-center gap-2 text-xs text-neutral-200">
-                              <span className="font-roboto font-normal text-white text-md select-none">
+                              {/* <span className="font-roboto font-normal text-white text-md select-none">
                                 {suggestionMoves[i].substring(0, 2)}
                               </span>
-                              <FaArrowRightLong className="fill-white w-4 h-4" />
+                              <FaArrowRightLong className="fill-white w-4 h-4" /> */}
                               <span className="font-roboto font-normal text-white text-md select-none">
                                 {suggestionMoves[i].substring(2, 4)}
                               </span>

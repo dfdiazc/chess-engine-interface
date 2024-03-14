@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { CustomChessboard, GamePanel } from "@/app/components/chess";
+import { CustomChessboard, GameHistory, GamePanel } from "@/app/components/chess";
 
 export default function MainGame() {
   const [loaded, setLoaded] = useState(false);
@@ -12,7 +12,7 @@ export default function MainGame() {
   }
   return (
     <div className="flex flex-col md:flex-row justify-center items-center relative md:h-screen px-4 pt-4 md:pt-12 pb-4">
-      <div className="hidden md:flex w-full shrink" />
+      <div className="hidden md:block w-full" />
       <div className="relative flex justify-center p-2">
         <CustomChessboard />
       </div>
