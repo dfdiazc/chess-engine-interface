@@ -8,3 +8,4 @@ export { default as GamePanel } from "./GamePanel";
 export { default as RestartGame } from "./RestartGame";
 export { default as GameOver } from "./GameOver";
 export { default as MainGame } from "./MainGame";
+export { default as GameHistory } from "./GameHistory";

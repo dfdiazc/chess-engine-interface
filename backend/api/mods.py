@@ -164,7 +164,7 @@ def get_move(engine: str, difficulty: str, FEN: str):
 
 
 def get_full_game(engine: str):
-    
+
     if engine == "stockfish":
 
         engine_settings = {"UCI_Elo": 1600, "UCI_LimitStrength": "true"}

@@ -21,7 +21,7 @@ import { VscDebugRestart } from "react-icons/vsc";
 import { FaPlus } from "react-icons/fa6";
 import { FaRegLightbulb } from "react-icons/fa";
 import EngineSelector from "./EngineSelector";
-import { ChessSettings, ChessSuggestions, RestartGame } from ".";
+import { ChessSettings, ChessSuggestions, GameHistory, RestartGame } from ".";
 import { Toggle } from "@/components/ui/toggle";
 import {
   Tooltip,
@@ -30,6 +30,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useTranslations } from "next-intl";
+import { Separator } from "@/components/ui/separator";
 
 export default function GamePanel() {
   const t = useTranslations();
@@ -111,7 +112,7 @@ export default function GamePanel() {
             <>
               <div className="hidden md:block">&middot;</div>
               <div className="flex gap-2 items-center">
-                <p>{difficulty}</p>
+                <p className="text-sm">{difficulty}</p>
                 <span className="text-xs uppercase">
                   {t("play.settings.difficulty.elo")}
                 </span>
@@ -122,7 +123,7 @@ export default function GamePanel() {
             <>
               <div className="hidden md:block">&middot;</div>
               <div className="flex gap-2 items-center">
-                <p>{difficulty}</p>
+                <p className="text-sm">{difficulty}</p>
                 <span className="text-xs uppercase">
                   {t("play.settings.difficulty.skillLevel")}
                 </span>
@@ -132,7 +133,8 @@ export default function GamePanel() {
         </div>
         <EngineSelector />
       </div>
-      <div className="h-px bg-neutral-400" />
+      <GameHistory />
+      <Separator className="dark:bg-neutral-700" />
       <div className="flex justify-between">
         <div className="flex gap-0.5">
           <ChessSettings />

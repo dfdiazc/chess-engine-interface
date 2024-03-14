@@ -4,12 +4,20 @@
 
 input:-webkit-autofill,
 input:-webkit-autofill:focus {
-    transition: background-color 600000s 0s, color 600000s 0s;
+  transition: background-color 600000s 0s, color 600000s 0s;
 }
 input[data-autocompleted] {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
 
 html {
-    background-color: #171717;
+  background-color: #171717;
+}
+html,
+body {
+  font-family: var(--font-inter);
+}
+.moves-scroll {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
