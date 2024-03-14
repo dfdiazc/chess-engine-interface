@@ -1,28 +1,51 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/store";
 
+interface ChessState {
+  initialRender: boolean;
+  playerColor: string;
+  turn: string;
+  fen: string;
+  gameHistory: string[];
+  engine: string;
+  creatingGame: boolean;
+  gamestate: string;
+  difficulty: number;
+  engineDifficultyValues: { min: number; max: number };
+  areSuggestionsShown: boolean;
+  suggestionShown: { [key: number]: boolean };
+  suggestionMoves: { [key: number]: string };
+  suggestionPieces: { [key: number]: string };
+  pieceStyle: string;
+  areSettingsOpen: boolean;
+  isMoveSoundActive: boolean;
+  isTurnIndicatorShown: boolean;
+}
+
+const initialState: ChessState = {
+  initialRender: true,
+  playerColor: "w",
+  turn: "w",
+  fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  gameHistory: [],
+  engine: "Stockfish",
+  creatingGame: true,
+  gamestate: "waiting",
+  difficulty: 1500,
+  engineDifficultyValues: { min: 1350, max: 2850 },
+  areSuggestionsShown: false,
+  suggestionShown: { 1: false, 2: false, 3: false },
+  suggestionMoves: { 1: "", 2: "", 3: "" },
+  suggestionPieces: { 1: "", 2: "", 3: "" },
+  pieceStyle: "staunty",
+  areSettingsOpen: false,
+  isMoveSoundActive: true,
+  isTurnIndicatorShown: true,
+};
+
 const chessSlice = createSlice({
   name: "chess",
-  initialState: {
-    initialRender: true,
-    playerColor: "w",
-    turn: "w",
-    fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-    gameHistory: [],
-    engine: "Stockfish",
-    creatingGame: true,
-    gamestate: "waiting",
-    difficulty: 1500,
-    engineDifficultyValues: { min: 1350, max: 2850 },
-    areSuggestionsShown: false,
-    suggestionShown: { 1: false, 2: false, 3: false },
-    suggestionMoves: { 1: "", 2: "", 3: "" },
-    suggestionPieces: { 1: "", 2: "", 3: "" },
-    pieceStyle: "staunty",
-    areSettingsOpen: false,
-    isMoveSoundActive: true,
-    isTurnIndicatorShown: true,
-  },
+  initialState,
   reducers: {
     setInitialRender: (state, action) => {
       const initialRender = action.payload;
@@ -43,6 +66,10 @@ const chessSlice = createSlice({
     setGameHistory: (state, action) => {
       const gameHistory = action.payload;
       state.gameHistory = gameHistory;
+    },
+    appendToGameHistory: (state, action) => {
+      const newMove = action.payload;
+      state.gameHistory.push(newMove);
     },
     setEngine: (state, action) => {
       const engine = action.payload;
@@ -105,6 +132,7 @@ export const {
   setTurn,
   setFen,
   setGameHistory,
+  appendToGameHistory,
   setEngine,
   setCreatingGame,
   setGameState,

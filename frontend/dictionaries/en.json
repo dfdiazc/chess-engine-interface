@@ -34,7 +34,8 @@
       "checkmate": "Checkmate",
       "draw": "Draw",
       "victory": "You won!",
-      "defeat": "You lost!"
+      "defeat": "You lost!",
+      "gameHistory": "Game History"
     },
     "settings": {
       "selectEngine": "Select an engine",

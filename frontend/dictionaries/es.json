@@ -34,7 +34,8 @@
       "checkmate": "Jaque Mate",
       "draw": "Empate",
       "victory": "Ganaste!",
-      "defeat": "Perdiste!"
+      "defeat": "Perdiste!",
+      "gameHistory": "Historial de Juego"
     },
     "settings": {
       "selectEngine": "Selecciona un motor",

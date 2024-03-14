@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import { useSelector } from "react-redux";
 
-export default function LostPieces({
+export default function CapturedPieces({
   capturedPieces,
   color,
 }: {
@@ -21,9 +21,11 @@ export default function LostPieces({
               {Array(count)
                 .fill(null)
                 .map((_, i) => (
-                  <div style={{ marginLeft: i > 0 ? "-15px" : "0px" }}>
+                  <div
+                    style={{ marginLeft: i > 0 ? "-15px" : "0px" }}
+                    key={color + piece.toLocaleUpperCase() + i}
+                  >
                     <Image
-                      key={color + piece.toLocaleUpperCase() + i}
                       src={`${
                         process.env.NEXT_PUBLIC_API_URL
                       }/static/chess/pieces/${pieceStyle}/${color}${piece.toLocaleUpperCase()}.svg`}

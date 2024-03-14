@@ -9,8 +9,10 @@ import {
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import { useTranslations } from "next-intl";
 
 export default function GameHistory() {
+  const t = useTranslations();
   const gameHistory = useSelector(selectCurrentGameHistory);
   const pieceStyle = useSelector(selectCurrentPieceStyle);
   const gameState = useSelector(selectCurrentGameState);
@@ -33,7 +35,7 @@ export default function GameHistory() {
     <>
       {gameState !== "waiting" && (
         <div className="flex flex-col gap-2 w-full text-neutral-200 h-32">
-          <p className="text-xs uppercase">Game History</p>
+          <p className="text-xs uppercase">{t("play.game.gameHistory")}</p>
           <Separator className="dark:bg-neutral-700" />
           <div
             className="flex flex-col text-sm overflow-y-auto moves-scroll"

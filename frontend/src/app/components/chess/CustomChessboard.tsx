@@ -34,6 +34,8 @@ import {
   setAreSuggestionsShown,
   setSuggestionShown,
   setGameHistory,
+  selectCurrentGameHistory,
+  appendToGameHistory,
 } from "@/lib/features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import { TurnIndicator } from "@/app/components/chess";
@@ -92,13 +94,13 @@ export default function CustomChessboard() {
   const isMoveSoundActive = useSelector(selectCurrentIsMoveSoundActive);
   const engine = useSelector(selectCurrentEngine).toLowerCase();
   const difficulty = useSelector(selectCurrentDifficulty);
-  const creatingGame = useSelector(selectCurrentCreatingGame);
   const gameState = useSelector(selectCurrentGameState);
   const areSuggestionsShown = useSelector(selectCurrentAreSuggestionsShown);
   const suggestionShown = useSelector(selectCurrentSuggestionShown);
   const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
   const [suggestionArrows, setSuggestionArrows] = useState<Arrow[]>();
   const pieceStyle = useSelector(selectCurrentPieceStyle);
+  const gameHistory = useSelector(selectCurrentGameHistory);
   const { data: suggestions } = useSuggestionsQuery(fen, {
     skip: turn === computerColor || gameState !== "playing" || hasPlayerMoved,
   });
@@ -169,7 +171,9 @@ export default function CustomChessboard() {
         setArePiecesDragable(true);
         computerMove();
       }
-      dispatch(setGameHistory(game.history()));
+      if (game.history().length !== 0) {
+        dispatch(appendToGameHistory(game.history().slice(-1)[0]));
+      }
     } else if (game.isGameOver()) {
       gameOverState();
     }
@@ -561,7 +565,6 @@ export default function CustomChessboard() {
     showSuggestionArrows();
     return false;
   }
-  const [loaded, setLoaded] = useState(false);
   return (
     <div className="flex flex-col gap-2 h-fit">
       <CapturedPieces
@@ -580,6 +583,7 @@ export default function CustomChessboard() {
             customLightSquareStyle={{ backgroundColor: "#E6E1D6" }}
             arePiecesDraggable={arePiecesDragable}
             arePremovesAllowed={true}
+            clearPremovesOnRightClick={true}
             onPromotionCheck={promotionHandler}
             onPromotionPieceSelect={promotionPieceHandler}
             boardOrientation={boardOrientation}
