@@ -16,5 +16,4 @@ urlpatterns = [
     path("play/stockfish/suggest/<str:FEN>", views.GetStockfishBestMoves.as_view()),
     path("play/<str:engine>/<int:difficulty>/<str:FEN>", views.GetMove.as_view()),
     path("playfullgame/<str:engine>", views.GetFullGame.as_view()),
-    path("play/evaluation/<str:fen>", views.GetGameEvaluation.as_view()),
 ]

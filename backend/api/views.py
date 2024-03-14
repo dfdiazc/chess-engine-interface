@@ -79,15 +79,6 @@ class GetFullGame(generics.GenericAPIView):
         return Response({"moves": moves})
 
 
-class GetGameEvaluation(generics.GenericAPIView):
-
-    def get(self, request, fen):
-
-        evaluation = mods.get_game_evaluation(fen)
-
-        return Response({"eval": evaluation})
-
-
 class MatchInfo(generics.GenericAPIView):
 
     def get(self, request, match_id):
