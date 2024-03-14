@@ -164,7 +164,7 @@ def get_move(engine: str, difficulty: str, FEN: str):
 
 
 def get_full_game(engine: str):
-    
+
     if engine == "stockfish":
 
         engine_settings = {"UCI_Elo": 1600, "UCI_LimitStrength": "true"}
@@ -190,6 +190,21 @@ def get_full_game(engine: str):
     engine.quit()
 
     return moves
+
+
+def get_game_evaluation(fen: str):
+
+    engine_settings = {"UCI_Elo": 2850, "UCI_LimitStrength": "true"}
+    engine = load_engine("stockfish")
+    engine.configure(engine_settings)
+
+    fen = fen.replace("-", "/")
+    board = chess.Board(fen)
+    eval = engine.analyse(board, chess.engine.Limit(time=0.1))
+
+    engine.quit()
+
+    return eval["score"].relative.score()/100
 
 
 def lost(current_FEN: str, previous_FEN: str) -> dict:
