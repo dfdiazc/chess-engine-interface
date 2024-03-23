@@ -127,6 +127,7 @@ export default function CustomChessboard() {
     game.reset();
     dispatch(setFen(game.fen()));
     dispatch(setTurn(game.turn()));
+    dispatch(setGameHistory([]));
     setMoveSquares({});
     setCheckSquares({});
     setOptionSquares({});
