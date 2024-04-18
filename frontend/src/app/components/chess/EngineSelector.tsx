@@ -87,7 +87,7 @@ export default function EngineSelector() {
           <div className="flex flex-col justify-center items-center gap-1">
             {selectedEngine === "Stockfish" ? (
               <div className="w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24 bg-[url('/images/stockfish.png')] bg-cover self-center rounded-lg" />
-            ) : selectedEngine === "Leela" ? (
+            ) : selectedEngine === "Lc0" ? (
               <div className="flex w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24 self-center justify-center">
                 <div className="flex bg-neutral-200 rounded-lg w-14 md:w-16 lg:w-20 h-14 md:h-16 lg:h-20 self-center">
                   <div className="self-center bg-[url('/images/leela.svg')] md:-mx-0.5 lg:mx-0.5 w-12 md:w-14 lg:w-16 h-12 md:h-14 lg:h-16 bg-cover" />
@@ -122,7 +122,7 @@ export default function EngineSelector() {
             ) : selectedEngine === "Berserk" ? (
               <div className="flex w-16 md:w-20 lg:w-24 h-16 md:h-20 lg:h-24 self-center rounded-lg justify-center">
                 <div className="flex bg-red-900 rounded-lg w-14 md:w-16 lg:w-20 h-14 md:h-16 lg:h-20 self-center justify-center">
-                  <div className="self-center bg-[url('/images/berserk.svg')] w-12 md:w-14 lg:w-16 h-12 md:h-14 lg:h-16 bg-cover" />
+                  <div className="self-center bg-[url('/images/berserk.svg')] w-10 md:w-12 lg:w-14 h-10 md:h-12 lg:h-14 bg-cover" />
                 </div>
               </div>
             ) : selectedEngine === "Wasp" ? (
@@ -182,15 +182,14 @@ export default function EngineSelector() {
                   />
                   <div
                     className={`flex w-14 md:w-16 h-14 md:h-16 self-center rounded-lg justify-center ${
-                      selectedEngine === "Leela" && "ring-2 ring-aquamarine-300"
+                      selectedEngine === "Lc0" && "ring-2 ring-aquamarine-300"
                     }`}
                   >
                     <button
                       onClick={() => {
-                        setSelectedEngine("Leela");
+                        setSelectedEngine("Lc0");
                       }}
-                      className="flex bg-white rounded-lg w-12 md:w-14 h-12 md:h-14 self-center opacity-50 cursor-not-allowed"
-                      disabled
+                      className="flex bg-white rounded-lg w-12 md:w-14 h-12 md:h-14 self-center"
                     >
                       <div className="self-center bg-[url('/images/leela.svg')] md:-m-1.5 w-10 md:w-14 h-10 md:h-14 bg-cover" />
                     </button>
@@ -214,8 +213,7 @@ export default function EngineSelector() {
                       onClick={() => {
                         setSelectedEngine("Critter");
                       }}
-                      className="flex justify-center bg-white rounded-lg w-12 md:w-14 h-12 md:h-14 self-center opacity-50 cursor-not-allowed"
-                      disabled
+                      className="flex justify-center bg-white rounded-lg w-12 md:w-14 h-12 md:h-14 self-center"
                     >
                       <div className="self-center bg-[url('/images/critter.png')] bg-center w-10 md:w-12 h-10 md:h-12 bg-cover" />
                     </button>
@@ -230,8 +228,7 @@ export default function EngineSelector() {
                       onClick={() => {
                         setSelectedEngine("Arasan");
                       }}
-                      className="flex bg-white rounded-lg w-12 md:w-14 h-12 md:h-14 self-center justify-center opacity-50 cursor-not-allowed"
-                      disabled
+                      className="flex bg-white rounded-lg w-12 md:w-14 h-12 md:h-14 self-center justify-center"
                     >
                       <div className="self-center bg-[url('/images/arasan.svg')] bg-center bg-contain bg-no-repeat w-10 md:w-12 h-10 md:h-12" />
                     </button>
@@ -276,8 +273,7 @@ export default function EngineSelector() {
                       onClick={() => {
                         setSelectedEngine("Berserk");
                       }}
-                      className="flex bg-red-900 rounded-lg w-12 md:w-14 h-12 md:h-14 self-center justify-center opacity-50 cursor-not-allowed"
-                      disabled
+                      className="flex bg-red-900 rounded-lg w-12 md:w-14 h-12 md:h-14 self-center justify-center"
                     >
                       <div className="self-center bg-[url('/images/berserk.svg')] w-8 md:w-10 h-8 md:h-10 bg-cover" />
                     </button>
@@ -291,8 +287,7 @@ export default function EngineSelector() {
                       onClick={() => {
                         setSelectedEngine("Wasp");
                       }}
-                      className="flex bg-[#85A843] rounded-lg w-12 md:w-14 h-12 md:h-14 self-center justify-center opacity-50 cursor-not-allowed"
-                      disabled
+                      className="flex bg-[#85A843] rounded-lg w-12 md:w-14 h-12 md:h-14 self-center justify-center"
                     >
                       <div className="self-center bg-[url('/images/wasp.svg')] w-10 md:w-12 h-10 md:h-12 bg-contain bg-no-repeat bg-center" />
                     </button>
@@ -307,8 +302,7 @@ export default function EngineSelector() {
                       onClick={() => {
                         setSelectedEngine("Ethereal");
                       }}
-                      className="flex bg-neutral-900 rounded-lg w-12 md:w-14 h-12 md:h-14 self-center justify-center opacity-50 cursor-not-allowed"
-                      disabled
+                      className="flex bg-neutral-900 rounded-lg w-12 md:w-14 h-12 md:h-14 self-center justify-center"
                     >
                       <div className="self-center bg-[url('/images/ethereal.svg')] w-10 md:w-12 h-10 md:h-12 bg-contain bg-no-repeat bg-center" />
                     </button>
