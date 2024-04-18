@@ -9,6 +9,12 @@ engines = {
     "komodo": "../engines/komodo-13_201fd6/Linux/komodo-13.02-linux",
     "slowchess": "../engines/slowchess/SlowChess-Linux-2.9/slow64_linux_sse",
     "koivisto": "../engines/koivisto/Koivisto_8.0-x64-linux-sse2",
+    "lc0": "../engines/lc0/lc0",
+    "arasan": "../engines/arasan/arasanx-64",
+    "wasp": "../engines/wasp/Wasp650-linux",
+    "berserk": "../engines/berserk/berserk",
+    "ethereal": "../engines/ethereal/Ethereal",
+    "critter": "../engines/critter/critter",
 }
 
 
@@ -140,7 +146,7 @@ def will_promote(move: str, FEN: str) -> bool:
 
 def get_move(engine: str, difficulty: str, FEN: str):
 
-    if engine == "stockfish":
+    if engine == "stockfish" or engine == "arasan":
 
         engine_settings = {"UCI_Elo": difficulty, "UCI_LimitStrength": "true"}
 

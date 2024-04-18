@@ -53,7 +53,7 @@ export default function GamePanel() {
       <div className="flex items-center gap-2">
         {engine === "Stockfish" ? (
           <div className="w-16 h-16 bg-[url('/images/stockfish.png')] bg-cover self-center rounded-lg" />
-        ) : engine === "Leela" ? (
+        ) : engine === "Lc0" ? (
           <div className="flex w-16 h-16 self-center justify-center">
             <div className="flex bg-neutral-200 rounded-lg w-14 h-14 self-center">
               <div className="self-center bg-[url('/images/leela.svg')] w-12 h-12 bg-cover" />
