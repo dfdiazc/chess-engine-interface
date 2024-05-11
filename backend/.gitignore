@@ -10,5 +10,6 @@ build
 htmlcov
 
 api/__pycache__
+api/migrations
 users/__pycache__
 backend/__pycache__

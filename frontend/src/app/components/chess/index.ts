@@ -1,11 +1,16 @@
 export { default as CustomChessboard } from "./CustomChessboard";
+export { default as OnlineChessboard } from "./OnlineChessboard";
 export { default as CapturedPieces } from "./CapturedPieces";
 export { default as TurnIndicator } from "./TurnIndicator";
 export { default as ChessSettings } from "./ChessSettings";
 export { default as DifficultySelector } from "./DifficultySelector";
 export { default as ChessSuggestions } from "./ChessSuggestions";
 export { default as GamePanel } from "./GamePanel";
+export { default as OnlinePanel } from "./OnlinePanel";
+export { default as OnlineCreatePanel } from "./OnlineCreatePanel";
 export { default as RestartGame } from "./RestartGame";
 export { default as GameOver } from "./GameOver";
 export { default as MainGame } from "./MainGame";
+export { default as OnlineGame } from "./OnlineGame";
 export { default as GameHistory } from "./GameHistory";
+export { default as ResignGame } from "./ResignGame";

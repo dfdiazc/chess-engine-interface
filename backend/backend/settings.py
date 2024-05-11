@@ -41,6 +41,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    # Django Channels
+    "daphne",
     # REST Framework apps
     "rest_framework",
     "rest_framework_simplejwt",
@@ -91,6 +93,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "backend.wsgi.application"
 
+ASGI_APPLICATION = "backend.asgi.application"
+
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -100,6 +104,12 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
+}
+
+CHANNEL_LAYERS = { 
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }   
 }
 
 
@@ -187,6 +197,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+
 # serve static files
 
 STATIC_ROOT = os.getenv("STATIC_ROOT")
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
