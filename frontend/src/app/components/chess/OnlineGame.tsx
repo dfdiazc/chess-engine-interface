@@ -10,9 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCurrentGameState,
-  setFen,
-  setGameState,
-  setTurn,
+  setHasJoinedGame,
 } from "@/lib/features/chess/chessSlice";
 
 export default function OnlineGame() {
@@ -27,15 +25,19 @@ export default function OnlineGame() {
     skip: !data,
   });
   const gameState = useSelector(selectCurrentGameState);
+  async function join() {
+    await joinMatch(matchId);
+    dispatch(setHasJoinedGame(true));
+  }
   useEffect(() => {
-    joinMatch(matchId);
+    join();
     setLoaded(true);
   }, []);
   if (!loaded) {
     return null;
   }
   return (
-    <div className="flex flex-col md:flex-row justify-center items-center relative md:h-screen px-4 pt-4 md:pt-12 pb-4">
+    <div className="flex flex-col md:flex-row justify-center items-center relative md:h-screen px-4 pt-4 md:pt-10 pb-4">
       <div className="hidden md:block w-full" />
       <div className="relative flex justify-center p-2">
         {matchQueryData?.fen && <OnlineChessboard />}

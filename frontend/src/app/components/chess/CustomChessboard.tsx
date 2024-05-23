@@ -50,7 +50,7 @@ export default function CustomChessboard() {
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
       return windowWidth < 768
-        ? windowWidth * 0.7
+        ? windowWidth * 0.9
         : windowWidth < 1024
         ? windowWidth * 0.55
         : windowHeight * 0.8;
@@ -63,7 +63,7 @@ export default function CustomChessboard() {
       let windowHeight = window.innerHeight;
       setBoardWidth(
         windowWidth < 768
-          ? windowWidth * 0.7
+          ? windowWidth * 0.9
           : windowWidth < 1024
           ? windowWidth * 0.55
           : windowHeight * 0.8

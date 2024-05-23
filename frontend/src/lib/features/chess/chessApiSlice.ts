@@ -16,12 +16,12 @@ export const chessApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     createMatch: builder.mutation({
-      query: (playerColor) => ({
+      query: ({ playerColor, variant }) => ({
         url: "/api/match",
         method: "POST",
         credentials: "include",
         mode: "cors",
-        body: { player_color: playerColor },
+        body: { player_color: playerColor, variant: variant },
       }),
     }),
     joinMatch: builder.mutation({
@@ -50,14 +50,19 @@ export const chessApiSlice = apiSlice.injectEndpoints({
           const listener = (event: MessageEvent) => {
             const data = JSON.parse(event.data);
             updateCachedData((draft) => {
-              console.log(data);
               if (data.command === "move") {
                 if (!draft.moves) {
                   draft.moves = [];
                 }
                 draft.moves.push(data.move);
               } else if (data.command === "start_game") {
+                console.log(data);
                 draft.game_state = data.status;
+                if (!draft.whites_player) {
+                  draft.whites_player = data.whites_player;
+                } else if (!draft.blacks_player) {
+                  draft.blacks_player = data.blacks_player;
+                }
               }
             });
           };
@@ -68,15 +73,40 @@ export const chessApiSlice = apiSlice.injectEndpoints({
       },
     }),
     move: builder.mutation({
-      queryFn: async ({ matchId, move }) => {
+      queryFn: async ({ move }) => {
         return new Promise((resolve, reject) => {
           if (ws) {
             const message = JSON.stringify({
+              command: "move",
               move: move,
             });
             const listener = (event: MessageEvent) => {
               const data = JSON.parse(event.data);
               if (data.command === "move" && data.move === move) {
+                ws.removeEventListener("message", listener);
+                resolve({ data: data });
+              }
+            };
+
+            ws.addEventListener("message", listener);
+            ws.send(message);
+          } else {
+            reject("No websocket connection");
+          }
+        });
+      },
+    }),
+    resign: builder.mutation({
+      queryFn: async (playerId) => {
+        return new Promise((resolve, reject) => {
+          if (ws) {
+            const message = JSON.stringify({
+              command: "resign",
+              player_id: playerId,
+            });
+            const listener = (event: MessageEvent) => {
+              const data = JSON.parse(event.data);
+              if (data.command === "game_over") {
                 ws.removeEventListener("message", listener);
                 resolve({ data: data });
               }
@@ -100,4 +130,5 @@ export const {
   useGetMatchQuery,
   useJoinMatchMutation,
   useMoveMutation,
+  useResignMutation,
 } = chessApiSlice;

@@ -1,34 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import * as Dialog from "@radix-ui/react-dialog";
-import { VscDebugRestart } from "react-icons/vsc";
-import { FaPlus } from "react-icons/fa6";
 import { X } from "lucide-react";
-import {
-  selectCurrentCreatingGame,
-  selectCurrentPlayerColor,
-  selectCurrentTurn,
-  setCreatingGame,
-  setGameState,
-  selectCurrentGameState,
-} from "@/lib/features/chess/chessSlice";
+import { selectCurrentGameState } from "@/lib/features/chess/chessSlice";
 import { useSelector } from "react-redux";
-import { useTranslations } from "next-intl";
 
-export default function GameOver({
-  gameOverMessage,
-}: {
-  gameOverMessage: string;
-}) {
-  const t = useTranslations();
-  const dispatch = useDispatch<AppDispatch>();
-  const creatingGame = useSelector(selectCurrentCreatingGame);
+export default function OnlineGameOver() {
   const gameState = useSelector(selectCurrentGameState);
-  const turn = useSelector(selectCurrentTurn);
-  const playerColor = useSelector(selectCurrentPlayerColor);
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (gameState === "over") {
@@ -36,7 +15,7 @@ export default function GameOver({
       return;
     }
     setOpen(false);
-  }, [creatingGame, gameState]);
+  }, [gameState]);
   useEffect(() => {
     if (open) {
       const timer = setTimeout(() => {
@@ -47,18 +26,6 @@ export default function GameOver({
       document.body.style.pointerEvents = "auto";
     }
   }, [open]);
-  function restartGame() {
-    dispatch(setCreatingGame(true));
-    dispatch(setGameState("reset"));
-  }
-  function rematch() {
-    dispatch(setGameState("rematch"));
-  }
-  const [loaded, setLoaded] = useState(false);
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-  if (!loaded) return null;
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Portal container={document.getElementById("chessboard")}>
@@ -89,26 +56,6 @@ export default function GameOver({
               ? t("play.game.defeat")
               : t("play.game.victory")}
           </Dialog.Description>
-          <div className="flex gap-2 mt-auto">
-            <Button
-              variant="default"
-              type="submit"
-              className="w-full"
-              onClick={restartGame}
-            >
-              <FaPlus className="w-5 h-5 stroke-neutral-200 mr-1" />
-              {t("play.game.newGame")}
-            </Button>
-            <Button
-              variant="default"
-              type="submit"
-              className="w-full"
-              onClick={rematch}
-            >
-              <VscDebugRestart className="w-5 h-5 scale-x-[-1] stroke-neutral-200 mr-1" />
-              {t("play.game.rematch")}
-            </Button>
-          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

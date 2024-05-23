@@ -5,7 +5,7 @@ from .models import Match, Moves, Player
 class PlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Player
-        fields = ["anonymous_id"]
+        fields = ["anonymous_id", "username"]
 
 
 class MatchSerializer(serializers.ModelSerializer):
@@ -21,6 +21,7 @@ class MatchSerializer(serializers.ModelSerializer):
             "whites_player",
             "blacks_player",
             "id",
+            "variant",
             "fen",
             "pgn",
             "owner",

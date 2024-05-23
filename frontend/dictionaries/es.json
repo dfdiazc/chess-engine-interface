@@ -25,6 +25,10 @@
   },
   "play": {
     "game": {
+      "playEngines": "Juega contra los motores",
+      "challengeFriend": "Desafía a un amigo",
+      "playerColor": "Juego como",
+      "copyLink": "Copiar Enlace",
       "startGame": "Comenzar Juego",
       "newGame": "Nuevo Juego",
       "rematch": "Revancha",

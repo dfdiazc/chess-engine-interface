@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import * as Dialog from "@radix-ui/react-dialog";
-import { RotateCw, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useSelector } from "react-redux";
 import {
   selectCurrentCreatingGame,
@@ -20,16 +20,18 @@ import {
 } from "@/components/ui/tooltip";
 import { useTranslations } from "next-intl";
 import { FiFlag } from "react-icons/fi";
+import Cookies from "js-cookie";
+import { useResignMutation } from "@/lib/features/chess/chessApiSlice";
 
 export default function Resign() {
   const t = useTranslations();
-  const dispatch = useDispatch<AppDispatch>();
-  const creatingGame = useSelector(selectCurrentCreatingGame);
+  const playerId = Cookies.get("player_id");
   const gameState = useSelector(selectCurrentGameState);
   const [open, setOpen] = useState(false);
-  function restartGame() {
-    dispatch(setCreatingGame(true));
-    dispatch(setGameState("reset"));
+  const [resignMatch, { isLoading: isResigningGame, data: resignData }] =
+    useResignMutation();
+  async function resignGame() {
+    const data = await resignMatch(playerId);
     setOpen(false);
   }
   const [loaded, setLoaded] = useState(false);
@@ -85,7 +87,7 @@ export default function Resign() {
               variant="default"
               type="submit"
               className="w-full text-sm md:text-base"
-              onClick={restartGame}
+              onClick={resignGame}
             >
               Resign
             </Button>

@@ -25,6 +25,10 @@
   },
   "play": {
     "game": {
+      "playEngines": "Play the engines",
+      "challengeFriend": "Challenge a friend",
+      "playerColor": "I play as",
+      "copyLink": "Copy Link",
       "startGame": "Start Game",
       "newGame": "New Game",
       "rematch": "Rematch",

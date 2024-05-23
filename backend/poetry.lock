@@ -186,6 +186,17 @@ files = [
 ]
 
 [[package]]
+name = "coolname"
+version = "2.2.0"
+description = "Random name and slug generator"
+optional = false
+python-versions = "*"
+files = [
+    {file = "coolname-2.2.0-py2.py3-none-any.whl", hash = "sha256:4d1563186cfaf71b394d5df4c744f8c41303b6846413645e31d31915cdeb13e8"},
+    {file = "coolname-2.2.0.tar.gz", hash = "sha256:6c5d5731759104479e7ca195a9b64f7900ac5bead40183c09323c7d0be9e75c7"},
+]
+
+[[package]]
 name = "cryptography"
 version = "42.0.5"
 description = "cryptography is a package which provides cryptographic recipes and primitives to Python developers."
@@ -705,4 +716,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "60fb2c677e2a9237b10967d894fbe180eca32b69a292f5344b447660cccbde25"
+content-hash = "db6788c63d8ec698f8da0700d12d6731b4c18e75883e276012dfdc14c2a1dae6"

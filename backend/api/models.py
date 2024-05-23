@@ -4,18 +4,33 @@ from shortuuid.django_fields import ShortUUIDField
 import uuid
 import chess
 import chess.pgn
+from coolname import generate_slug
 
 
 # Create your models here.
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     anonymous_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    username = models.CharField(max_length=30, default=generate_slug(2))
+
+    def to_dict(self):
+        return {
+            "username": self.username,
+            "anonymous_id": str(self.anonymous_id),
+        }
 
 
 class Match(models.Model):
 
     # All matches must be associated to a player on whites and a player on blacks (one of them could be the engine)
     id = ShortUUIDField(length=8, max_length=40, primary_key=True, editable=False)
+    variant = models.CharField(
+        max_length=30,
+        choices={
+            "standard": "Standard",
+        },
+        default="standard",
+    )
     whites_player = models.ForeignKey(
         Player, on_delete=models.CASCADE, related_name="whites", null=True
     )
@@ -43,7 +58,7 @@ class Match(models.Model):
         null=True,
         default='[Event "?"]\n[Site "?"]\n[Date "????.??.??"]\n[Round "?"]\n[White "?"]\n[Black "?"]\n[Result "*"]\n\n*',
     )
-    start_time = models.DateTimeField(auto_now_add=True)
+    start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
 
     """

@@ -1,4 +1,5 @@
 import datetime
+from django.utils import timezone
 import json
 import uuid
 from urllib.parse import parse_qs
@@ -44,6 +45,8 @@ class MatchConsumer(WebsocketConsumer):
         if game.blacks_player is not None and game.whites_player is not None:
             # Both players have connected, start the game
             game.game_state = "playing"
+            if game.start_time is None:
+                game.start_time = timezone.now()
             game.save()
             async_to_sync(self.channel_layer.group_send)(
                 self.room_group_name,
@@ -71,27 +74,37 @@ class MatchConsumer(WebsocketConsumer):
 
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        move = text_data_json.get("move")
+        command = text_data_json.get("command")
 
-        if move:
-            match = Match.objects.get(id=self.match_id)
+        if command == "move":
+            move = text_data_json.get("move")
+            match = self.get_game()
 
             pgn = io.StringIO(match.pgn)
             game = chess.pgn.read_game(pgn)
             board = game.end().board()
-            
+
             if move.get("promotion") is not None:
                 parse_move = move["from"] + move["to"] + move["promotion"]
             else:
                 parse_move = move["from"] + move["to"]
-                
+
             chess_move = chess.Move.from_uci(parse_move)
             board.push(chess_move)
 
             game.end().add_main_variation(chess_move)
 
             if board.is_checkmate() or board.is_stalemate():
-                match.state = "over"
+                match.game_state = "over"
+                if game.end_time is None:
+                    game.end_time = timezone.now()
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "game_over",
+                        "state": match.state,
+                    },
+                )
 
             match.pgn = str(game)
             match.fen = board.fen()
@@ -101,6 +114,27 @@ class MatchConsumer(WebsocketConsumer):
                 {
                     "type": "move",
                     "move": move,
+                },
+            )
+        elif command == "resign":
+            match = self.get_game()
+            match.game_state = "over"
+            player_id = text_data_json.get("player_id")
+            player = async_to_sync(self.get_player)(self.player_id)
+            if player == game.blacks_player:
+                # set winner to white
+                pass
+            elif player == game.whites_player:
+                # set winner to black
+                pass
+            if match.end_time is None:
+                match.end_time = timezone.now()
+            match.save()
+            async_to_sync(self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    "type": "game_over",
+                    "state": "resign",
                 },
             )
 
@@ -114,10 +148,21 @@ class MatchConsumer(WebsocketConsumer):
                 {
                     "command": "start_game",
                     "status": game.game_state,
-                    "blacks_player": str(game.blacks_player.anonymous_id),
-                    "whites_player": str(game.whites_player.anonymous_id),
+                    "blacks_player": game.blacks_player.to_dict(),
+                    "whites_player": game.whites_player.to_dict(),
                     "fen": game.fen,
                     "pgn": game.pgn,
+                }
+            )
+        )
+
+    def game_over(self, event):
+        game = self.get_game()
+        self.send(
+            text_data=json.dumps(
+                {
+                    "command": "game_over",
+                    "status": game.game_state,
                 }
             )
         )

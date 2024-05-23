@@ -10,12 +10,10 @@ import { AppDispatch } from "@/lib/store";
 import Cookies from "js-cookie";
 import {
   selectCurrentPlayerColor,
-  selectCurrentEngine,
   selectCurrentTurn,
   setTurn,
   selectCurrentFen,
   setFen,
-  selectCurrentDifficulty,
   selectCurrentPieceStyle,
   selectCurrentIsTurnIndicatorShown,
   selectCurrentIsMoveSoundActive,
@@ -24,24 +22,25 @@ import {
   setCreatingGame,
   setGameHistory,
   appendToGameHistory,
-  selectCurrentMoves,
   setPlayerColor,
+  selectCurrentHasJoinedGame,
+  selectCurrentTimeControl,
 } from "@/lib/features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import { TurnIndicator } from "@/app/components/chess";
-import { Arrow, Square } from "react-chessboard/dist/chessboard/types";
+import { Square } from "react-chessboard/dist/chessboard/types";
 import { useTranslations } from "next-intl";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import {
   useGetMatchQuery,
   useMoveMutation,
 } from "@/lib/features/chess/chessApiSlice";
 
 export default function OnlineChessboard() {
-  const router = useRouter();
   const { id: matchId } = useParams();
+  const hasJoinedGame = useSelector(selectCurrentHasJoinedGame);
   const { data: matchQueryData, refetch } = useGetMatchQuery(matchId, {
-    skip: !matchId,
+    skip: !hasJoinedGame,
   });
   const [move] = useMoveMutation();
   const t = useTranslations();
@@ -51,7 +50,7 @@ export default function OnlineChessboard() {
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
       return windowWidth < 768
-        ? windowWidth * 0.7
+        ? windowWidth * 0.9
         : windowWidth < 1024
         ? windowWidth * 0.55
         : windowHeight * 0.8;
@@ -64,7 +63,7 @@ export default function OnlineChessboard() {
       let windowHeight = window.innerHeight;
       setBoardWidth(
         windowWidth < 768
-          ? windowWidth * 0.7
+          ? windowWidth * 0.9
           : windowWidth < 1024
           ? windowWidth * 0.55
           : windowHeight * 0.8
@@ -93,6 +92,7 @@ export default function OnlineChessboard() {
   const isMoveSoundActive = useSelector(selectCurrentIsMoveSoundActive);
   const gameState = useSelector(selectCurrentGameState);
   const pieceStyle = useSelector(selectCurrentPieceStyle);
+  const timeControl = useSelector(selectCurrentTimeControl);
   const moveSound = new Howl({
     src: ["/sounds/chess-move.mp3"],
     volume: 0.5,
@@ -143,11 +143,9 @@ export default function OnlineChessboard() {
     setInitialState(true);
   }
   useEffect(() => {
-    if (
-      matchQueryData &&
-      matchQueryData.game_state === "playing" &&
-      !initialState
-    ) {
+    console.log(matchQueryData);
+    console.log(initialState);
+    if (matchQueryData && !initialState) {
       loadGame();
     }
   }, [matchQueryData]);
@@ -527,12 +525,84 @@ export default function OnlineChessboard() {
     }
     return false;
   }
+  const [players, setPlayers] = useState({ current: "", opponent: "" });
+  useEffect(() => {
+    setPlayers({
+      current: getUsername("current"),
+      opponent: getUsername("opponent"),
+    });
+  }, [matchQueryData?.whites_player, matchQueryData?.blacks_player]);
+  function getUsername(player: "current" | "opponent") {
+    if (player === "current") {
+      if (playerId === matchQueryData?.whites_player?.anonymous_id) {
+        return matchQueryData.whites_player?.username;
+      } else if (playerId === matchQueryData?.blacks_player?.anonymous_id) {
+        return matchQueryData.blacks_player?.username;
+      }
+    } else if (player === "opponent") {
+      if (playerId !== matchQueryData?.whites_player?.anonymous_id) {
+        return (
+          matchQueryData?.whites_player?.username || "Waiting for opponent..."
+        );
+      } else if (playerId !== matchQueryData?.blacks_player?.anonymous_id) {
+        return (
+          matchQueryData?.blacks_player?.username || "Waiting for opponent..."
+        );
+      }
+    }
+  }
+  const [currentPlayerTime, setCurrentPlayerTime] = useState(60 * 10);
+  const [opponentPlayerTime, setOpponentPlayerTime] = useState(60 * 10);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (turn === playerColor) {
+        setCurrentPlayerTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      } else {
+        setOpponentPlayerTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      }
+    }, 1000);
+
+    if (currentPlayerTime === 0 || opponentPlayerTime === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [turn, currentPlayerTime, opponentPlayerTime]);
   return (
     <div className="flex flex-col gap-2 h-fit">
-      <CapturedPieces
-        capturedPieces={getCapturedPieces(game, opponentColor)}
-        color={playerColor}
-      />
+      <div className={`flex justify-between ${isTurnIndicatorShown && "mr-5"} h-11`}>
+        <div className="flex items-center gap-2">
+          <div className="flex justify-center items-center w-8 h-8 bg-neutral-300 rounded opacity-80">
+            <div
+              className="bg-center bg-no-repeat h-6 w-6"
+              style={{
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                backgroundSize: "100%",
+              }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-neutral-200 text-sm">{players.opponent}</p>
+            <CapturedPieces
+              capturedPieces={getCapturedPieces(game, opponentColor)}
+              color={playerColor}
+            />
+          </div>
+        </div>
+        {timeControl !== "unlimited" && (
+          <div className="bg-neutral-800 px-4 py-2 rounded w-24 flex justify-center items-center">
+            <p
+              className={`text-neutral-200 ${
+                turn === playerColor && "opacity-50"
+              } text-xl`}
+            >
+              {Math.floor(opponentPlayerTime / 60)}:
+              {opponentPlayerTime % 60 < 10 ? "0" : ""}
+              {opponentPlayerTime % 60}
+            </p>
+          </div>
+        )}
+      </div>
       <div className="flex">
         <div className="relative" id="chessboard">
           <Chessboard
@@ -571,10 +641,39 @@ export default function OnlineChessboard() {
         ) : null}
         <GameOver gameOverMessage={gameOverMessage} />
       </div>
-      <CapturedPieces
-        capturedPieces={getCapturedPieces(game, playerColor)}
-        color={opponentColor}
-      />
+      <div className={`flex justify-between ${isTurnIndicatorShown && "mr-5"} h-11`}>
+        <div className="flex items-center gap-2">
+          <div className="flex justify-center items-center w-8 h-8 bg-neutral-300 rounded opacity-80">
+            <div
+              className="bg-center bg-no-repeat h-6 w-6"
+              style={{
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                backgroundSize: "100%",
+              }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-neutral-200 text-sm">{players.current}</p>
+            <CapturedPieces
+              capturedPieces={getCapturedPieces(game, playerColor)}
+              color={opponentColor}
+            />
+          </div>
+        </div>
+        {timeControl !== "unlimited" && (
+          <div className="bg-neutral-800 px-4 py-2 rounded w-24 flex justify-center items-center">
+            <p
+              className={`text-neutral-200 ${
+                turn === opponentColor && "opacity-50"
+              } text-xl`}
+            >
+              {Math.floor(currentPlayerTime / 60)}:
+              {currentPlayerTime % 60 < 10 ? "0" : ""}
+              {currentPlayerTime % 60}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

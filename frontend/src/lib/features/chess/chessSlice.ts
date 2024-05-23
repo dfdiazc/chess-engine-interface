@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/store";
-import { chessApiSlice } from "./chessApiSlice";
 
 interface Move {
   from: string;
@@ -13,8 +12,11 @@ interface ChessState {
   playerColor: string;
   turn: string;
   fen: string;
+  variant: string;
+  timeControl: string;
   moves: Move[];
   gameHistory: string[];
+  hasJoinedGame: boolean;
   engine: string;
   creatingGame: boolean;
   gameState: string;
@@ -35,9 +37,12 @@ const initialState: ChessState = {
   playerColor: "w",
   turn: "w",
   fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  variant: "standard",
+  timeControl: "unlimited",
   moves: [],
   gameHistory: [],
   engine: "Stockfish",
+  hasJoinedGame: false,
   creatingGame: true,
   gameState: "waiting",
   difficulty: 1500,
@@ -49,7 +54,7 @@ const initialState: ChessState = {
   pieceStyle: "staunty",
   areSettingsOpen: false,
   isMoveSoundActive: true,
-  isTurnIndicatorShown: true,
+  isTurnIndicatorShown: false,
 };
 
 const chessSlice = createSlice({
@@ -72,6 +77,14 @@ const chessSlice = createSlice({
       const fen = action.payload;
       state.fen = fen;
     },
+    setVariant: (state, action) => {
+      const variant = action.payload;
+      state.variant = variant;
+    },
+    setTimeControl: (state, action) => {
+      const timeControl = action.payload;
+      state.timeControl = timeControl;
+    },
     addMove: (state, action) => {
       state.moves.push(action.payload);
     },
@@ -86,6 +99,10 @@ const chessSlice = createSlice({
     setEngine: (state, action) => {
       const engine = action.payload;
       state.engine = engine;
+    },
+    setHasJoinedGame: (state, action) => {
+      const hasJoinedGame = action.payload;
+      state.hasJoinedGame = hasJoinedGame;
     },
     setCreatingGame: (state, action) => {
       const creatingGame = action.payload;
@@ -143,9 +160,12 @@ export const {
   setPlayerColor,
   setTurn,
   setFen,
+  setVariant,
+  setTimeControl,
   setGameHistory,
   appendToGameHistory,
   setEngine,
+  setHasJoinedGame,
   setCreatingGame,
   setGameState,
   setDifficulty,
@@ -168,9 +188,12 @@ export const selectCurrentPlayerColor = (state: RootState) =>
   state.chess.playerColor;
 export const selectCurrentTurn = (state: RootState) => state.chess.turn;
 export const selectCurrentFen = (state: RootState) => state.chess.fen;
+export const selectCurrentVariant = (state: RootState) => state.chess.variant;
+export const selectCurrentTimeControl = (state: RootState) => state.chess.timeControl;
 export const selectCurrentGameHistory = (state: RootState) =>
   state.chess.gameHistory;
 export const selectCurrentEngine = (state: RootState) => state.chess.engine;
+export const selectCurrentHasJoinedGame = (state: RootState) => state.chess.hasJoinedGame;
 export const selectCurrentCreatingGame = (state: RootState) =>
   state.chess.creatingGame;
 export const selectCurrentGameState = (state: RootState) =>
