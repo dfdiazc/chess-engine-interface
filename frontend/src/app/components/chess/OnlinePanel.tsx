@@ -7,7 +7,6 @@ import {
   selectCurrentPlayerColor,
   selectCurrentPieceStyle,
   selectCurrentGameState,
-  selectCurrentCreatingGame,
   setCreatingGame,
   setGameState,
   selectCurrentTurn,
@@ -22,11 +21,11 @@ import { Separator } from "@/components/ui/separator";
 import { useParams } from "next/navigation";
 import { useGetMatchQuery } from "@/lib/features/chess/chessApiSlice";
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 export default function OnlinePanel() {
   const t = useTranslations();
   const dispatch = useDispatch<AppDispatch>();
-  const creatingGame = useSelector(selectCurrentCreatingGame);
   const gameState = useSelector(selectCurrentGameState);
   const turn = useSelector(selectCurrentTurn);
   const playerColor = useSelector(selectCurrentPlayerColor);
@@ -138,16 +137,13 @@ export default function OnlinePanel() {
       </div>
       {gameState === "over" && (
         <div className="flex gap-2 mt-4">
-          <Button
-            variant="default"
-            type="submit"
-            className="w-full"
-            onClick={restartGame}
-          >
-            <FaPlus className="w-5 h-5 stroke-neutral-200 mr-2" />
-            {t("play.game.newGame")}
+          <Button variant="default" className="w-full" asChild>
+            <Link href="/play">
+              <FaPlus className="w-5 h-5 stroke-neutral-200 mr-2" />
+              {t("play.game.newGame")}
+            </Link>
           </Button>
-          <Button
+          {/* <Button
             variant="default"
             type="submit"
             className="w-full"
@@ -155,7 +151,7 @@ export default function OnlinePanel() {
           >
             <VscDebugRestart className="w-5 h-5 scale-x-[-1] stroke-neutral-200 mr-2" />
             {t("play.game.rematch")}
-          </Button>
+          </Button> */}
         </div>
       )}
     </div>

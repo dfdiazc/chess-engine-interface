@@ -26,6 +26,8 @@ class MatchSerializer(serializers.ModelSerializer):
             "pgn",
             "owner",
             "game_state",
+            "winner",
+            "outcome",
             "start_time",
             "end_time",
         ]

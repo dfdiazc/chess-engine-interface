@@ -20,5 +20,5 @@ coolname = "^2.2.0"
 
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.7.1"]
 build-backend = "poetry.core.masonry.api"

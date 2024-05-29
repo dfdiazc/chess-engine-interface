@@ -11,7 +11,11 @@ from coolname import generate_slug
 class Player(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     anonymous_id = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
-    username = models.CharField(max_length=30, default=generate_slug(2))
+
+    def generate_username():
+        return generate_slug(2)
+
+    username = models.CharField(max_length=30, default=generate_username)
 
     def to_dict(self):
         return {
@@ -48,6 +52,27 @@ class Match(models.Model):
             "over": "Over",
         },
         default="waiting",
+    )
+    winner = models.CharField(
+        max_length=10,
+        choices={
+            "white": "White",
+            "black": "Black",
+            "draw": "Draw",
+        },
+        null=True,
+    )
+    outcome = models.CharField(
+        max_length=30,
+        choices={
+            "checkmate": "Checkmate",
+            "stalemate": "Stalemate",
+            "insuficcient_material": "Insuficcient Material",
+            "fivefold_repetition": "Fivefold Repetition",
+            "seventyfive_move_rule": "Seventyfive Move Rule",
+            "variant_end_condition": "Variant End Condition",
+        },
+        null=True,
     )
     fen = models.CharField(
         max_length=50,

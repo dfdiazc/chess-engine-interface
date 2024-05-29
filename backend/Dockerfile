@@ -11,10 +11,11 @@ ENV YOUR_ENV=${YOUR_ENV} \
     PIP_DEFAULT_TIMEOUT=100 \
     # Poetry's configuration:
     POETRY_NO_INTERACTION=1 \
-    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_VIRTUALENVS_CREATE=true \
     POETRY_CACHE_DIR='/var/cache/pypoetry' \
     POETRY_HOME='/usr/local' \
     POETRY_VERSION=1.7.1 \
+    # ^^^
     # Make sure to update it!
     PATH="${PATH}:/usr/local/bin"
 
@@ -22,9 +23,7 @@ ENV YOUR_ENV=${YOUR_ENV} \
 RUN apt-get update && apt-get install -y curl python3 python3-pip python3-venv
 
 # Install Poetry:
-RUN curl -sSL https://install.python-poetry.org > get-poetry.py \
-    && python3 get-poetry.py --version $POETRY_VERSION \
-    && rm get-poetry.py
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
 # Copy only requirements to cache them in docker layer
 WORKDIR /code
@@ -32,9 +31,9 @@ COPY poetry.lock pyproject.toml /code/
 
 # Project initialization:
 RUN if [ "$YOUR_ENV" = "production" ]; then \
-        poetry install --no-interaction --no-ansi --no-dev; \
+    poetry install --no-interaction --no-ansi --no-dev; \
     else \
-        poetry install --no-interaction --no-ansi; \
+    poetry install --no-interaction --no-ansi; \
     fi
 
 # Creating folders, and files for a project:

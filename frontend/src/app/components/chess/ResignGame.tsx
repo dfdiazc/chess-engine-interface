@@ -1,16 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import * as Dialog from "@radix-ui/react-dialog";
 import { X } from "lucide-react";
 import { useSelector } from "react-redux";
 import {
-  selectCurrentCreatingGame,
   selectCurrentGameState,
-  setCreatingGame,
-  setGameState,
 } from "@/lib/features/chess/chessSlice";
 import {
   Tooltip,
@@ -46,7 +41,7 @@ export default function Resign() {
           <TooltipTrigger asChild>
             <Dialog.Trigger
               asChild
-              disabled={gameState !== "playing" && gameState !== "over"}
+              disabled={gameState !== "playing"}
             >
               <Button variant={"ghost"}>
                 <FiFlag className="w-4 h-4 stroke-neutral-200" />

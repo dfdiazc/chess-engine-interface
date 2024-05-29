@@ -41,8 +41,12 @@ class MatchConsumer(WebsocketConsumer):
         )
 
         self.accept()
-        # Check if both players have connected
-        if game.blacks_player is not None and game.whites_player is not None:
+        # Check if both players have connected and game isn't over
+        if (
+            game.blacks_player is not None
+            and game.whites_player is not None
+            and game.game_state == "waiting"
+        ):
             # Both players have connected, start the game
             game.game_state = "playing"
             if game.start_time is None:
@@ -94,18 +98,7 @@ class MatchConsumer(WebsocketConsumer):
 
             game.end().add_main_variation(chess_move)
 
-            if board.is_checkmate() or board.is_stalemate():
-                match.game_state = "over"
-                if game.end_time is None:
-                    game.end_time = timezone.now()
-                async_to_sync(self.channel_layer.group_send)(
-                    self.room_group_name,
-                    {
-                        "type": "game_over",
-                        "state": match.state,
-                    },
-                )
-
+            outcome = board.outcome()
             match.pgn = str(game)
             match.fen = board.fen()
             match.save()
@@ -116,17 +109,45 @@ class MatchConsumer(WebsocketConsumer):
                     "move": move,
                 },
             )
+            if outcome:
+                match.game_state = "over"
+                if outcome.winner == chess.WHITE:
+                    match.winner = "white"
+                elif outcome.winner == chess.BLACK:
+                    match.winner = "black"
+                else:
+                    match.winner = "draw"
+                if outcome.termination == chess.Termination.CHECKMATE:
+                    match.outcome = "checkmate"
+                elif outcome.termination == chess.Termination.STALEMATE:
+                    match.outcome = "stalemate"
+                elif outcome.termination == chess.Termination.INSUFFICIENT_MATERIAL:
+                    match.outcome = "insufficient_material"
+                elif outcome.termination == chess.Termination.FIVEFOLD_REPETITION:
+                    match.outcome = "fivefold_repetition"
+                elif outcome.termination == chess.Termination.SEVENTYFIVE_MOVE_RULE:
+                    match.outcome = "seventyfive_move_rule"
+                else:
+                    match.outcome = "variant_end_condition"
+                if match.end_time is None:
+                    match.end_time = timezone.now()
+                match.save()
+                async_to_sync(self.channel_layer.group_send)(
+                    self.room_group_name,
+                    {
+                        "type": "game_over",
+                    },
+                )
         elif command == "resign":
             match = self.get_game()
             match.game_state = "over"
-            player_id = text_data_json.get("player_id")
+            match.outcome = "resignation"
+            self.player_id = text_data_json.get("player_id")
             player = async_to_sync(self.get_player)(self.player_id)
-            if player == game.blacks_player:
-                # set winner to white
-                pass
-            elif player == game.whites_player:
-                # set winner to black
-                pass
+            if player == match.blacks_player:
+                match.winner = "white"
+            elif player == match.whites_player:
+                match.winner = "black"
             if match.end_time is None:
                 match.end_time = timezone.now()
             match.save()
@@ -134,7 +155,6 @@ class MatchConsumer(WebsocketConsumer):
                 self.room_group_name,
                 {
                     "type": "game_over",
-                    "state": "resign",
                 },
             )
 
@@ -163,6 +183,8 @@ class MatchConsumer(WebsocketConsumer):
                 {
                     "command": "game_over",
                     "status": game.game_state,
+                    "winner": game.winner,
+                    "outcome": game.outcome,
                 }
             )
         )

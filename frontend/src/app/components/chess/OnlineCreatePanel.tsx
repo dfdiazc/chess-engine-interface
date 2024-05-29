@@ -92,7 +92,7 @@ export default function OnlineCreatePanel() {
           className="w-full px-12 gap-6 justify-start"
         >
           <LuLink className="w-8 h-8 mx-2 stroke-neutral-300 shrink-0" />
-          <p className="text-xl font-semibold text-left">
+          <p className="text-xl font-semibold text-wrap text-left">
             {t("play.game.challengeFriend")}
           </p>
         </Button>
@@ -178,7 +178,7 @@ export default function OnlineCreatePanel() {
               />
               <div className="flex justify-between">
                 <div>
-                  <p className="font-medium text-neutral-200">
+                  <p className="text-sm font-medium text-neutral-200">
                     {t("play.game.playerColor")}
                   </p>
                 </div>
@@ -225,7 +225,7 @@ export default function OnlineCreatePanel() {
               </div>
               <Button
                 variant={"default"}
-                className="w-full mt-4 md:mt-0 !whitespace-normal gap-2 font-medium"
+                className="w-full mt-4 md:mt-0 !whitespace-normal gap-2 font-medium h-14"
                 onClick={
                   matchData?.id ? handleLinkCopy : form.handleSubmit(createGame)
                 }

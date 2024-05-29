@@ -56,13 +56,16 @@ export const chessApiSlice = apiSlice.injectEndpoints({
                 }
                 draft.moves.push(data.move);
               } else if (data.command === "start_game") {
-                console.log(data);
                 draft.game_state = data.status;
                 if (!draft.whites_player) {
                   draft.whites_player = data.whites_player;
                 } else if (!draft.blacks_player) {
                   draft.blacks_player = data.blacks_player;
                 }
+              } else if (data.command === "game_over") {
+                draft.game_state = data.status;
+                draft.winner = data.winner;
+                draft.outcome = data.outcome;
               }
             });
           };
