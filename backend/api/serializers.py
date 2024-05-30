@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Match, Moves, Player
+from .models import Match, Player
 
 
 class PlayerSerializer(serializers.ModelSerializer):
@@ -31,12 +31,3 @@ class MatchSerializer(serializers.ModelSerializer):
             "start_time",
             "end_time",
         ]
-
-
-class MoveSerializer(serializers.ModelSerializer):
-
-    class Meta:
-
-        model = Moves
-
-        fields = ["match", "fen_code", "move", "order"]

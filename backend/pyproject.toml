@@ -17,6 +17,8 @@ python-dotenv = "^1.0.1"
 channels = {extras = ["daphne"], version = "^4.1.0"}
 shortuuid = "^1.0.13"
 coolname = "^2.2.0"
+gunicorn = "^22.0.0"
+psycopg2-binary = "^2.9.9"
 
 
 [build-system]

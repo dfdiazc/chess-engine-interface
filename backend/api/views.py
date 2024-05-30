@@ -2,13 +2,13 @@ from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.views import APIView
 from . import mods
-from .models import Match, Moves, Player
-from .serializers import MatchSerializer, MoveSerializer
+from .models import Match, Player
+from .serializers import MatchSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from uuid import UUID
 
-# Auxiliary functions
 
+# Auxiliary functions
 
 def fix_fen(url_fen):
 
@@ -118,12 +118,6 @@ class MatchView(APIView):
         return Response({"error": "Match ID is required"}, status=400)
 
 
-class CreateMoveView(generics.CreateAPIView):
-
-    queryset = Moves.objects.all()
-    serializer_class = MoveSerializer
-
-
 class GetStockfishBestMoves(generics.GenericAPIView):
 
     def get(self, request, FEN):
@@ -164,7 +158,6 @@ class GetFullGame(generics.GenericAPIView):
         return Response({"moves": moves})
 
 
-class MatchInfo(generics.GenericAPIView):
 
     def get(self, request, match_id):
 
