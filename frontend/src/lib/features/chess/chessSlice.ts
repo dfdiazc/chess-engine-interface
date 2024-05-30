@@ -1,15 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/lib/store";
 
+interface Move {
+  from: string;
+  to: string;
+  promotion: string;
+}
+
 interface ChessState {
   initialRender: boolean;
   playerColor: string;
   turn: string;
   fen: string;
+  variant: string;
+  timeControl: string;
+  moves: Move[];
   gameHistory: string[];
+  hasJoinedGame: boolean;
   engine: string;
   creatingGame: boolean;
-  gamestate: string;
+  gameState: string;
   difficulty: number;
   engineDifficultyValues: { min: number; max: number };
   areSuggestionsShown: boolean;
@@ -27,10 +37,14 @@ const initialState: ChessState = {
   playerColor: "w",
   turn: "w",
   fen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+  variant: "standard",
+  timeControl: "unlimited",
+  moves: [],
   gameHistory: [],
   engine: "Stockfish",
+  hasJoinedGame: false,
   creatingGame: true,
-  gamestate: "waiting",
+  gameState: "waiting",
   difficulty: 1500,
   engineDifficultyValues: { min: 1350, max: 2850 },
   areSuggestionsShown: false,
@@ -40,7 +54,7 @@ const initialState: ChessState = {
   pieceStyle: "staunty",
   areSettingsOpen: false,
   isMoveSoundActive: true,
-  isTurnIndicatorShown: true,
+  isTurnIndicatorShown: false,
 };
 
 const chessSlice = createSlice({
@@ -63,6 +77,17 @@ const chessSlice = createSlice({
       const fen = action.payload;
       state.fen = fen;
     },
+    setVariant: (state, action) => {
+      const variant = action.payload;
+      state.variant = variant;
+    },
+    setTimeControl: (state, action) => {
+      const timeControl = action.payload;
+      state.timeControl = timeControl;
+    },
+    addMove: (state, action) => {
+      state.moves.push(action.payload);
+    },
     setGameHistory: (state, action) => {
       const gameHistory = action.payload;
       state.gameHistory = gameHistory;
@@ -75,13 +100,17 @@ const chessSlice = createSlice({
       const engine = action.payload;
       state.engine = engine;
     },
+    setHasJoinedGame: (state, action) => {
+      const hasJoinedGame = action.payload;
+      state.hasJoinedGame = hasJoinedGame;
+    },
     setCreatingGame: (state, action) => {
       const creatingGame = action.payload;
       state.creatingGame = creatingGame;
     },
     setGameState: (state, action) => {
-      const gamestate = action.payload;
-      state.gamestate = gamestate;
+      const gameState = action.payload;
+      state.gameState = gameState;
     },
     setDifficulty: (state, action) => {
       const difficulty = action.payload;
@@ -131,9 +160,12 @@ export const {
   setPlayerColor,
   setTurn,
   setFen,
+  setVariant,
+  setTimeControl,
   setGameHistory,
   appendToGameHistory,
   setEngine,
+  setHasJoinedGame,
   setCreatingGame,
   setGameState,
   setDifficulty,
@@ -145,6 +177,7 @@ export const {
   setAreSettingOpen,
   setIsMoveSoundActive,
   setIsTurnIndicatorShown,
+  addMove,
 } = chessSlice.actions;
 
 export default chessSlice.reducer;
@@ -155,13 +188,16 @@ export const selectCurrentPlayerColor = (state: RootState) =>
   state.chess.playerColor;
 export const selectCurrentTurn = (state: RootState) => state.chess.turn;
 export const selectCurrentFen = (state: RootState) => state.chess.fen;
+export const selectCurrentVariant = (state: RootState) => state.chess.variant;
+export const selectCurrentTimeControl = (state: RootState) => state.chess.timeControl;
 export const selectCurrentGameHistory = (state: RootState) =>
   state.chess.gameHistory;
 export const selectCurrentEngine = (state: RootState) => state.chess.engine;
+export const selectCurrentHasJoinedGame = (state: RootState) => state.chess.hasJoinedGame;
 export const selectCurrentCreatingGame = (state: RootState) =>
   state.chess.creatingGame;
 export const selectCurrentGameState = (state: RootState) =>
-  state.chess.gamestate;
+  state.chess.gameState;
 export const selectCurrentDifficulty = (state: RootState) =>
   state.chess.difficulty;
 export const selectCurrentEngineDifficultyValues = (state: RootState) =>
@@ -182,3 +218,4 @@ export const selectCurrentIsMoveSoundActive = (state: RootState) =>
   state.chess.isMoveSoundActive;
 export const selectCurrentIsTurnIndicatorShown = (state: RootState) =>
   state.chess.isTurnIndicatorShown;
+export const selectCurrentMoves = (state: RootState) => state.chess.moves;

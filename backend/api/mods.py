@@ -189,7 +189,7 @@ def get_full_game(engine: str):
     board = chess.Board()
     moves = []
     while not board.is_game_over() and len(moves) < 150:
-        result = engine.play(board, chess.engine.Limit(time=0.001))
+        result = engine.play(board, chess.engine.Limit(time=0.0001))
         moves.append(result.move.uci())
         board.push(result.move)
 

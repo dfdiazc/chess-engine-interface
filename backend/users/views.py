@@ -5,22 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .permissions import IsOwner
 from django.shortcuts import get_object_or_404
-from api.models import Match, Moves
-
-# Auxiliary functions
-
-def get_match_result(match):
-    """
-    Get the player who made the last move in the match
-    """
-
-    moves = Moves.objects.filter(match=match.pk).order_by("time")
-    last_move = move[-1]
-
-    player_last_move = last_move.fen_code.split(" ")[1]
-
-    return player_last_move
-
+from api.models import Match
 
 # Views
 
@@ -81,7 +66,6 @@ class UserMatchesView(generics.GenericAPIView):
 
                 "against": matches_as_whites[i].blacks_player.username,
                 "date": matches_as_whites[i].start_time,
-                "won": "w" == get_match_result(matches_as_whites[i])
 
             }
 
@@ -93,7 +77,6 @@ class UserMatchesView(generics.GenericAPIView):
 
                 "against": matches_as_blacks[i].whites_player.username,
                 "date": matches_as_blacks[i].start_time,
-                "won": "b" == get_match_result(matches_as_blacks[i])
 
             }
 

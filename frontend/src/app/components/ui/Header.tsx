@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Header() {
   const [sidebarOpen, setSideBarOpen] = useState<boolean>(false);
   return (
-    <header className="md:fixed flex items-center justify-between h-12 pl-6 pr-5 sm:pl-10 w-full bg-transparent max-w-[1920px] bg-neutral-900 z-[100]">
+    <header className="md:fixed flex items-center justify-between h-12 px-4 sm:pl-10 w-full bg-transparent max-w-[1920px] bg-neutral-900 z-[100]">
       <Link href="/" className="flex gap-2 shrink-0">
         <Image
           src={"/images/logo.png"}

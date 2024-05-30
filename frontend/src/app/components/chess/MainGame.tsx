@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { CustomChessboard, GameHistory, GamePanel } from "@/app/components/chess";
+import { CustomChessboard, GamePanel } from "@/app/components/chess";
 
 export default function MainGame() {
   const [loaded, setLoaded] = useState(false);

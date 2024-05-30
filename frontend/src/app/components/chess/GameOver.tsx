@@ -13,9 +13,9 @@ import {
   selectCurrentTurn,
   setCreatingGame,
   setGameState,
+  selectCurrentGameState,
 } from "@/lib/features/chess/chessSlice";
 import { useSelector } from "react-redux";
-import { selectCurrentGameState } from "@/lib/features/chess/chessSlice";
 import { useTranslations } from "next-intl";
 
 export default function GameOver({

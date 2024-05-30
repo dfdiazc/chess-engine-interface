@@ -1,48 +1,48 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { Howl } from "howler";
-import { GameOver, CapturedPieces } from "@/app/components/chess";
+import { CapturedPieces } from "@/app/components/chess";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
-import {
-  useLazyEngineMoveQuery,
-  useSuggestionsQuery,
-} from "@/lib/features/chess/chessApiSlice";
+import Cookies from "js-cookie";
 import {
   selectCurrentPlayerColor,
-  selectCurrentEngine,
   selectCurrentTurn,
   setTurn,
   selectCurrentFen,
   setFen,
-  selectCurrentSuggestionMoves,
-  setSuggestionMoves,
-  setSuggestionPieces,
-  selectCurrentAreSuggestionsShown,
-  selectCurrentSuggestionShown,
-  selectCurrentDifficulty,
   selectCurrentPieceStyle,
   selectCurrentIsTurnIndicatorShown,
   selectCurrentIsMoveSoundActive,
   setGameState,
-  selectCurrentCreatingGame,
   selectCurrentGameState,
-  setCreatingGame,
-  setAreSuggestionsShown,
-  setSuggestionShown,
   setGameHistory,
-  selectCurrentGameHistory,
   appendToGameHistory,
+  setPlayerColor,
+  selectCurrentHasJoinedGame,
+  selectCurrentTimeControl,
 } from "@/lib/features/chess/chessSlice";
 import { Piece, Color } from "chess.js";
 import { TurnIndicator } from "@/app/components/chess";
-import { Arrow, Square } from "react-chessboard/dist/chessboard/types";
+import { Square } from "react-chessboard/dist/chessboard/types";
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
+import {
+  useGetMatchQuery,
+  useMoveMutation,
+} from "@/lib/features/chess/chessApiSlice";
+import OnlineGameOver from "./OnlineGameOver";
 
-export default function CustomChessboard() {
+export default function OnlineChessboard() {
+  const { id: matchId } = useParams();
+  const hasJoinedGame = useSelector(selectCurrentHasJoinedGame);
+  const { data: matchQueryData } = useGetMatchQuery(matchId, {
+    skip: !hasJoinedGame,
+  });
+  const [move] = useMoveMutation();
   const t = useTranslations();
   const [boardWidth, setBoardWidth] = useState(initialBoardSize);
   function initialBoardSize() {
@@ -80,141 +80,89 @@ export default function CustomChessboard() {
   }, []);
   const dispatch = useDispatch<AppDispatch>();
   const fen = useSelector(selectCurrentFen);
-  const [game] = useState(new Chess(fen));
+  let [game, setGame] = useState(new Chess(fen));
+  const [initialState, setInitialState] = useState(false);
   const playerColor = useSelector(selectCurrentPlayerColor);
-  const [hasPlayerMoved, setHasPlayerMoved] = useState(false);
-  const [computerColor, setComputerColor] = useState<string>(() => {
-    if (playerColor === "w") {
-      return "b";
-    }
-    return "w";
-  });
+  const [opponentColor, setOpponentColor] = useState<string>(
+    playerColor === "w" ? "b" : "w"
+  );
   const turn = useSelector(selectCurrentTurn);
   const isTurnIndicatorShown = useSelector(selectCurrentIsTurnIndicatorShown);
   const isMoveSoundActive = useSelector(selectCurrentIsMoveSoundActive);
-  const engine = useSelector(selectCurrentEngine).toLowerCase();
-  const difficulty = useSelector(selectCurrentDifficulty);
   const gameState = useSelector(selectCurrentGameState);
-  const areSuggestionsShown = useSelector(selectCurrentAreSuggestionsShown);
-  const suggestionShown = useSelector(selectCurrentSuggestionShown);
-  const suggestionMoves = useSelector(selectCurrentSuggestionMoves);
-  const [suggestionArrows, setSuggestionArrows] = useState<Arrow[]>();
   const pieceStyle = useSelector(selectCurrentPieceStyle);
-  const gameHistory = useSelector(selectCurrentGameHistory);
-  const { data: suggestions } = useSuggestionsQuery(fen, {
-    skip: turn === computerColor || gameState !== "playing" || hasPlayerMoved,
-  });
-  const [engineMoveTrigger] = useLazyEngineMoveQuery();
+  const timeControl = useSelector(selectCurrentTimeControl);
   const moveSound = new Howl({
     src: ["/sounds/chess-move.mp3"],
     volume: 0.5,
   });
   const [arePiecesDragable, setArePiecesDragable] = useState(false);
+  useEffect(() => {
+    if (matchQueryData?.game_state === "over") {
+      setArePiecesDragable(false);
+    }
+  }, [matchQueryData?.game_state]);
   const [boardOrientation, setBoardOrientation] = useState<
     "white" | "black" | undefined
-  >(() => {
-    if (playerColor === "w") {
-      return "white";
-    }
-    return "black";
-  });
+  >(playerColor === "w" ? "white" : "black");
   const [rightClickedSquares, setRightClickedSquares] = useState<any>({});
   const [moveSquares, setMoveSquares] = useState<any>({});
   const [optionSquares, setOptionSquares] = useState<any>({});
   const [checkSquares, setCheckSquares] = useState<any>({});
   const [moveFrom, setMoveFrom] = useState("");
-  function resetGame(newGameState: string) {
-    game.reset();
-    dispatch(setFen(game.fen()));
-    dispatch(setTurn(game.turn()));
-    dispatch(setGameHistory([]));
+  const playerId = Cookies.get("player_id");
+  useEffect(() => {
+    if (matchQueryData?.whites_player?.anonymous_id === playerId) {
+      dispatch(setPlayerColor("w"));
+    } else if (matchQueryData?.blacks_player?.anonymous_id === playerId) {
+      dispatch(setPlayerColor("b"));
+    }
+  }, [matchQueryData?.whites_player, matchQueryData?.blacks_player, playerId]);
+  function loadGame() {
+    dispatch(setGameState(matchQueryData.game_state));
+    dispatch(setTurn(matchQueryData.fen.split(" ")[1]));
+    game.loadPgn(matchQueryData.pgn);
+    dispatch(setFen(matchQueryData.fen));
+    dispatch(setGameHistory(game.history()));
     setMoveSquares({});
     setCheckSquares({});
     setOptionSquares({});
     setRightClickedSquares({});
-    setArePiecesDragable(false);
-    dispatch(setAreSuggestionsShown(false));
-    dispatch(
-      setSuggestionShown({
-        1: false,
-        2: false,
-        3: false,
-      })
-    );
-    setSuggestionArrows([]);
-    if (newGameState === "waiting") {
-      dispatch(setCreatingGame(true));
-    }
-    dispatch(setGameState(newGameState));
+    setInitialState(true);
   }
+  useEffect(() => {
+    if (matchQueryData && !initialState) {
+      loadGame();
+    }
+  }, [matchQueryData]);
   useEffect(() => {
     if (playerColor === "w") {
       setBoardOrientation("white");
-      setComputerColor("b");
+      setOpponentColor("b");
     } else {
       setBoardOrientation("black");
-      setComputerColor("w");
+      setOpponentColor("w");
     }
   }, [playerColor]);
-  useEffect(() => {
-    if (gameState === "reset") {
-      resetGame("waiting");
-    } else if (gameState === "rematch") {
-      resetGame("playing");
-    }
-  }, [gameState]);
   useEffect(() => {
     if (gameState === "playing" && !game.isGameOver()) {
       setArePiecesDragable(true);
       if (turn === playerColor) {
-        setHasPlayerMoved(false);
-      } else if (turn === computerColor) {
+      } else if (turn === opponentColor) {
         setArePiecesDragable(true);
-        computerMove();
+        if (matchQueryData.moves) {
+          const lastMove =
+            matchQueryData.moves[matchQueryData.moves.length - 1];
+          const lastMoveColor = game
+            .history({ verbose: true })
+            ?.slice(-1)[0]?.color;
+          try {
+            opponentMove(lastMove);
+          } catch {}
+        }
       }
-      if (game.history().length !== 0) {
-        dispatch(appendToGameHistory(game.history().slice(-1)[0]));
-      }
-    } else if (game.isGameOver()) {
-      gameOverState();
     }
-  }, [turn, gameState]);
-  useEffect(() => {
-    if (suggestionShown && gameState === "playing" && !game.isGameOver()) {
-      showSuggestionArrows();
-    }
-  }, [suggestionShown, areSuggestionsShown, suggestionMoves]);
-  useEffect(() => {
-    if (turn === playerColor) {
-      setSuggestions();
-    }
-  }, [suggestions]);
-  function showSuggestionArrows() {
-    if (suggestionShown[1] && areSuggestionsShown) {
-      setSuggestionArrows([
-        [
-          suggestionMoves[1].substring(0, 2) as Square,
-          suggestionMoves[1].substring(2, 4) as Square,
-        ],
-      ]);
-    } else if (suggestionShown[2] && areSuggestionsShown) {
-      setSuggestionArrows([
-        [
-          suggestionMoves[2].substring(0, 2) as Square,
-          suggestionMoves[2].substring(2, 4) as Square,
-        ],
-      ]);
-    } else if (suggestionShown[3] && areSuggestionsShown) {
-      setSuggestionArrows([
-        [
-          suggestionMoves[3].substring(0, 2) as Square,
-          suggestionMoves[3].substring(2, 4) as Square,
-        ],
-      ]);
-    } else {
-      setSuggestionArrows([]);
-    }
-  }
+  }, [turn, gameState, matchQueryData]);
   type PieceSymbol = "p" | "r" | "n" | "b" | "q";
 
   function getCapturedPieces(game: Chess, color: string) {
@@ -287,22 +235,6 @@ export default function CustomChessboard() {
     }
     return undefined;
   };
-  const [gameOverMessage, setGameOverMessage] = useState("");
-  function gameOverState() {
-    if (game.isGameOver()) {
-      const checkmate = game.isCheckmate();
-      const draw = game.isDraw();
-
-      if (checkmate) {
-        setGameOverMessage(t("play.game.checkmate"));
-      } else if (draw) {
-        setGameOverMessage(t("play.game.draw"));
-      }
-      dispatch(setGameState("over"));
-      dispatch(setAreSuggestionsShown(false));
-      setArePiecesDragable(false);
-    }
-  }
   function getMoveOptions(square: Square) {
     const moves = game.moves({
       square,
@@ -396,12 +328,11 @@ export default function CustomChessboard() {
             [square]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
           });
           setOptionSquares({});
-          setSuggestionArrows([]);
-          setHasPlayerMoved(true);
           dispatch(setFen(game.fen()));
+          move({ move: { from: moveFrom, to: square } });
           if (game.isCheck()) {
             const computerKingSquare: Square = getPiecePositions({
-              color: computerColor as Color,
+              color: opponentColor as Color,
               type: "k",
             })[0];
             addCheckSquares(computerKingSquare);
@@ -409,6 +340,7 @@ export default function CustomChessboard() {
             setCheckSquares({});
           }
           dispatch(setTurn(game.turn()));
+          dispatch(appendToGameHistory(game.history().slice(-1)[0]));
           setMoveFrom("");
           if (isMoveSoundActive) moveSound.play();
         } else {
@@ -421,31 +353,12 @@ export default function CustomChessboard() {
       }
     }
   }
-  async function setSuggestions() {
-    if (suggestions) {
-      dispatch(setSuggestionMoves(suggestions));
-      dispatch(
-        setSuggestionPieces({
-          1: game.get(suggestions[1].substring(0, 2)).type,
-          2: game.get(suggestions[2].substring(0, 2)).type,
-          3: game.get(suggestions[3].substring(0, 2)).type,
-        })
-      );
-    }
-  }
-  function timeout(delay: number) {
-    return new Promise((res) => setTimeout(res, delay));
-  }
-  async function computerMove() {
+  function opponentMove(move: { from: string; to: string; promotion: string }) {
     try {
-      await timeout(1000);
-      const { data } = await engineMoveTrigger({ engine, difficulty, fen });
-      const move = data.best_move;
-      const source = move.substring(0, 2);
-      const target = move.substring(2, 4);
-      if (move.length === 5) {
-        const promoPiece = move.substring(4);
-        game.move({ from: source, to: target, promotion: promoPiece });
+      const source = move.from;
+      const target = move.to;
+      if (move?.promotion?.length > 0) {
+        game.move({ from: source, to: target, promotion: move.promotion });
       } else {
         game.move({ from: source, to: target });
       }
@@ -454,6 +367,7 @@ export default function CustomChessboard() {
         [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
       });
       dispatch(setFen(game.fen()));
+      dispatch(appendToGameHistory(game.history().slice(-1)[0]));
       if (game.isCheck()) {
         const playerKingSquare: Square = getPiecePositions({
           color: playerColor as Color,
@@ -478,12 +392,12 @@ export default function CustomChessboard() {
             [target]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
           });
           setOptionSquares({});
-          setSuggestionArrows([]);
-          setHasPlayerMoved(true);
           dispatch(setFen(game.fen()));
+          dispatch(appendToGameHistory(game.history().slice(-1)[0]));
+          move({ move: { from: source, to: target } });
           if (game.isCheck()) {
             const computerKingSquare: Square = getPiecePositions({
-              color: computerColor as Color,
+              color: opponentColor as Color,
               type: "k",
             })[0];
             addCheckSquares(computerKingSquare);
@@ -497,7 +411,6 @@ export default function CustomChessboard() {
       } catch (error) {
         return false;
       }
-      showSuggestionArrows();
       return false;
     }
     return false;
@@ -543,12 +456,17 @@ export default function CustomChessboard() {
             [promoSquares[1]]: { backgroundColor: "rgba(255, 255, 0, 0.4)" },
           });
           setOptionSquares({});
-          setSuggestionArrows([]);
-          setHasPlayerMoved(true);
           dispatch(setFen(game.fen()));
+          move({
+            move: {
+              from: promoSquares[0],
+              to: promoSquares[1],
+              promotion: piece[1].toLocaleLowerCase(),
+            },
+          });
           if (game.isCheck()) {
             const computerKingSquare: Square = getPiecePositions({
-              color: computerColor as Color,
+              color: opponentColor as Color,
               type: "k",
             })[0];
             addCheckSquares(computerKingSquare);
@@ -563,15 +481,90 @@ export default function CustomChessboard() {
         return false;
       }
     }
-    showSuggestionArrows();
     return false;
   }
+  const [players, setPlayers] = useState({ current: "", opponent: "" });
+  useEffect(() => {
+    setPlayers({
+      current: getUsername("current"),
+      opponent: getUsername("opponent"),
+    });
+  }, [matchQueryData?.whites_player, matchQueryData?.blacks_player]);
+  function getUsername(player: "current" | "opponent") {
+    if (player === "current") {
+      if (playerId === matchQueryData?.whites_player?.anonymous_id) {
+        return matchQueryData.whites_player?.username;
+      } else if (playerId === matchQueryData?.blacks_player?.anonymous_id) {
+        return matchQueryData.blacks_player?.username;
+      }
+    } else if (player === "opponent") {
+      if (playerId !== matchQueryData?.whites_player?.anonymous_id) {
+        return (
+          matchQueryData?.whites_player?.username || "Waiting for opponent..."
+        );
+      } else if (playerId !== matchQueryData?.blacks_player?.anonymous_id) {
+        return (
+          matchQueryData?.blacks_player?.username || "Waiting for opponent..."
+        );
+      }
+    }
+  }
+  const [currentPlayerTime, setCurrentPlayerTime] = useState(60 * 10);
+  const [opponentPlayerTime, setOpponentPlayerTime] = useState(60 * 10);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (turn === playerColor) {
+        setCurrentPlayerTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      } else {
+        setOpponentPlayerTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+      }
+    }, 1000);
+
+    if (currentPlayerTime === 0 || opponentPlayerTime === 0) {
+      clearInterval(timer);
+    }
+
+    return () => clearInterval(timer);
+  }, [turn, currentPlayerTime, opponentPlayerTime]);
   return (
     <div className="flex flex-col gap-2 h-fit">
-      <CapturedPieces
-        capturedPieces={getCapturedPieces(game, computerColor)}
-        color={playerColor}
-      />
+      <div
+        className={`flex justify-between ${
+          isTurnIndicatorShown && "mr-5"
+        } h-11`}
+      >
+        <div className="flex items-center gap-2">
+          <div className="flex justify-center items-center w-8 h-8 bg-neutral-300 rounded opacity-80">
+            <div
+              className="bg-center bg-no-repeat h-6 w-6"
+              style={{
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                backgroundSize: "100%",
+              }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-neutral-200 text-sm">{players.opponent}</p>
+            <CapturedPieces
+              capturedPieces={getCapturedPieces(game, opponentColor)}
+              color={playerColor}
+            />
+          </div>
+        </div>
+        {timeControl !== "unlimited" && (
+          <div className="bg-neutral-800 px-4 py-2 rounded w-24 flex justify-center items-center">
+            <p
+              className={`text-neutral-200 ${
+                turn === playerColor && "opacity-50"
+              } text-xl`}
+            >
+              {Math.floor(opponentPlayerTime / 60)}:
+              {opponentPlayerTime % 60 < 10 ? "0" : ""}
+              {opponentPlayerTime % 60}
+            </p>
+          </div>
+        )}
+      </div>
       <div className="flex">
         <div className="relative" id="chessboard">
           <Chessboard
@@ -596,7 +589,6 @@ export default function CustomChessboard() {
             onMouseOutSquare={onMouseOutSquare}
             onSquareRightClick={onSquareRightClick}
             onSquareClick={onSquareClick}
-            customArrows={suggestionArrows}
             customArrowColor="#DC5A41"
             customSquareStyles={{
               ...moveSquares,
@@ -609,12 +601,45 @@ export default function CustomChessboard() {
         {isTurnIndicatorShown ? (
           <TurnIndicator boardWidth={boardWidth} />
         ) : null}
-        <GameOver gameOverMessage={gameOverMessage} />
+        {gameState === "over" && <OnlineGameOver />}
       </div>
-      <CapturedPieces
-        capturedPieces={getCapturedPieces(game, playerColor)}
-        color={computerColor}
-      />
+      <div
+        className={`flex justify-between ${
+          isTurnIndicatorShown && "mr-5"
+        } h-11`}
+      >
+        <div className="flex items-center gap-2">
+          <div className="flex justify-center items-center w-8 h-8 bg-neutral-300 rounded opacity-80">
+            <div
+              className="bg-center bg-no-repeat h-6 w-6"
+              style={{
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                backgroundSize: "100%",
+              }}
+            />
+          </div>
+          <div className="flex flex-col">
+            <p className="text-neutral-200 text-sm">{players.current}</p>
+            <CapturedPieces
+              capturedPieces={getCapturedPieces(game, playerColor)}
+              color={opponentColor}
+            />
+          </div>
+        </div>
+        {timeControl !== "unlimited" && (
+          <div className="bg-neutral-800 px-4 py-2 rounded w-24 flex justify-center items-center">
+            <p
+              className={`text-neutral-200 ${
+                turn === opponentColor && "opacity-50"
+              } text-xl`}
+            >
+              {Math.floor(currentPlayerTime / 60)}:
+              {currentPlayerTime % 60 < 10 ? "0" : ""}
+              {currentPlayerTime % 60}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

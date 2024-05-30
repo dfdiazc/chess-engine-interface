@@ -6,15 +6,11 @@ import { useSelector } from "react-redux";
 import {
   selectCurrentPlayerColor,
   selectCurrentPieceStyle,
-  selectCurrentEngine,
-  selectCurrentDifficulty,
   selectCurrentIsTurnIndicatorShown,
   selectCurrentIsMoveSoundActive,
   setPieceStyle,
   setIsTurnIndicatorShown,
   setIsMoveSoundActive,
-  selectCurrentCreatingGame,
-  selectCurrentGameState,
 } from "@/lib/features/chess/chessSlice";
 import * as Dialog from "@radix-ui/react-dialog";
 import {
@@ -51,10 +47,6 @@ export default function ChessSettings() {
   const dispatch = useDispatch<AppDispatch>();
   const playerColor = useSelector(selectCurrentPlayerColor);
   const pieceStyle = useSelector(selectCurrentPieceStyle);
-  const creatingGame = useSelector(selectCurrentCreatingGame);
-  const gameState = useSelector(selectCurrentGameState);
-  const engine = useSelector(selectCurrentEngine);
-  const difficulty = useSelector(selectCurrentDifficulty);
   const turnIndicator = useSelector(selectCurrentIsTurnIndicatorShown);
   const soundOnMove = useSelector(selectCurrentIsMoveSoundActive);
   const pieceStyles = [

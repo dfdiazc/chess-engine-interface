@@ -13,7 +13,7 @@ export default function CapturedPieces({
 }) {
   const pieceStyle = useSelector(selectCurrentPieceStyle);
   return (
-    <div className="flex h-6">
+    <div className="flex h-4">
       {Object.entries(capturedPieces).map(([piece, count]) => {
         return (
           count > 0 && (
@@ -22,15 +22,15 @@ export default function CapturedPieces({
                 .fill(null)
                 .map((_, i) => (
                   <div
-                    style={{ marginLeft: i > 0 ? "-15px" : "0px" }}
+                    style={{ marginLeft: i > 0 ? "-10px" : "0px" }}
                     key={color + piece.toLocaleUpperCase() + i}
                   >
                     <Image
                       src={`${
                         process.env.NEXT_PUBLIC_API_URL
                       }/static/chess/pieces/${pieceStyle}/${color}${piece.toLocaleUpperCase()}.svg`}
-                      width={24}
-                      height={24}
+                      width={16}
+                      height={16}
                       alt="chessPiece"
                     />
                   </div>
