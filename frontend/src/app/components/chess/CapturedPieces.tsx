@@ -26,7 +26,7 @@ export default function CapturedPieces({
                     key={color + piece.toLocaleUpperCase() + i}
                   >
                     <Image
-                      src={`${
+                      src={`https://${
                         process.env.NEXT_PUBLIC_API_URL
                       }/static/chess/pieces/${pieceStyle}/${color}${piece.toLocaleUpperCase()}.svg`}
                       width={16}

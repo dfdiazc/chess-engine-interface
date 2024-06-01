@@ -43,7 +43,7 @@ export const chessApiSlice = apiSlice.injectEndpoints({
       ) {
         const playerId = Cookies.get("player_id");
         ws = new WebSocket(
-          `ws://localhost:8000/api/ws/match/${arg}?player_id=${playerId}`
+          `wss://${process.env.NEXT_PUBLIC_API_URL}/api/ws/match/${arg}?player_id=${playerId}`
         );
         try {
           await cacheDataLoaded;

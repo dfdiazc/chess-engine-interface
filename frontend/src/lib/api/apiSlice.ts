@@ -8,7 +8,7 @@ import {
 import type { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL,
+  baseUrl: `https://${process.env.NEXT_PUBLIC_API_URL}`,
   credentials: "include",
   /* prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;

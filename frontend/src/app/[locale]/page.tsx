@@ -13,7 +13,7 @@ import { getTranslations } from "next-intl/server";
 
 async function get_game() {
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/playfullgame/stockfish`,
+    `https://${process.env.NEXT_PUBLIC_API_URL}/api/playfullgame/stockfish`,
     {
       cache: "no-store",
     }
