@@ -112,7 +112,7 @@ export default function OnlinePanel() {
               <div
                 className="bg-center bg-no-repeat h-6 w-6"
                 style={{
-                  backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                  backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
                   backgroundSize: "100%",
                 }}
               />
@@ -127,7 +127,7 @@ export default function OnlinePanel() {
               <div
                 className="bg-center bg-no-repeat h-6 w-6"
                 style={{
-                  backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/bP.svg)`,
+                  backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/bP.svg)`,
                   backgroundSize: "100%",
                 }}
               />

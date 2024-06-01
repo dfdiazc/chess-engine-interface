@@ -162,7 +162,7 @@ export default function ChessSettings() {
                       <div
                         className="bg-center bg-cover bg-no-repeat self-center w-8 md:w-12 h-8 md:h-12"
                         style={{
-                          backgroundImage: `url(${
+                          backgroundImage: `url(https://${
                             process.env.NEXT_PUBLIC_API_URL
                           }/static/chess/pieces/${
                             form.getValues().pieceStyle

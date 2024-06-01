@@ -111,6 +111,7 @@ export default function OnlineChessboard() {
   const [checkSquares, setCheckSquares] = useState<any>({});
   const [moveFrom, setMoveFrom] = useState("");
   const playerId = Cookies.get("player_id");
+  console.log(playerId);
   useEffect(() => {
     if (matchQueryData?.whites_player?.anonymous_id === playerId) {
       dispatch(setPlayerColor("w"));
@@ -223,7 +224,7 @@ export default function OnlineChessboard() {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />
@@ -538,7 +539,7 @@ export default function OnlineChessboard() {
             <div
               className="bg-center bg-no-repeat h-6 w-6"
               style={{
-                backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
                 backgroundSize: "100%",
               }}
             />
@@ -613,7 +614,7 @@ export default function OnlineChessboard() {
             <div
               className="bg-center bg-no-repeat h-6 w-6"
               style={{
-                backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
                 backgroundSize: "100%",
               }}
             />

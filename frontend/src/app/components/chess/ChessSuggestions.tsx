@@ -103,7 +103,7 @@ export default function ChessSuggestions() {
                                 playerColor +
                                 suggestionPieces[i].toLocaleUpperCase()
                               }
-                              src={`${
+                              src={`https://${
                                 process.env.NEXT_PUBLIC_API_URL
                               }/static/chess/pieces/${pieceStyle}/${playerColor}${suggestionPieces[
                                 i

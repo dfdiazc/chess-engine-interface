@@ -31,12 +31,12 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
 
 ALLOWED_HOSTS = [
-    "unrealchess.pythonanywhere.com",
-    "dfdiazc.pythonanywhere.com",
+    "api.unrealchess.live",
     "localhost",
     "127.0.0.1",
     "0.0.0.0",
 ]
+os.getenv("CORS_ALLOWED_ORIGINS").split(" ")
 
 
 # Application definition
