@@ -22,7 +22,7 @@ export default async function Page() {
             <div className="relative flex justify-center p-2">
               <DummyChessboard />
             </div>
-            <div className="w-full lg:min-w-[20rem] max-w-md">
+            <div className="w-full lg:min-w-[20rem] max-w-lg">
               <div className="flex flex-col gap-6">
                 <Button
                   asChild
