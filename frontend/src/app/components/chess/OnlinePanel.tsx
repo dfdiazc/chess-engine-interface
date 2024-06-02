@@ -74,7 +74,7 @@ export default function OnlinePanel() {
       }
     }
   }
-  const [currentPlayerTime, setCurrentPlayerTime] = useState(60 * 10);
+  /* const [currentPlayerTime, setCurrentPlayerTime] = useState(60 * 10);
   const [opponentPlayerTime, setOpponentPlayerTime] = useState(60 * 10);
   useEffect(() => {
     const timer = setInterval(() => {
@@ -90,7 +90,7 @@ export default function OnlinePanel() {
     }
 
     return () => clearInterval(timer);
-  }, [turn, currentPlayerTime, opponentPlayerTime]);
+  }, [turn, currentPlayerTime, opponentPlayerTime]); */
   return (
     <div className="flex flex-col gap-2">
       <GameHistory />
@@ -112,7 +112,7 @@ export default function OnlinePanel() {
               <div
                 className="bg-center bg-no-repeat h-6 w-6"
                 style={{
-                  backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                  backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
                   backgroundSize: "100%",
                 }}
               />
@@ -127,7 +127,7 @@ export default function OnlinePanel() {
               <div
                 className="bg-center bg-no-repeat h-6 w-6"
                 style={{
-                  backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/bP.svg)`,
+                  backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/bP.svg)`,
                   backgroundSize: "100%",
                 }}
               />

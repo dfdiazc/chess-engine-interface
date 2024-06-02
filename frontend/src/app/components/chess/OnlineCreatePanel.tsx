@@ -89,10 +89,12 @@ export default function OnlineCreatePanel() {
       <Dialog.Trigger asChild>
         <Button
           variant={"secondary"}
-          className="w-full px-12 gap-6 justify-start"
+          className="w-full px-8 gap-4 justify-start"
         >
-          <LuLink className="w-8 h-8 mx-2 stroke-neutral-300 shrink-0" />
-          <p className="text-xl font-semibold text-wrap text-left">
+          <div className="w-12 h-12 flex justify-center items-center">
+            <LuLink className="w-8 h-8 stroke-neutral-300 shrink-0" />
+          </div>
+          <p className="text-xl lg:text-2xl font-semibold text-wrap text-left">
             {t("play.game.challengeFriend")}
           </p>
         </Button>
@@ -176,7 +178,7 @@ export default function OnlineCreatePanel() {
                   </FormItem>
                 )}
               />
-              <div className="flex justify-between">
+              <div className="space-y-2 flex justify-between items-center">
                 <div>
                   <p className="text-sm font-medium text-neutral-200">
                     {t("play.game.playerColor")}
@@ -197,7 +199,7 @@ export default function OnlineCreatePanel() {
                     <div
                       className="bg-center bg-no-repeat h-6 w-6"
                       style={{
-                        backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                        backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
                         backgroundSize: "100%",
                       }}
                     />
@@ -216,7 +218,7 @@ export default function OnlineCreatePanel() {
                     <div
                       className="bg-center bg-no-repeat h-6 w-6"
                       style={{
-                        backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/bP.svg)`,
+                        backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/bP.svg)`,
                         backgroundSize: "100%",
                       }}
                     />

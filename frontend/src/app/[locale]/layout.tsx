@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: "Un-Real Chess",
   description:
     "Play chess online for free against the world's best chess engines.",
-  metadataBase: new URL("https://unrealchess.vercel.app"),
+  metadataBase: new URL("https://unrealchess.live"),
 };
 
 export default function RootLayout({
