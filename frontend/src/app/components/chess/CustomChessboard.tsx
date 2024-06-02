@@ -50,9 +50,9 @@ export default function CustomChessboard() {
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
       return windowWidth < 768
-        ? windowWidth * 0.9
+        ? Math.min(windowWidth * 0.9, 500)
         : windowWidth < 1024
-        ? windowWidth * 0.55
+        ? Math.min(windowWidth * 0.55, windowHeight * 0.75)
         : windowHeight * 0.8;
     }
     return 0;
@@ -63,9 +63,9 @@ export default function CustomChessboard() {
       let windowHeight = window.innerHeight;
       setBoardWidth(
         windowWidth < 768
-          ? windowWidth * 0.9
+          ? Math.min(windowWidth * 0.9, 500)
           : windowWidth < 1024
-          ? windowWidth * 0.55
+          ? Math.min(windowWidth * 0.55, windowHeight * 0.75)
           : windowHeight * 0.8
       );
     }
@@ -275,7 +275,7 @@ export default function CustomChessboard() {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />

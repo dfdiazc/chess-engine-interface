@@ -60,7 +60,7 @@ export default function GameHistory() {
                       <Image
                         width={16}
                         height={16}
-                        src={`https://${
+                        src={`${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${
                           process.env.NEXT_PUBLIC_API_URL
                         }/static/chess/pieces/${pieceStyle}/${getPieceColor(
                           index * 2
@@ -79,7 +79,7 @@ export default function GameHistory() {
                       <Image
                         width={16}
                         height={16}
-                        src={`https://${
+                        src={`${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${
                           process.env.NEXT_PUBLIC_API_URL
                         }/static/chess/pieces/${pieceStyle}/${getPieceColor(
                           index * 2 + 1

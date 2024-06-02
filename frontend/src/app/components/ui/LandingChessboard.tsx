@@ -209,7 +209,7 @@ export default function LandingChessboard({
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />

@@ -14,3 +14,4 @@ export { default as MainGame } from "./MainGame";
 export { default as OnlineGame } from "./OnlineGame";
 export { default as GameHistory } from "./GameHistory";
 export { default as ResignGame } from "./ResignGame";
+export { default as DummyChessboard } from "./DummyChessboard";

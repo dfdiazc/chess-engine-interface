@@ -50,9 +50,9 @@ export default function OnlineChessboard() {
       let windowWidth = window.innerWidth;
       let windowHeight = window.innerHeight;
       return windowWidth < 768
-        ? windowWidth * 0.9
+        ? Math.min(windowWidth * 0.9, 500)
         : windowWidth < 1024
-        ? windowWidth * 0.55
+        ? Math.min(windowWidth * 0.55, windowHeight * 0.75)
         : windowHeight * 0.8;
     }
     return 0;
@@ -63,9 +63,9 @@ export default function OnlineChessboard() {
       let windowHeight = window.innerHeight;
       setBoardWidth(
         windowWidth < 768
-          ? windowWidth * 0.9
+          ? Math.min(windowWidth * 0.9, 500)
           : windowWidth < 1024
-          ? windowWidth * 0.55
+          ? Math.min(windowWidth * 0.55, windowHeight * 0.75)
           : windowHeight * 0.8
       );
     }
@@ -224,7 +224,7 @@ export default function OnlineChessboard() {
           style={{
             width: squareWidth,
             height: squareWidth,
-            backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceType}/${p}.svg)`,
             backgroundSize: "100%",
           }}
         />
@@ -510,7 +510,7 @@ export default function OnlineChessboard() {
       }
     }
   }
-  const [currentPlayerTime, setCurrentPlayerTime] = useState(60 * 10);
+  /* const [currentPlayerTime, setCurrentPlayerTime] = useState(60 * 10);
   const [opponentPlayerTime, setOpponentPlayerTime] = useState(60 * 10);
   useEffect(() => {
     const timer = setInterval(() => {
@@ -526,7 +526,7 @@ export default function OnlineChessboard() {
     }
 
     return () => clearInterval(timer);
-  }, [turn, currentPlayerTime, opponentPlayerTime]);
+  }, [turn, currentPlayerTime, opponentPlayerTime]); */
   return (
     <div className="flex flex-col gap-2 h-fit">
       <div
@@ -539,7 +539,7 @@ export default function OnlineChessboard() {
             <div
               className="bg-center bg-no-repeat h-6 w-6"
               style={{
-                backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
                 backgroundSize: "100%",
               }}
             />
@@ -552,7 +552,7 @@ export default function OnlineChessboard() {
             />
           </div>
         </div>
-        {timeControl !== "unlimited" && (
+        {/* {timeControl !== "unlimited" && (
           <div className="bg-neutral-800 px-4 py-2 rounded w-24 flex justify-center items-center">
             <p
               className={`text-neutral-200 ${
@@ -564,7 +564,7 @@ export default function OnlineChessboard() {
               {opponentPlayerTime % 60}
             </p>
           </div>
-        )}
+        )} */}
       </div>
       <div className="flex">
         <div className="relative" id="chessboard">
@@ -614,7 +614,7 @@ export default function OnlineChessboard() {
             <div
               className="bg-center bg-no-repeat h-6 w-6"
               style={{
-                backgroundImage: `url(https://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
+                backgroundImage: `url(${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/static/chess/pieces/${pieceStyle}/wP.svg)`,
                 backgroundSize: "100%",
               }}
             />
@@ -627,7 +627,7 @@ export default function OnlineChessboard() {
             />
           </div>
         </div>
-        {timeControl !== "unlimited" && (
+        {/* {timeControl !== "unlimited" && (
           <div className="bg-neutral-800 px-4 py-2 rounded w-24 flex justify-center items-center">
             <p
               className={`text-neutral-200 ${
@@ -639,7 +639,7 @@ export default function OnlineChessboard() {
               {currentPlayerTime % 60}
             </p>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

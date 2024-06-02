@@ -6,9 +6,14 @@ from .models import Match, Player
 from .serializers import MatchSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from uuid import UUID
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 # Auxiliary functions
+
 
 def fix_fen(url_fen):
 
@@ -62,7 +67,11 @@ class MatchView(APIView):
             response = Response(serializer.data, status=201)
             if not player_id:
                 response.set_cookie(
-                    "player_id", player.anonymous_id, samesite="None", secure=True
+                    "player_id",
+                    player.anonymous_id,
+                    samesite="None",
+                    secure=True,
+                    domain=os.getenv("COOKIE_DOMAIN"),
                 )
             return response
         return Response(serializer.errors, status=400)
@@ -111,7 +120,11 @@ class MatchView(APIView):
 
                 response = Response(MatchSerializer(match).data, status=200)
                 response.set_cookie(
-                    "player_id", player.anonymous_id, samesite="None", secure=True
+                    "player_id",
+                    player.anonymous_id,
+                    samesite="None",
+                    secure=True,
+                    domain=os.getenv("COOKIE_DOMAIN"),
                 )
                 return response
 
@@ -156,4 +169,3 @@ class GetFullGame(generics.GenericAPIView):
         moves = mods.get_full_game(engine)
 
         return Response({"moves": moves})
-
