@@ -1,6 +1,6 @@
 .DS_Store
 .env
-.idea
+.env.*
 *.log
 tmp/
 
