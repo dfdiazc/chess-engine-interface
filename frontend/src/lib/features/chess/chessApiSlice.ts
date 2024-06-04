@@ -5,16 +5,6 @@ let ws: WebSocket;
 
 export const chessApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    engineMove: builder.query({
-      query: ({ engine, difficulty = 1, fen }) => ({
-        url: `/api/play/${engine}/${difficulty}/${fen.replaceAll("/", "-")}`,
-      }),
-    }),
-    suggestions: builder.query({
-      query: (fen) => ({
-        url: `/api/play/stockfish/suggest/${fen.replaceAll("/", "-")}`,
-      }),
-    }),
     createMatch: builder.mutation({
       query: ({ playerColor, variant }) => ({
         url: "/api/match",
@@ -127,8 +117,6 @@ export const chessApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useSuggestionsQuery,
-  useLazyEngineMoveQuery,
   useCreateMatchMutation,
   useGetMatchQuery,
   useJoinMatchMutation,

@@ -10,7 +10,7 @@ import { AppDispatch } from "@/lib/store";
 import {
   useLazyEngineMoveQuery,
   useSuggestionsQuery,
-} from "@/lib/features/chess/chessApiSlice";
+} from "@/lib/features/chess/engineApiSlice";
 import {
   selectCurrentPlayerColor,
   selectCurrentEngine,

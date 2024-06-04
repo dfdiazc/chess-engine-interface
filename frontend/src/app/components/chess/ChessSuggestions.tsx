@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/lib/store";
-import { useSuggestionsQuery } from "@/lib/features/chess/chessApiSlice";
+import { useSuggestionsQuery } from "@/lib/features/chess/engineApiSlice";
 import { useSelector } from "react-redux";
 import {
   selectCurrentAreSuggestionsShown,

@@ -229,7 +229,12 @@ export default function OnlineCreatePanel() {
                 variant={"default"}
                 className="w-full mt-4 md:mt-0 !whitespace-normal gap-2 font-medium h-14"
                 onClick={
-                  matchData?.id ? handleLinkCopy : form.handleSubmit(createGame)
+                  matchData?.id
+                    ? () => handleLinkCopy(matchData.id)
+                    : (e) => {
+                        e.preventDefault();
+                        form.handleSubmit(createGame)();
+                      }
                 }
                 disabled={isCreatingGame}
                 type={matchData?.id ? "button" : "submit"}
