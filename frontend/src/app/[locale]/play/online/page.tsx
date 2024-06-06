@@ -1,4 +1,4 @@
-import { OnlineChessboard, OnlineCreatePanel } from "@/app/components/chess";
+import { DummyChessboard, OnlineCreatePanel } from "@/app/components/chess";
 import { Header } from "@/app/components/ui";
 import React from "react";
 
@@ -15,7 +15,7 @@ export default function Page() {
           <div className="flex flex-col md:flex-row justify-center items-center relative md:h-screen px-4 pt-4 md:pt-12 pb-4">
             <div className="hidden md:block w-full" />
             <div className="relative flex justify-center p-2">
-              <OnlineChessboard />
+              <DummyChessboard />
             </div>
             <div className="w-full lg:min-w-[20rem] max-w-md">
               <OnlineCreatePanel />

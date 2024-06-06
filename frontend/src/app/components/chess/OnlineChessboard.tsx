@@ -111,7 +111,6 @@ export default function OnlineChessboard() {
   const [checkSquares, setCheckSquares] = useState<any>({});
   const [moveFrom, setMoveFrom] = useState("");
   const playerId = Cookies.get("player_id");
-  console.log(playerId);
   useEffect(() => {
     if (matchQueryData?.whites_player?.anonymous_id === playerId) {
       dispatch(setPlayerColor("w"));
