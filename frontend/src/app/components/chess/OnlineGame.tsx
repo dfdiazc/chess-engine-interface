@@ -24,12 +24,12 @@ export default function OnlineGame() {
   });
   const gameState = useSelector(selectCurrentGameState);
   async function join() {
-    try {
-      const matchData = await joinMatch(matchId).unwrap();
-      dispatch(setHasJoinedGame(true));
-    } catch (error) {
-      router.push("/play");
-    }
+      try {
+        const matchData = await joinMatch(matchId).unwrap();
+        dispatch(setHasJoinedGame(true));
+      } catch (error) {
+        router.push("/play");
+      }
   }
   useEffect(() => {
     join();
