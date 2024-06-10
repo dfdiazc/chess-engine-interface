@@ -155,12 +155,12 @@ export default function LandingChessboard({
   const [boardWidth, setBoardWidth] = useState(initialBoardSize);
   function initialBoardSize() {
     if (typeof window !== "undefined") {
-      let windowWidth = window.innerWidth;
+      let windowWidth = window.innerWidth;  
       let windowHeight = window.innerHeight;
       return windowWidth < 768
-        ? windowWidth * 0.7
+        ? Math.min(windowWidth * 0.9, 500)
         : windowWidth < 1024
-        ? windowWidth * 0.55
+        ? Math.min(windowWidth * 0.55, windowHeight * 0.75)
         : windowHeight * 0.8;
     }
     return 0;
@@ -171,9 +171,9 @@ export default function LandingChessboard({
       let windowHeight = window.innerHeight;
       setBoardWidth(
         windowWidth < 768
-          ? windowWidth * 0.7
+          ? Math.min(windowWidth * 0.9, 500)
           : windowWidth < 1024
-          ? windowWidth * 0.55
+          ? Math.min(windowWidth * 0.55, windowHeight * 0.75)
           : windowHeight * 0.8
       );
     }

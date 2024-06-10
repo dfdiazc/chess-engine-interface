@@ -11,8 +11,10 @@ import {
   selectCurrentGameState,
   setHasJoinedGame,
 } from "@/lib/features/chess/chessSlice";
+import { useRouter } from "next/navigation";
 
 export default function OnlineGame() {
+  const router = useRouter();
   const [loaded, setLoaded] = useState(false);
   const dispatch = useDispatch();
   const { id: matchId } = useParams();
@@ -22,8 +24,12 @@ export default function OnlineGame() {
   });
   const gameState = useSelector(selectCurrentGameState);
   async function join() {
-    await joinMatch(matchId);
-    dispatch(setHasJoinedGame(true));
+      try {
+        const matchData = await joinMatch(matchId).unwrap();
+        dispatch(setHasJoinedGame(true));
+      } catch (error) {
+        router.push("/play");
+      }
   }
   useEffect(() => {
     join();
