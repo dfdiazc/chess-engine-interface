@@ -509,23 +509,6 @@ export default function OnlineChessboard() {
       }
     }
   }
-  /* const [currentPlayerTime, setCurrentPlayerTime] = useState(60 * 10);
-  const [opponentPlayerTime, setOpponentPlayerTime] = useState(60 * 10);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (turn === playerColor) {
-        setCurrentPlayerTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-      } else {
-        setOpponentPlayerTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-      }
-    }, 1000);
-
-    if (currentPlayerTime === 0 || opponentPlayerTime === 0) {
-      clearInterval(timer);
-    }
-
-    return () => clearInterval(timer);
-  }, [turn, currentPlayerTime, opponentPlayerTime]); */
   return (
     <div className="flex flex-col gap-2 h-fit">
       <div
@@ -551,19 +534,6 @@ export default function OnlineChessboard() {
             />
           </div>
         </div>
-        {/* {timeControl !== "unlimited" && (
-          <div className="bg-neutral-800 px-4 py-2 rounded w-24 flex justify-center items-center">
-            <p
-              className={`text-neutral-200 ${
-                turn === playerColor && "opacity-50"
-              } text-xl`}
-            >
-              {Math.floor(opponentPlayerTime / 60)}:
-              {opponentPlayerTime % 60 < 10 ? "0" : ""}
-              {opponentPlayerTime % 60}
-            </p>
-          </div>
-        )} */}
       </div>
       <div className="flex">
         <div className="relative" id="chessboard">
@@ -626,19 +596,6 @@ export default function OnlineChessboard() {
             />
           </div>
         </div>
-        {/* {timeControl !== "unlimited" && (
-          <div className="bg-neutral-800 px-4 py-2 rounded w-24 flex justify-center items-center">
-            <p
-              className={`text-neutral-200 ${
-                turn === opponentColor && "opacity-50"
-              } text-xl`}
-            >
-              {Math.floor(currentPlayerTime / 60)}:
-              {currentPlayerTime % 60 < 10 ? "0" : ""}
-              {currentPlayerTime % 60}
-            </p>
-          </div>
-        )} */}
       </div>
     </div>
   );

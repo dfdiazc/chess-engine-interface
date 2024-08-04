@@ -10,9 +10,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Languages, ChevronDown } from "lucide-react";
-import { useParams } from "next/navigation";
 import { useLocale } from "next-intl";
-import { ChangeEvent, ReactNode, useTransition } from "react";
+import { useTransition } from "react";
 import { useRouter, usePathname } from "@/navigation";
 
 export default function LanguageSelector() {
@@ -21,7 +20,6 @@ export default function LanguageSelector() {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const pathname = usePathname();
-  const params = useParams();
   function setLocale(locale: string) {
     startTransition(() => {
       router.replace(pathname, { locale: locale });

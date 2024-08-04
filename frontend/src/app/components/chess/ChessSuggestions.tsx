@@ -60,10 +60,6 @@ export default function ChessSuggestions() {
                   <Skeleton className="w-2/3 h-4 rounded-md bg-neutral-300 self-center" />
                   <Skeleton className="w-1/3 h-4 rounded-md bg-neutral-300 self-center" />
                 </div>
-                {/* <div className="flex xl:hidden gap-2">
-                  <Skeleton className="w-1/3 h-4 rounded-md bg-neutral-300 self-center" />
-                  <Skeleton className="w-2/3 h-4 rounded-md bg-neutral-300 self-center" />
-                </div> */}
               </div>
             ) : (
               hasValidSuggestion() && (
