@@ -15,7 +15,7 @@ import { Chess } from "chess.js";
 async function get_game() {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/api/playfullgame/stockfish`,
+      `${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_ENGINE_API_URL}/api/playfullgame/stockfish`,
       {
         cache: "no-store",
       }
