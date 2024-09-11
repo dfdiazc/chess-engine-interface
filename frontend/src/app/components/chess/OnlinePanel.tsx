@@ -13,7 +13,6 @@ import {
   selectCurrentHasJoinedGame,
 } from "@/lib/features/chess/chessSlice";
 import { Button } from "@/components/ui/button";
-import { VscDebugRestart } from "react-icons/vsc";
 import { FaPlus } from "react-icons/fa6";
 import { ChessSettings, GameHistory, ResignGame } from ".";
 import { useTranslations } from "next-intl";
@@ -74,23 +73,6 @@ export default function OnlinePanel() {
       }
     }
   }
-  /* const [currentPlayerTime, setCurrentPlayerTime] = useState(60 * 10);
-  const [opponentPlayerTime, setOpponentPlayerTime] = useState(60 * 10);
-  useEffect(() => {
-    const timer = setInterval(() => {
-      if (turn === playerColor) {
-        setCurrentPlayerTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-      } else {
-        setOpponentPlayerTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-      }
-    }, 1000);
-
-    if (currentPlayerTime === 0 || opponentPlayerTime === 0) {
-      clearInterval(timer);
-    }
-
-    return () => clearInterval(timer);
-  }, [turn, currentPlayerTime, opponentPlayerTime]); */
   return (
     <div className="flex flex-col gap-2">
       <GameHistory />
@@ -143,15 +125,6 @@ export default function OnlinePanel() {
               {t("play.game.newGame")}
             </Link>
           </Button>
-          {/* <Button
-            variant="default"
-            type="submit"
-            className="w-full"
-            onClick={rematch}
-          >
-            <VscDebugRestart className="w-5 h-5 scale-x-[-1] stroke-neutral-200 mr-2" />
-            {t("play.game.rematch")}
-          </Button> */}
         </div>
       )}
     </div>

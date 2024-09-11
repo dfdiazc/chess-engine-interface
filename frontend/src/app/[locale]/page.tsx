@@ -10,16 +10,32 @@ import { Slider } from "@/components/ui/slider";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { getTranslations } from "next-intl/server";
+import { Chess } from "chess.js";
 
 async function get_game() {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_API_URL}/api/playfullgame/stockfish`,
-    {
-      cache: "no-store",
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_HTTP_PROTOCOL}://${process.env.NEXT_PUBLIC_ENGINE_API_URL}/api/playfullgame/stockfish`,
+      {
+        cache: "no-store",
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch {
+    const chess = new Chess();
+    const game: { moves: string[] } = {
+      moves: [],
+    };
+    while (!chess.isGameOver()) {
+      const possibleMoves = chess.moves();
+      const randomMove =
+        possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+      chess.move(randomMove);
+      game.moves.push(randomMove);
     }
-  );
-  const data = await response.json();
-  return data;
+    return game;
+  }
 }
 
 export default async function Page() {

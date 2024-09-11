@@ -7,7 +7,6 @@ import {
 } from "react-redux";
 import { apiSlice } from "./api/apiSlice";
 import { engineSlice } from "./api/engineApiSlice";
-// import authReducer from "./features/auth/authSlice";
 import chessReducer from "./features/chess/chessSlice";
 
 export const makeStore = () => {
@@ -15,7 +14,6 @@ export const makeStore = () => {
     reducer: {
       [apiSlice.reducerPath]: apiSlice.reducer,
       [engineSlice.reducerPath]: engineSlice.reducer,
-      // auth: authReducer,
       chess: chessReducer,
     },
     middleware: (getDefaultMiddleware) =>
