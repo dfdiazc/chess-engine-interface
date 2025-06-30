@@ -1,6 +1,4 @@
-# [unrealchess.live](https://unrealchess.live/)
-
-[![Un-Real Chess Logo](https://github.com/dfdiazc/chess-engine-interface/blob/main/unrealchess-logo.png?raw=true)](https://unrealchess.live/)
+![Un-Real Chess Logo](https://github.com/dfdiazc/chess-engine-interface/blob/main/unrealchess-logo.png?raw=true)
 
 Un-Real Chess is an online, free platform where you can play chess against the best chess engines in the world, or with your friends!
 
